@@ -1,0 +1,24 @@
+[submodule "comfyui"]
+	path = comfyui
+	url = ./comfyui/
+[submodule "Pixelsorting"]
+	path = Pixelsorting
+	url = ./Pixelsorting
+[submodule "bypass-paywalls-chrome-clean"]
+	path = bypass-paywalls-chrome-clean
+	url = ./bypass-paywalls-chrome-clean/
+[submodule "gasmask"]
+	path = gasmask
+	url = ./gasmask/
+[submodule "nicotine-plus"]
+	path = nicotine-plus
+	url = ./nicotine-plus/
+[submodule "stable-diffusion-xl-base-1.0"]
+	path = stable-diffusion-xl-base-1.0
+	url = ./stable-diffusion-xl-base-1.0/
+[submodule "stable-diffusion-xl-refiner-1.0"]
+	path = stable-diffusion-xl-refiner-1.0
+	url = ./stable-diffusion-xl-refiner-1.0/
+[submodule "youtube-dl"]
+	path = youtube-dl
+	url = ./youtube-dl/
