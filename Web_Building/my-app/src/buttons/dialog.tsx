@@ -4,8 +4,8 @@ import { ComponentConfig } from "@measured/puck";
 import { Cross1Icon } from "@radix-ui/react-icons";
 import React, { Fragment, ReactElement } from "react";
 import { clsx } from "clsx";
-import { Button } from "./button";
-
+import { Button as ButtonConfig } from "./button";
+const Button = ButtonConfig.render;
 export interface DialogProps {
   buttonText: string;
   title: string;

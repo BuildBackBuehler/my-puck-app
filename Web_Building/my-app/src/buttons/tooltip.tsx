@@ -2,8 +2,8 @@ import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import { ComponentConfig } from "@measured/puck";
 import { clsx } from "clsx";
 import React from "react";
-import { Button } from "./button";
-
+import { Button as ButtonConfig } from "./button";
+const Button = ButtonConfig.render;
 export interface TooltipProps {
   triggerText: string;
   content: string;

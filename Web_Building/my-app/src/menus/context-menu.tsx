@@ -4,7 +4,8 @@ import React, { ReactElement } from "react";
 import dynamic from "next/dynamic";
 import dynamicIconImports from "lucide-react/dynamicIconImports";
 import { clsx } from "clsx";
-import Button from "../buttons/button";
+import { Button as ButtonConfig } from "../buttons/button";
+const Button = ButtonConfig.render;
 
 const icons = Object.keys(dynamicIconImports).reduce<Record<string, ReactElement>>((acc, iconName) => {
   const El = dynamic((dynamicIconImports as any)[iconName]);

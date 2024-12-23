@@ -2,9 +2,11 @@ import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
 import { ComponentConfig } from "@measured/puck";
 import React, { ReactElement, useState } from "react";
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import dynamicIconImports from "lucide-react/dynamicIconImports";
 import { clsx } from "clsx";
-import { Button } from "../buttons/button";
+import { Button as ButtonConfig } from "../buttons/button";
+const Button = ButtonConfig.render;
 
 const icons = Object.keys(dynamicIconImports).reduce<Record<string, ReactElement>>((acc, iconName) => {
   const El = dynamic((dynamicIconImports as any)[iconName]);
@@ -143,9 +145,8 @@ export const DropdownMenu: ComponentConfig<DropdownMenuProps> = {
                 {item.submenuItems.map((subItem, i) => (
                   <DropdownMenuPrimitive.Item key={i} className={subItem.itemClassName}>
                     {subItem.icon && icons[subItem.icon]}
-                    {subItem.url && (
-                      <img className="mr-2.5 h-6 w-6 rounded-full" src={subItem.url} alt={subItem.label} />
-                    )}
+                      <Image className="mr-2.5 h-6 w-6 rounded-full" src={subItem.url} alt={subItem.label} width={24} height={24} />
+                    }
                     <span>{subItem.label}</span>
                   </DropdownMenuPrimitive.Item>
                 ))}
@@ -168,7 +169,7 @@ export const DropdownMenu: ComponentConfig<DropdownMenuProps> = {
       <div className="relative inline-block text-left">
         <DropdownMenuPrimitive.Root>
           <DropdownMenuPrimitive.Trigger asChild>
-            <Button>{buttonText}</Button>
+            <Button text={buttonText} />
           </DropdownMenuPrimitive.Trigger>
 
           <DropdownMenuPrimitive.Portal>
