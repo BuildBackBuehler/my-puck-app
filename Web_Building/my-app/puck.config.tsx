@@ -13,11 +13,12 @@ import { AccordionProps, AspectRatioProps, AvatarProps, CheckboxProps, Collapsib
 import { CommandMenu, ContextMenu, DropdownMenu, NavigationMenu, Menubar, Tabs, Toolbar } from './src/menus';
 import { CommandMenuProps, ContextMenuProps, DropdownMenuProps, MenubarProps, NavigationMenuProps, TabsProps, ToolbarProps } from "./src/menus";
 
-
-
+import { DemoCard } from './src/basics/demo-card';
+import { DemoCardProps } from './src/basics/demo-card';
 
 type Props = {
   HeadingBlock: { title: string };
+  DemoCard: DemoCardProps;
   Button: ButtonProps;
   Dialog: DialogProps;
   CommandMenu: CommandMenuProps;
@@ -64,6 +65,7 @@ export const config: Config<Props> = {
         </div>
       ),
     },
+    DemoCard,
     Button,
     Dialog,
     CommandMenu,
