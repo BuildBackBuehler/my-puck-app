@@ -33,7 +33,12 @@ export const Checkbox: ComponentConfig<CheckboxProps> = {
   defaultProps: {
     label: "Accept terms and conditions",
     defaultChecked: true,
-    checkboxClassName: "flex h-5 w-5 items-center justify-center rounded radix-state-checked:bg-purple-600 radix-state-unchecked:bg-gray-100 dark:radix-state-unchecked:bg-gray-900 focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75",
+    checkboxClassName: clsx(
+      "flex h-5 w-5 items-center justify-center rounded",
+      "radix-state-checked:bg-purple-600",
+      "radix-state-unchecked:bg-gray-100 dark:radix-state-unchecked:bg-gray-900",
+      "focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75"
+    ),
     labelClassName: "ml-3 select-none text-sm font-medium text-gray-900 dark:text-gray-100",
     iconClassName: "h-4 w-4 self-center text-white",
     formClassName: "flex items-center"

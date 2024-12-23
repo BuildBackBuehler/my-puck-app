@@ -1,8 +1,8 @@
 import type { Config } from "@measured/puck";
 // import { Divider, Heading, Paragraph, DemoCard, Icon } from './src/basics';
 
-import { Columns, Container, ThemeSwitcher } from './src/layout';
-import { ColumnsProps, ContainerProps, ThemeSwitcherProps } from "./src/layout";
+import { Columns, Section, ThemeSwitcher } from './src/layout';
+import { ColumnsProps, SectionProps, ThemeSwitcherProps } from "./src/layout";
 
 import { AlertDialog, Button, Dialog, Popover, RadioGroup, Select, Toggle, Toast, ToggleGroup, Tooltip } from './src/buttons';
 import { AlertDialogProps, ButtonProps, DialogProps, PopoverProps, RadioGroupProps, SelectProps, ToggleProps, ToastProps, ToggleGroupProps, TooltipProps } from './src/buttons';
@@ -12,6 +12,7 @@ import { AccordionProps, AspectRatioProps, AvatarProps, CheckboxProps, Collapsib
 
 import { CommandMenu, ContextMenu, DropdownMenu, NavigationMenu, Menubar, Tabs, Toolbar } from './src/menus';
 import { CommandMenuProps, ContextMenuProps, DropdownMenuProps, MenubarProps, NavigationMenuProps, TabsProps, ToolbarProps } from "./src/menus";
+
 
 
 
@@ -26,7 +27,6 @@ type Props = {
   Collapsible: CollapsibleProps;
   ThemeSwitcher: ThemeSwitcherProps;
   Columns: ColumnsProps;
-  Container: ContainerProps;
   AlertDialog: AlertDialogProps;
   Popover: PopoverProps;
   Select: SelectProps;
@@ -46,7 +46,7 @@ type Props = {
   HoverCard: HoverCardProps;
   RadioGroup: RadioGroupProps;
   Menubar: MenubarProps;
-  
+  Section: SectionProps;
 };
 
 export const config: Config<Props> = {
@@ -73,7 +73,7 @@ export const config: Config<Props> = {
     Collapsible,
     ThemeSwitcher,
     Columns,
-    Container,
+    Section,
     AlertDialog,
     Popover,
     Select,
@@ -101,7 +101,7 @@ export const config: Config<Props> = {
     },
     layout: {
       title: 'Layout',
-      components: ['Columns', 'Container', 'ThemeSwitcher']
+      components: ['Columns', 'Section', 'ThemeSwitcher']
     },
     'data-displays': {
       title: 'Data Displays',
