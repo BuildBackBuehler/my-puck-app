@@ -116,6 +116,11 @@ export const config: Config<Props> = {
       components: ['AlertDialog', 'Button', 'Dialog', 'RadioGroup', 'Popover', 'Select', 'Toggle', 'Toast', 'ToggleGroup', 'Tooltip']
     }
   },
+  root: {
+    render: ({ children }) => {
+      return <div className="p-16">{children}</div>;
+    }
+  }
 };
 
 export default config;
