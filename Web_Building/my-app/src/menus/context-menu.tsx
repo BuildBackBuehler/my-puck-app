@@ -177,7 +177,7 @@ export const ContextMenu: ComponentConfig<ContextMenuProps> = {
     return (
       <ContextMenuPrimitive.Root>
         <ContextMenuPrimitive.Trigger asChild>
-          <Button>{buttonText}</Button>
+          <Button text={buttonText} />
         </ContextMenuPrimitive.Trigger>
 
         <ContextMenuPrimitive.Portal>

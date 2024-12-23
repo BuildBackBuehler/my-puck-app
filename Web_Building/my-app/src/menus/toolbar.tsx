@@ -7,7 +7,7 @@ import React from "react";
 interface ToolbarGroup {
   type: "single" | "multiple";
   label: string;
-  defaultValue?: string;
+  defaultValue?: string | string[];
   items: {
     value: string;
     label: string;
@@ -134,7 +134,7 @@ export const Toolbar: ComponentConfig<ToolbarProps> = {
             ) : (
               <ToolbarPrimitive.ToggleGroup
                 type="multiple"
-                defaultValue={group.defaultValue}
+                defaultValue={group.defaultValue as string[]}
                 aria-label={group.label}
               >
                 {group.items.map(item => (

@@ -1,19 +1,20 @@
 import * as ToggleGroupPrimitive from "@radix-ui/react-toggle-group";
 import { ComponentConfig } from "@measured/puck";
-import { FontBoldIcon, FontItalicIcon, UnderlineIcon } from "@radix-ui/react-icons";
+import { FontBoldIcon, FontItalicIcon, UnderlineIcon, TextAlignCenterIcon, TextAlignLeftIcon, TextAlignRightIcon } from "@radix-ui/react-icons";
 import { clsx } from "clsx";
 import React from "react";
+import { Toggle as ToggleConfig, ToggleProps } from "./toggle";
+const Toggle = ToggleConfig.render;
 
-interface ToggleOption {
-  value: string;
-  label: string;
-}
+// interface ToggleOption {
+//   value: string;
+//   label: string;
+// }
 
 export interface ToggleGroupProps {
-  options: ToggleOption[];
+  Toggle: ToggleProps[];
   defaultValue?: string;
   className?: string;
-  type?: 'single' | 'multiple';
 }
 
 const ToggleGroupItem = React.forwardRef<
@@ -34,49 +35,70 @@ ToggleGroupItem.displayName = 'ToggleGroupItem';
 
 export const ToggleGroup: ComponentConfig<ToggleGroupProps> = {
   fields: {
-    options: {
-      type: 'array',
-      arrayFields: {
-        label: { type: 'text' },
-        value: { type: 'text' }
-      },
-      defaultValue: [
-        { label: "Bold", value: "bold" },
-        { label: "Italic", value: "italic" },
-        { label: "Underline", value: "underline" }
-      ]
-    },
-    type: {
-      type: 'select',
-      options: [
-        { label: 'Single', value: 'single' },
-        { label: 'Multiple', value: 'multiple' }
-      ],
-      defaultValue: 'single'
-    }
+    Toggle: { type: "array", arrayFields: {
+      type: "object",
+      objectFields: {
+        defaultPressed: { type: "boolean" },
+        activeText: { type: "text" },
+        inactiveText: { type: "text" },
+        buttonClassName: { type: "text" },
+        iconClassName: { type: "text" },
+        textClassName: { type: "text" },
+        showIcon: { type: "boolean" }
+      }
+    }},
+    defaultValue: { type: "text" },
+    className: { type: "text" }
   },
 
-  render: ({ options, type = 'single', className }) => {
-    if (!options || !Array.isArray(options)) {
-      return null;
-    }
-
+  defaultProps: {
+    Toggle: [
+      {
+        defaultPressed: false,
+        activeText: "Bold",
+        inactiveText: "Bold",
+        buttonClassName: "inline-flex items-center justify-center px-3 py-2 text-sm font-medium bg-white text-gray-700 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700",
+        iconClassName: "h-4 w-4",
+        textClassName: "ml-2 leading-5",
+        showIcon: true
+      },
+      {
+        defaultPressed: false,
+        activeText: "Italic",
+        inactiveText: "Italic",
+        buttonClassName: "inline-flex items-center justify-center px-3 py-2 text-sm font-medium bg-white text-gray-700 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700",
+        iconClassName: "h-4 w-4",
+        textClassName: "ml-2 leading-5",
+        showIcon: true
+      },
+      {
+        defaultPressed: false,
+        activeText: "Underline",
+        inactiveText: "Underline",
+        buttonClassName: "inline-flex items-center justify-center px-3 py-2 text-sm font-medium bg-white text-gray-700 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700",
+        iconClassName: "h-4 w-4",
+        textClassName: "ml-2 leading-5",
+        showIcon: true
+      }
+    ],
+    defaultValue: "bold",
+    className: "inline-flex rounded-md shadow-sm"
+  },
+  render: ({ Toggle, defaultValue, className }) => {
     return (
       <ToggleGroupPrimitive.Root
-        type={type}
+        type="single"
         className={clsx('inline-flex rounded-md shadow-sm', className)}
       >
-        {options.map((option) => (
+        {Toggle.map((toggles) => (
           <ToggleGroupItem
-            key={option.value}
-            value={option.value}
+            key={toggles.activeText}
+            value={toggles.activeText}
           >
-            {option.label}
+            {toggles.activeText}
           </ToggleGroupItem>
         ))}
       </ToggleGroupPrimitive.Root>
     );
   }
 };
-
-export default ToggleGroup;

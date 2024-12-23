@@ -43,7 +43,7 @@ export const Tooltip: ComponentConfig<TooltipProps> = {
     <TooltipPrimitive.Provider>
       <TooltipPrimitive.Root>
         <TooltipPrimitive.Trigger asChild>
-          <Button>{triggerText}</Button>
+          <Button text={triggerText} />
         </TooltipPrimitive.Trigger>
         <TooltipPrimitive.Content
           sideOffset={sideOffset}

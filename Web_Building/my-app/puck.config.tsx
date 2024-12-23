@@ -15,6 +15,8 @@ import { CommandMenuProps, ContextMenuProps, DropdownMenuProps, MenubarProps, Na
 
 import { DemoCard } from './src/basics/demo-card';
 import { DemoCardProps } from './src/basics/demo-card';
+import { FieldLabel } from '@measured/puck';
+
 
 type Props = {
   HeadingBlock: { title: string };

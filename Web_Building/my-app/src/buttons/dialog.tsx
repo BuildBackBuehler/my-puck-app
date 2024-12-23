@@ -94,7 +94,7 @@ export const Dialog: ComponentConfig<DialogProps> = {
     return (
       <DialogPrimitive.Root open={isOpen} onOpenChange={setIsOpen}>
         <DialogPrimitive.Trigger asChild>
-          <Button>{buttonText}</Button>
+          <Button text={buttonText} />
         </DialogPrimitive.Trigger>
         <DialogPrimitive.Portal forceMount>
           <Transition.Root show={isOpen}>
