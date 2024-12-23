@@ -1,6 +1,6 @@
 import { clsx } from "clsx";
 import React from "react";
-import { ComponentConfig } from "@/core/types";
+import { ComponentConfig } from "@measured/puck";
 
 export interface ButtonProps {
   text: string;

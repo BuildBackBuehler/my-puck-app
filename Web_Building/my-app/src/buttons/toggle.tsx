@@ -1,59 +1,57 @@
+import * as TogglePrimitive from "@radix-ui/react-toggle";
 import { ComponentConfig } from "@measured/puck";
 import { StarFilledIcon, StarIcon } from "@radix-ui/react-icons";
-import * as TogglePrimitive from "@radix-ui/react-toggle";
 import React from "react";
-import Button from "./shared/button";
 
-interface Props {
-  defaultPressed?: boolean;
-  activeIcon?: React.ReactNode;
-  inactiveIcon?: React.ReactNode;
-  activeText?: string;
-  inactiveText?: string;
-  buttonClassName?: string;
-  iconClassName?: string;
-  textClassName?: string;
+export interface ToggleProps {
+  defaultPressed: boolean;
+  activeText: string;
+  inactiveText: string;
+  buttonClassName: string;
+  iconClassName: string;
+  textClassName: string;
+  showIcon: boolean;
 }
 
-const Toggle: React.FC<Props> = ({
-  defaultPressed = false,
-  activeIcon = <StarFilledIcon className="h-4 w-4 text-yellow-400" />,
-  inactiveIcon = <StarIcon className="h-4 w-4" />,
-  activeText = "Starred",
-  inactiveText = "Star",
-  buttonClassName,
-  iconClassName,
-  textClassName = "ml-2 leading-5",
-}) => {
-  const [pressed, setPressed] = React.useState(defaultPressed);
+export const Toggle: ComponentConfig<ToggleProps> = {
+  fields: {
+    defaultPressed: { type: "boolean" },
+    activeText: { type: "text" },
+    inactiveText: { type: "text" },
+    buttonClassName: { type: "text" },
+    iconClassName: { type: "text" },
+    textClassName: { type: "text" },
+    showIcon: { type: "boolean" }
+  },
 
-  return (
-    <TogglePrimitive.Root
-      pressed={pressed}
-      onPressedChange={setPressed}
-      asChild
-    >
-      <Button className={buttonClassName}>
-        <span className={iconClassName}>
-          {pressed ? activeIcon : inactiveIcon}
-        </span>
+  defaultProps: {
+    defaultPressed: false,
+    activeText: "Starred",
+    inactiveText: "Star",
+    buttonClassName: "inline-flex items-center justify-center px-3 py-2 rounded-md text-sm font-medium bg-white text-gray-700 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700",
+    iconClassName: "h-4 w-4",
+    textClassName: "ml-2 leading-5",
+    showIcon: true
+  },
+
+  render: ({ defaultPressed, activeText, inactiveText, buttonClassName, iconClassName, textClassName, showIcon }) => {
+    const [pressed, setPressed] = React.useState(defaultPressed);
+
+    return (
+      <TogglePrimitive.Root
+        pressed={pressed}
+        onPressedChange={setPressed}
+        className={buttonClassName}
+      >
+        {showIcon && (
+          pressed ? 
+            <StarFilledIcon className={`${iconClassName} text-yellow-400`} /> : 
+            <StarIcon className={iconClassName} />
+        )}
         <span className={textClassName}>
           {pressed ? activeText : inactiveText}
         </span>
-      </Button>
-    </TogglePrimitive.Root>
-  );
+      </TogglePrimitive.Root>
+    );
+  }
 };
-
-export const config: ComponentConfig<Props> = {
-  fields: {
-    defaultPressed: { type: "boolean", label: "Initially Pressed" },
-    activeText: { type: "text", label: "Active State Text" },
-    inactiveText: { type: "text", label: "Inactive State Text" },
-    buttonClassName: { type: "text", label: "Button Class" },
-    iconClassName: { type: "text", label: "Icon Class" },
-    textClassName: { type: "text", label: "Text Class" },
-  },
-};
-
-export default Toggle;
