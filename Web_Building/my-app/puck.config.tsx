@@ -7,8 +7,9 @@ import type { Config } from "@measured/puck";
 // import { CommandMenu, ContextMenu, DropdownMenu, NavigationMenu, Tabs, Toolbar } from './src/menus';
 // import { CommandMenuProps, ContextMenuProps, DropdownMenuProps, NavigationMenuProps, TabsProps, ToolbarProps } from "./src/menus";
 // import { AlertDialog, Button, Dialog, Popover, Select, Toggle, Toast, ToggleGroup, Tooltip } from './src/buttons';
-import { Button, ButtonProps } from './src/buttons/button';
-import { Dialog, DialogProps } from './src/buttons/dialog';
+
+import { Button, Dialog, Popover } from './src/buttons';
+
 import { CommandMenu, CommandMenuProps } from './src/menus/command-menu';
 import { ContextMenu, ContextMenuProps } from './src/menus/context-menu';
 import { DropdownMenu, DropdownMenuProps } from './src/menus/dropdown-menu';
