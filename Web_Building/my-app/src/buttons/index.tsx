@@ -14,3 +14,7 @@ export { Toast } from './toast';
 export type { ToastProps } from './toast';
 export { Tooltip } from './tooltip';
 export type { TooltipProps } from './tooltip';
+export { AlertDialog } from './alert-dialog';
+export type { AlertDialogProps } from './alert-dialog';
+export { RadioGroup } from './radio-group';
+export type { RadioGroupProps } from './radio-group';
