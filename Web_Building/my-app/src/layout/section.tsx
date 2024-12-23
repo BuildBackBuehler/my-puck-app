@@ -15,12 +15,14 @@ export const Section: ComponentConfig<SectionProps> = {
     padding: { type: "text" },
     maxWidth: { type: "text" },
     className: { type: "text" },
-    children: { type: "external" }
+    children: { type: "node" }
   },
 
   defaultProps: {
     padding: "0px",
-    maxWidth: "1280px"
+    maxWidth: "1280px",
+    className: "",
+    children: null
   },
 
   render: ({ children, className, padding, maxWidth, style = {} }) => (

@@ -61,3 +61,5 @@ export const Button: ComponentConfig<ButtonProps> = {
     )
   )
 };
+
+export default Button;

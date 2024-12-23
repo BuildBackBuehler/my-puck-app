@@ -1,6 +1,6 @@
 import { ComponentConfig } from "@measured/puck";
 import { DropZone } from "@measured/puck";
-import { generateId } from "@measured/puck";
+import { generateId } from "../../lib/generate-id";
 import { Section } from "./section";
 import { clsx } from "clsx";
 import React from "react";

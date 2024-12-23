@@ -115,7 +115,8 @@ export const config: Config<Props> = {
       title: 'Buttons',
       components: ['AlertDialog', 'Button', 'Dialog', 'RadioGroup', 'Popover', 'Select', 'Toggle', 'Toast', 'ToggleGroup', 'Tooltip']
     }
-  }
+  },
 };
 
 export default config;
+

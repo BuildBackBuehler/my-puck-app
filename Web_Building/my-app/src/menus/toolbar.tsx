@@ -112,24 +112,45 @@ export const Toolbar: ComponentConfig<ToolbarProps> = {
       <ToolbarPrimitive.Root className={rootClassName}>
         {groups.map((group, index) => (
           <React.Fragment key={group.label}>
-            <ToolbarPrimitive.ToggleGroup
-              type={group.type}
-              defaultValue={group.defaultValue}
-              aria-label={group.label}
-            >
-              {group.items.map(item => (
-                <ToolbarPrimitive.ToggleItem
-                  key={item.value}
-                  value={item.value}
-                  aria-label={item.label}
-                  className={itemClassName}
-                >
-                  {React.cloneElement(getIcon(item.icon), {
-                    className: iconClassName
-                  })}
-                </ToolbarPrimitive.ToggleItem>
-              ))}
-            </ToolbarPrimitive.ToggleGroup>
+            {group.type === "single" ? (
+              <ToolbarPrimitive.ToggleGroup
+                type="single"
+                defaultValue={group.defaultValue}
+                aria-label={group.label}
+              >
+                {group.items.map(item => (
+                  <ToolbarPrimitive.ToggleItem
+                    key={item.value}
+                    value={item.value}
+                    aria-label={item.label}
+                    className={itemClassName}
+                  >
+                    {React.cloneElement(getIcon(item.icon), {
+                      className: iconClassName
+                    })}
+                  </ToolbarPrimitive.ToggleItem>
+                ))}
+              </ToolbarPrimitive.ToggleGroup>
+            ) : (
+              <ToolbarPrimitive.ToggleGroup
+                type="multiple"
+                defaultValue={group.defaultValue}
+                aria-label={group.label}
+              >
+                {group.items.map(item => (
+                  <ToolbarPrimitive.ToggleItem
+                    key={item.value}
+                    value={item.value}
+                    aria-label={item.label}
+                    className={itemClassName}
+                  >
+                    {React.cloneElement(getIcon(item.icon), {
+                      className: iconClassName
+                    })}
+                  </ToolbarPrimitive.ToggleItem>
+                ))}
+              </ToolbarPrimitive.ToggleGroup>
+            )}
             {index < groups.length - 1 && (
               <ToolbarPrimitive.Separator className={separatorClassName} />
             )}
