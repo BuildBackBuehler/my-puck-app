@@ -115,7 +115,7 @@ export const Toolbar: ComponentConfig<ToolbarProps> = {
             {group.type === "single" ? (
               <ToolbarPrimitive.ToggleGroup
                 type="single"
-                defaultValue={group.defaultValue}
+                defaultValue={group.defaultValue as string}
                 aria-label={group.label}
               >
                 {group.items.map(item => (

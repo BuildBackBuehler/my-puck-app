@@ -1,9 +1,6 @@
 import { ComponentConfig } from "@measured/puck";
 import { DropZone } from "@measured/puck";
 import { generateId } from "../../lib/generate-id";
-import { Section } from "./section";
-import { clsx } from "clsx";
-import React from "react";
 
 export interface ColumnsProps {
   distribution: "auto" | "manual";
@@ -38,12 +35,12 @@ export const Columns: ComponentConfig<ColumnsProps> = {
     },
     columns: {
       type: "array",
-      getItemSummary: (col) => `Column (span ${col.span ? Math.max(Math.min(col.span, 12), 1) : "auto"})`,
+      getItemSummary: (col) => `Column (span ${col.span || "auto"})`,
       arrayFields: {
         span: {
           label: "Span (1-12)",
           type: "number",
-          min: 0,
+          min: 1,
           max: 12,
         },
       },
@@ -52,35 +49,36 @@ export const Columns: ComponentConfig<ColumnsProps> = {
 
   defaultProps: {
     distribution: "auto",
-    columns: [{}, {}],
+    columns: [{ span: 6 }, { span: 6 }],
   },
 
   render: ({ columns, distribution }) => {
+    const getGridCols = () => {
+      if (distribution === "manual") return "grid-cols-12";
+      return columns.length <= 4 
+        ? `grid-cols-${columns.length}` 
+        : "grid-cols-12";
+    };
+
     return (
-      <section>
-        <div
-          className={clsx(
-            "flex flex-col gap-6 min-h-0 min-w-0",
-            "md:grid",
-            distribution === "manual" ? "md:grid-cols-12" : `md:grid-cols-${columns.length}`
-          )}
-        >
-          {columns.map(({ span, id }, idx) => (
+      <div className="w-full px-4 py-8">
+        <div className={`
+          grid gap-6
+          ${getGridCols()}
+        `}>
+          {columns.map(({ span = distribution === "auto" ? 12 / columns.length : 1, id }, i) => (
             <div
-              key={id ?? idx}
-              className="flex flex-col"
-              style={span && distribution === "manual" ? {
-                gridColumn: `span ${Math.max(Math.min(span, 12), 1)}`
-              } : undefined}
+              key={id ?? i}
+              className={distribution === "manual" ? `col-span-${Math.min(span, 12)}` : ""}
             >
               <DropZone
-                zone={`column-${id ?? idx}`}
+                zone={`column-${id ?? i}`}
                 disallow={["Hero", "Logos", "Stats"]}
               />
             </div>
           ))}
         </div>
-      </section>
+      </div>
     );
   },
 };
