@@ -28,7 +28,10 @@ export const Select: ComponentConfig<SelectProps> = {
       arrayFields: {
         value: { type: "text" },
         label: { type: "text" },
-        disabled: { type: "radio" }
+        disabled: { type: "radio", options: [
+          { label: "Yes", value: true },
+          { label: "No", value: false }
+        ] }
       }
     },
     defaultValue: { type: "text" },

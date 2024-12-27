@@ -5,6 +5,7 @@ module.exports = {
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
     "./src/**/*.{js,ts,jsx,tsx}",
+    "./src/**/**/*.{js,ts,jsx,tsx}"
   ],
   darkMode: "class",
   theme: {
@@ -26,6 +27,9 @@ module.exports = {
       ],
     },
     extend: {
+      transitionDuration: {
+        '400': '400ms',
+      },
       boxShadow: {
         slider: "0 0 0 5px rgba(0, 0, 0, 0.3)",
       },
@@ -118,10 +122,11 @@ module.exports = {
             transform: "translateY(calc(100% + 1rem))",
           },
         },
+        // Ticker
         "ticker-scroll": {
           '0%': { transform: 'translateX(0)' },
           '100%': { transform: 'translateX(-100%)' },
-        }
+        },
       },
       animation: {
         // Ticker

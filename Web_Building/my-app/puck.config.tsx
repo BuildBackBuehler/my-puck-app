@@ -13,13 +13,12 @@ import { AccordionProps, AspectRatioProps, AvatarProps, CheckboxProps, Collapsib
 import { CommandMenu, ContextMenu, DropdownMenu, NavigationMenu, Menubar, Tabs, Toolbar } from './src/menus';
 import { CommandMenuProps, ContextMenuProps, DropdownMenuProps, MenubarProps, NavigationMenuProps, TabsProps, ToolbarProps } from "./src/menus";
 
-import { DemoCard } from './src/basics/demo-card';
-import { DemoCardProps } from './src/basics/demo-card';
-
-
+import { ArticleCard, DemoCard } from './src/basics';
+import { ArticleCardProps, DemoCardProps } from './src/basics';
 
 type Props = {
   HeadingBlock: { title: string };
+  ArticleCard: ArticleCardProps;
   DemoCard: DemoCardProps;
   Button: ButtonProps;
   Dialog: DialogProps;
@@ -105,7 +104,7 @@ export const config: Config<Props> = {
     categories: {
     basics: {
       title: 'Basics',
-      components: ['Divider', 'Heading', 'Paragraph', 'DemoCard', 'Icon']
+      components: [ 'ArticleCard', 'Divider', 'DemoCard', 'Icon']
     },
     layout: {
       title: 'Layout',
@@ -124,12 +123,13 @@ export const config: Config<Props> = {
       components: ['AlertDialog', 'Button', 'Dialog', 'RadioGroup', 'Popover', 'Select', 'Toggle', 'Toast', 'ToggleGroup', 'Tooltip']
     }
   },
-  root: {
-    render: ({ children }) => {
-      return <div className="p-16">{children}</div>;
+    root: {
+        render: ({ children }: { children: React.ReactNode }) => (
+          <div className="min-h-screen bg-white text-gray-900 transition-colors duration-200 dark:bg-gray-900 dark:text-white">
+            {children}
+          </div>
+        )
     }
-  }
-};
+  };
 
 export default config;
-

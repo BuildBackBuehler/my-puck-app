@@ -26,10 +26,15 @@ export const AlertDialog: ComponentConfig<AlertDialogProps> = {
   fields: {
     trigger: {
       type: "object",
-      fields: {
-        text: { type: "text" },
-        className: { type: "text" }
-      }
+      label: "Trigger Button",
+      defaultValue: {
+        text: "",
+        className: ""
+      },
+      fields: [
+        { name: "text", type: "text" },
+        { name: "className", type: "text" }
+      ]
     },
     title: { type: "text" },
     description: { type: "textarea" },
