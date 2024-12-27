@@ -1,84 +1,101 @@
 import { ComponentConfig } from "@measured/puck";
 import { DropZone } from "@measured/puck";
 import { generateId } from "../../lib/generate-id";
+import { Section } from "./section";
+import clsx from "clsx";
+const Sect = Section.render;
 
-export interface ColumnsProps {
+export type ColumnsProps = {
   distribution: "auto" | "manual";
   columns: {
     span?: number;
     id?: string;
   }[];
-}
+};
 
 export const Columns: ComponentConfig<ColumnsProps> = {
+  // Dynamically generate an ID for each column
   resolveData: ({ props }, { lastData }) => {
-    if (lastData?.props.columns.length === props.columns.length) return { props };
+    if (lastData?.props.columns.length === props.columns.length) {
+      return { props };
+    }
 
     return {
       props: {
         ...props,
-        columns: props.columns.map(column => ({
+        columns: props.columns.map((column) => ({
           ...column,
           id: column.id ?? generateId(),
         })),
       },
     };
   },
-
   fields: {
     distribution: {
       type: "radio",
       options: [
-        { value: "auto", label: "Auto" },
-        { value: "manual", label: "Manual" },
+        {
+          value: "auto",
+          label: "Auto",
+        },
+        {
+          value: "manual",
+          label: "Manual",
+        },
       ],
     },
     columns: {
       type: "array",
-      getItemSummary: (col) => `Column (span ${col.span || "auto"})`,
+      getItemSummary: (col) =>
+        `Column (span ${
+          col.span ? Math.max(Math.min(col.span, 12), 1) : "auto"
+        })`,
       arrayFields: {
         span: {
           label: "Span (1-12)",
           type: "number",
-          min: 1,
+          min: 0,
           max: 12,
         },
       },
     },
   },
-
   defaultProps: {
     distribution: "auto",
-    columns: [{ span: 6 }, { span: 6 }],
+    columns: [{}, {}],
   },
-
   render: ({ columns, distribution }) => {
-    const getGridCols = () => {
-      if (distribution === "manual") return "grid-cols-12";
-      return columns.length <= 4 
-        ? `grid-cols-${columns.length}` 
-        : "grid-cols-12";
-    };
-
     return (
-      <div className="w-full px-4 py-8">
-        <div className={`
-          grid gap-6
-          ${getGridCols()}
-        `}>
-          {columns.map(({ span = distribution === "auto" ? 12 / columns.length : 1, id }, i) => (
+      <Sect>
+        <div
+          className={clsx()}
+          style={{
+            gridTemplateColumns:
+              distribution === "manual"
+                ? "repeat(12, 1fr)"
+                : `repeat(${columns.length}, 1fr)`,
+          }}
+        >
+          {columns.map(({ span, id }, idx) => (
             <div
-              key={id ?? i}
-              className={distribution === "manual" ? `col-span-${Math.min(span, 12)}` : ""}
+              key={id ?? idx}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gridColumn:
+                  span && distribution === "manual"
+                    ? `span ${Math.max(Math.min(span, 12), 1)}`
+                    : "",
+              }}
             >
               <DropZone
-                zone={`column-${id ?? i}`}
+                zone={`column-${id ?? idx}`}
                 disallow={["Hero", "Logos", "Stats"]}
               />
             </div>
           ))}
         </div>
-      </div>
+      </Sect>
     );
   },
 };

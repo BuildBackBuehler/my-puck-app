@@ -7,7 +7,7 @@ export interface SectionProps {
   children: ReactNode;
   padding?: string;
   maxWidth?: string;
-  style?: CSSProperties;
+  // style?: CSSProperties;
 }
 
 export const Section: ComponentConfig<SectionProps> = {
@@ -15,7 +15,7 @@ export const Section: ComponentConfig<SectionProps> = {
     padding: { type: "text" },
     maxWidth: { type: "text" },
     className: { type: "text" },
-    children: { type: "node" }
+    children: { type: "custom" }
   },
 
   defaultProps: {
@@ -25,14 +25,13 @@ export const Section: ComponentConfig<SectionProps> = {
     children: null
   },
 
-  render: ({ children, className, padding, maxWidth, style = {} }) => (
+  render: ({ children, className, padding, maxWidth }) => (
     <div
       className={clsx(
         "px-4 md:px-6 not-[.Section_.Section]",
         className
       )}
       style={{
-        ...style,
         paddingTop: padding,
         paddingBottom: padding
       }}

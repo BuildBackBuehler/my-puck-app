@@ -50,14 +50,14 @@ export const Button: ComponentConfig<ButtonProps> = {
 
   render: React.forwardRef<HTMLButtonElement, ButtonProps>(
     ({ text, baseClass, hoverClass, focusClass, stateClass, disabled, ...props }, ref) => (
-      <Button
+      <button
         ref={ref}
         className={clsx(baseClass, hoverClass, focusClass, stateClass)}
         disabled={disabled}
         {...props}
       >
         {text}
-      </Button>
+      </button>
     )
   )
 };
