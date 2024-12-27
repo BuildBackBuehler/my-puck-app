@@ -1,4 +1,4 @@
-import { ComponentConfig } from "@measured/puck";
+import { ComponentConfig, DropZone } from "@measured/puck";
 import { CSSProperties, ReactNode } from "react";
 import { clsx } from "clsx";
 
@@ -7,13 +7,14 @@ export interface SectionProps {
   children: ReactNode;
   padding?: string;
   maxWidth?: string;
-  // style?: CSSProperties;
+  height?: string;
 }
 
 export const Section: ComponentConfig<SectionProps> = {
   fields: {
     padding: { type: "text" },
     maxWidth: { type: "text" },
+    height: { type: "text" },
     className: { type: "text" },
     children: { type: "custom" }
   },
@@ -21,11 +22,12 @@ export const Section: ComponentConfig<SectionProps> = {
   defaultProps: {
     padding: "0px",
     maxWidth: "1280px",
+    height: "auto",
     className: "",
-    children: null
+    children: []
   },
 
-  render: ({ children, className, padding, maxWidth }) => (
+  render: ({ children, className, padding, maxWidth, height }) => (
     <div
       className={clsx(
         "px-4 md:px-6 not-[.Section_.Section]",
@@ -33,7 +35,8 @@ export const Section: ComponentConfig<SectionProps> = {
       )}
       style={{
         paddingTop: padding,
-        paddingBottom: padding
+        paddingBottom: padding,
+        height: height || 'auto'
       }}
     >
       <div 

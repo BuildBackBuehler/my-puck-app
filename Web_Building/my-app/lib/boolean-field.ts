@@ -1,12 +1,29 @@
-import { ComponentConfig } from "@measured/puck";
+import { BaseField, ComponentConfig, NumberField, resolveAllData, SelectField, TextareaField, TextField } from "@measured/puck";
 import { FieldLabel } from "@measured/puck";
 import React from "react";
 
-// export type BooleanField = {
-//   type: "boolean";
-//   label?: string;
-//   defaultValue?: boolean;
-// };
+export type BooleanField = {
+  type: "boolean";
+  options?: string;
+  defaultValue?: boolean;
+};
+
+// Update the Field type union
+type Field = TextField 
+  | NumberField 
+  | TextareaField 
+  | SelectField 
+  | BooleanField;  // Add your new type
+
+// Example usage in component config
+export const BooleanField = {
+  fields: {
+    BooleanField: {
+      type: "boolean"
+      // Additional properties
+    }
+  }
+};
 
 // export const BooleanField: ComponentConfig<BooleanField> = {
 //   fields: {

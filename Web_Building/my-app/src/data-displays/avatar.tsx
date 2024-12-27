@@ -1,7 +1,13 @@
 import * as AvatarPrimitive from "@radix-ui/react-avatar";
 import { ComponentConfig } from "@measured/puck";
 import { clsx } from "clsx";
-import React from "react";
+
+const sizeClassMap = {
+  sm: "h-8 w-8",
+  md: "h-10 w-10",
+  lg: "h-12 w-12",
+  xl: "h-14 w-14"
+};
 
 export interface AvatarProps {
   items: {
@@ -9,11 +15,8 @@ export interface AvatarProps {
     fallbackText: string;
   }[];
   variant: "circle" | "rounded";
+  size: keyof typeof sizeClassMap;
   isOnline?: boolean;
-  avatarClassName: string;
-  imageClassName: string;
-  fallbackClassName: string;
-  onlineIndicatorClassName: string;
 }
 
 export const Avatar: ComponentConfig<AvatarProps> = {
@@ -33,17 +36,20 @@ export const Avatar: ComponentConfig<AvatarProps> = {
         { label: "Rounded", value: "rounded" }
       ]
     },
+    size: {
+      type: "select",
+      options: Object.keys(sizeClassMap).map(size => ({
+        label: size.toUpperCase(),
+        value: size
+      }))
+    },
     isOnline: {
       type: "radio",
       options: [
         { label: "Online", value: true },
         { label: "Offline", value: false }
       ]
-    },
-    avatarClassName: { type: "text" },
-    imageClassName: { type: "text" },
-    fallbackClassName: { type: "text" },
-    onlineIndicatorClassName: { type: "text" }
+    }
   },
 
   defaultProps: {
@@ -52,58 +58,46 @@ export const Avatar: ComponentConfig<AvatarProps> = {
       fallbackText: "JD"
     }],
     variant: "circle",
-    isOnline: false,
-    avatarClassName: "relative inline-flex h-10 w-10",
-    imageClassName: "h-full w-full object-cover",
-    fallbackClassName: "flex h-full w-full items-center justify-center bg-white dark:bg-gray-800",
-    onlineIndicatorClassName: "block h-2.5 w-2.5 rounded-full bg-green-400"
+    size: "md",
+    isOnline: false
   },
 
-  render: ({ 
-    items,
-    variant, 
-    isOnline, 
-    avatarClassName,
-    imageClassName,
-    fallbackClassName,
-    onlineIndicatorClassName
-  }) => {
-    const variantClassMap = {
-      circle: "rounded-full",
-      rounded: "rounded"
-    };
+  render: ({ items, variant, size, isOnline }) => {
+    const variantClass = variant === "circle" ? "rounded-full" : "rounded";
+    const sizeClass = sizeClassMap[size];
 
     return (
-      <>
+      <div className="flex gap-2 items-center">
         {items.map((item, index) => (
-          <AvatarPrimitive.Root
-            key={index}
-            className={avatarClassName}
-          >
-            <AvatarPrimitive.Image
-              src={item.image}
-              alt="Avatar"
-              className={clsx(imageClassName, variantClassMap[variant])}
-            />
+          <div key={index} className="relative inline-flex">
+            <AvatarPrimitive.Root className={clsx("relative inline-flex", sizeClass)}>
+              <AvatarPrimitive.Image
+                src={item.image}
+                alt={item.fallbackText}
+                className={clsx("aspect-square object-cover", variantClass)}
+              />
+              <AvatarPrimitive.Fallback
+                className={clsx(
+                  "flex items-center justify-center bg-gray-100",
+                  variantClass
+                )}
+                delayMs={600}
+              >
+                <span className="text-sm font-medium text-gray-700">
+                  {item.fallbackText}
+                </span>
+              </AvatarPrimitive.Fallback>
+            </AvatarPrimitive.Root>
+            
             {isOnline && (
-              <div className={clsx(
-                "absolute bottom-0 right-0 h-2 w-2",
-                variant === "circle" ? "-translate-x-1/2 -translate-y-1/2" : ""
-              )}>
-                <span className={onlineIndicatorClassName} />
-              </div>
+              <span className={clsx(
+                "absolute bottom-0 right-0 block h-2.5 w-2.5 rounded-full bg-green-400 ring-2 ring-white",
+                variant === "circle" && "translate-x-1/6 translate-y-1/6"
+              )} />
             )}
-            <AvatarPrimitive.Fallback
-              className={clsx(fallbackClassName, variantClassMap[variant])}
-              delayMs={600}
-            >
-              <span className="text-sm font-medium uppercase text-gray-700 dark:text-gray-400">
-                {item.fallbackText}
-              </span>
-            </AvatarPrimitive.Fallback>
-          </AvatarPrimitive.Root>
+          </div>
         ))}
-      </>
-    )
+      </div>
+    );
   }
 };

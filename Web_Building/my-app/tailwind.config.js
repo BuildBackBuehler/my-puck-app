@@ -4,6 +4,7 @@ module.exports = {
     "puck.config.tsx",
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
+    "./src/**/*.{js,ts,jsx,tsx}",
   ],
   darkMode: "class",
   theme: {
@@ -117,8 +118,14 @@ module.exports = {
             transform: "translateY(calc(100% + 1rem))",
           },
         },
+        "ticker-scroll": {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-100%)' },
+        }
       },
       animation: {
+        // Ticker
+        'pause': 'animation-play-state: paused',
         // Dropdown menu
         "scale-in": "scale-in 0.2s ease-in-out",
         "slide-down": "slide-down 0.6s cubic-bezier(0.16, 1, 0.3, 1)",

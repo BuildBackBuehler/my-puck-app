@@ -13,7 +13,13 @@ export interface SwitchProps {
 
 export const Switch: ComponentConfig<SwitchProps> = {
   fields: {
-    defaultChecked: { type: "boolean" },
+    defaultChecked: { 
+      type: "radio",
+      options: [ 
+        { label: "True", value: true }, 
+        { label: "False", value: false }
+      ]
+    },
     label: { type: "text" },
     switchClassName: { type: "text" },
     thumbClassName: { type: "text" },

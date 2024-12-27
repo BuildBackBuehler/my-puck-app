@@ -4,24 +4,30 @@ import { StarFilledIcon, StarIcon } from "@radix-ui/react-icons";
 import React from "react";
 
 export interface ToggleProps {
-  defaultPressed: radio;
+  defaultPressed: boolean;
   activeText: string;
   inactiveText: string;
   buttonClassName: string;
   iconClassName: string;
   textClassName: string;
-  showIcon: radio;
+  showIcon: boolean;
 }
 
 export const Toggle: ComponentConfig<ToggleProps> = {
   fields: {
-    defaultPressed: { type: "radio" },
+    defaultPressed: { type: "radio", options: [
+      { label: "Yes", value: true },
+      { label: "No", value: false }
+    ] },
     activeText: { type: "text" },
     inactiveText: { type: "text" },
     buttonClassName: { type: "text" },
     iconClassName: { type: "text" },
     textClassName: { type: "text" },
-    showIcon: { type: "radio" }
+    showIcon: { type: "radio", options: [
+      { label: "Yes", value: true },
+      { label: "No", value: false }
+    ] }
   },
 
   defaultProps: {

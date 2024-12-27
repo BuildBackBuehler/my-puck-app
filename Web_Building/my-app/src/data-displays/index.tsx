@@ -16,3 +16,5 @@ export { Switch } from './switch';
 export type { SwitchProps } from './switch';
 export { HoverCard } from './hover-card';
 export type { HoverCardProps } from './hover-card';
+export { Ticker } from './ticker';
+export type { TickerProps } from './ticker';
