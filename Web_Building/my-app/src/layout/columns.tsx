@@ -1,35 +1,24 @@
 import { ComponentConfig } from "@measured/puck";
 import { DropZone } from "@measured/puck";
 import { generateId } from "../../lib/generate-id";
+import { Section } from "./section";
 import clsx from "clsx";
-
-const gridColsMap = {
-  1: "grid-cols-1",
-  2: "grid-cols-2",
-  3: "grid-cols-3",
-  4: "grid-cols-4",
-  5: "grid-cols-5",
-  6: "grid-cols-6",
-  7: "grid-cols-7",
-  8: "grid-cols-8",
-  9: "grid-cols-9",
-  10: "grid-cols-10",
-  11: "grid-cols-11",
-  12: "grid-cols-12",
-};
+const Sect = Section.render;
 
 export type ColumnsProps = {
   distribution: "auto" | "manual";
   columns: {
     span?: number;
     id?: string;
-    height?: string;
   }[];
 };
 
 export const Columns: ComponentConfig<ColumnsProps> = {
+  // Dynamically generate an ID for each column
   resolveData: ({ props }, { lastData }) => {
-    if (lastData?.props.columns.length === props.columns.length) return { props };
+    if (lastData?.props.columns.length === props.columns.length) {
+      return { props };
+    }
 
     return {
       props: {
@@ -41,64 +30,72 @@ export const Columns: ComponentConfig<ColumnsProps> = {
       },
     };
   },
-
   fields: {
     distribution: {
-      type: "select",
+      type: "radio",
       options: [
-        { label: "Auto", value: "auto" },
-        { label: "Manual", value: "manual" },
+        {
+          value: "auto",
+          label: "Auto",
+        },
+        {
+          value: "manual",
+          label: "Manual",
+        },
       ],
     },
     columns: {
       type: "array",
+      getItemSummary: (col) =>
+        `Column (span ${
+          col.span ? Math.max(Math.min(col.span, 12), 1) : "auto"
+        })`,
       arrayFields: {
-        span: { type: "number", min: 1, max: 12 },
-        height: { type: "text", label: "Height" },
-      },
-      defaultItemProps: {
-        span: 1,
-        height: "300px",
+        span: {
+          label: "Span (1-12)",
+          type: "number",
+          min: 0,
+          max: 12,
+        },
       },
     },
   },
-
   defaultProps: {
     distribution: "auto",
-    columns: [
-      { span: 6, height: "300px" },
-      { span: 6, height: "300px" },
-    ],
+    columns: [{}, {}],
   },
-
   render: ({ columns, distribution }) => {
     return (
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className={clsx(
-          "grid gap-4 w-full",
-          distribution === "auto" 
-            ? gridColsMap[Math.min(columns.length, 12) as keyof typeof gridColsMap]
-            : "grid-cols-12"
-        )}>
-          {columns.map((column) => (
+      <Sect>
+        <div
+          className={clsx()}
+          style={{
+            gridTemplateColumns:
+              distribution === "manual"
+                ? "repeat(12, 1fr)"
+                : `repeat(${columns.length}, 1fr)`,
+          }}
+        >
+          {columns.map(({ span, id }, idx) => (
             <div
-              key={column.id}
-              className={clsx(
-                "h-full w-full",
-                distribution === "manual" && `col-span-${Math.min(column.span || 1, 12)}`
-              )}
-              style={{ height: column.height || '300px' }}
+              key={id ?? idx}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gridColumn:
+                  span && distribution === "manual"
+                    ? `span ${Math.max(Math.min(span, 12), 1)}`
+                    : "",
+              }}
             >
               <DropZone
-                zone={`column-${column.id}`}
-                className="h-full"
+                zone={`column-${id ?? idx}`}
+                disallow={["Hero", "Logos", "Stats"]}
               />
             </div>
           ))}
         </div>
-      </div>
+      </Sect>
     );
   },
 };
-
-export default Columns;

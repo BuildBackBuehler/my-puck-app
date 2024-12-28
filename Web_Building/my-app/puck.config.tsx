@@ -13,8 +13,11 @@ import { AccordionProps, AspectRatioProps, AvatarProps, CheckboxProps, Collapsib
 import { CommandMenu, ContextMenu, DropdownMenu, NavigationMenu, Menubar, Tabs, Toolbar } from './src/menus';
 import { CommandMenuProps, ContextMenuProps, DropdownMenuProps, MenubarProps, NavigationMenuProps, TabsProps, ToolbarProps } from "./src/menus";
 
-import { ArticleCard, DemoCard } from './src/basics';
-import { ArticleCardProps, DemoCardProps } from './src/basics';
+import { ArticleCard, ArticleCardList, DemoCard } from './src/basics';
+import { ArticleCardProps, ArticleCardListProps, DemoCardProps } from './src/basics';
+
+import { ArticleList, Circle, FeaturedHeader } from "./src/spec_parts";
+import { ArticleListProps, CircleProps, FeaturedHeaderProps } from "./src/spec_parts";
 
 type Props = {
   HeadingBlock: { title: string };
@@ -51,6 +54,10 @@ type Props = {
   Section: SectionProps;
   Ticker: TickerProps;
   ThemeToggler: ThemeTogglerProps;
+  ArticleList: ArticleListProps;
+  Circle: CircleProps;
+  FeaturedHeader: FeaturedHeaderProps;
+  ArticleCardList: ArticleCardListProps;
 };
 
 export const config: Config<Props> = {
@@ -68,6 +75,11 @@ export const config: Config<Props> = {
         </div>
       ),
     },
+    ArticleList,
+    Circle,
+    FeaturedHeader,
+    ArticleCard,
+    ArticleCardList,
     Ticker,
     DemoCard,
     Button,
@@ -104,7 +116,7 @@ export const config: Config<Props> = {
     categories: {
     basics: {
       title: 'Basics',
-      components: [ 'ArticleCard', 'Divider', 'DemoCard', 'Icon']
+      components: [ 'ArticleCard', 'ArticleCardList', 'Divider', 'DemoCard', 'Icon']
     },
     layout: {
       title: 'Layout',
