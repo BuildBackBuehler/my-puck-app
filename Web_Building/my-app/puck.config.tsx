@@ -16,8 +16,8 @@ import { CommandMenuProps, ContextMenuProps, DropdownMenuProps, MenubarProps, Na
 import { ArticleCard, ArticleCardList, DemoCard } from './src/basics';
 import { ArticleCardProps, ArticleCardListProps, DemoCardProps } from './src/basics';
 
-import { ArticleList, Circle, FeaturedHeader } from "./src/spec_parts";
-import { ArticleListProps, CircleProps, FeaturedHeaderProps } from "./src/spec_parts";
+import { ArticleList, Circle, FeaturedHeader, Sidebar } from "./src/spec_parts";
+import { ArticleListProps, CircleProps, FeaturedHeaderProps, SidebarProps } from "./src/spec_parts";
 
 type Props = {
   HeadingBlock: { title: string };
@@ -58,6 +58,7 @@ type Props = {
   Circle: CircleProps;
   FeaturedHeader: FeaturedHeaderProps;
   ArticleCardList: ArticleCardListProps;
+  Sidebar: SidebarProps;
 };
 
 export const config: Config<Props> = {
@@ -112,6 +113,7 @@ export const config: Config<Props> = {
     RadioGroup,
     Menubar,
     ThemeToggler,
+    Sidebar
   },
     categories: {
     basics: {

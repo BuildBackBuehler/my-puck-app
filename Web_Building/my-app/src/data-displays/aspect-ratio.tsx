@@ -2,6 +2,7 @@ import * as AspectRatioPrimitive from "@radix-ui/react-aspect-ratio";
 import { ComponentConfig } from "@measured/puck";
 import { clsx } from "clsx";
 import React from "react";
+import Image from "next/image";
 
 export interface AspectRatioProps {
   ratio: number;
@@ -51,7 +52,7 @@ export const AspectRatio: ComponentConfig<AspectRatioProps> = {
   defaultProps: {
     ratio: 16/9,
     image: {
-      src: "https://images.unsplash.com/photo-1609825488888-3a766db05542",
+      src: "https://demo-source.imgix.net/puppy.jpg",
       alt: "Hero Image"
     },
     overlay: {
@@ -69,13 +70,15 @@ export const AspectRatio: ComponentConfig<AspectRatioProps> = {
         <h3 className={overlay.className}>
           {overlay.text}
         </h3>
-      </div>
       <div className={imageWrapperClassName}>
-        <img
+        <Image
           src={image.src}
           alt={image.alt}
           className={imageClassName}
+          fill
+          sizes="100vw"
         />
+      </div>
       </div>
     </AspectRatioPrimitive.Root>
   )

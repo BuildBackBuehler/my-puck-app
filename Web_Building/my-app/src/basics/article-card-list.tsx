@@ -15,7 +15,13 @@ export const ArticleCardList: ComponentConfig<ArticleCardListProps> = {
       arrayFields: {
         mainTitle: { type: "text" },
         date: { type: "text" },
-        image: { type: "text" },
+        image: {
+          type: "object",
+          objectFields: {
+            src: { type: "text" },
+            alt: { type: "text" }
+          }
+        },
         title: { type: "text" },
         author: { type: "text" },
         readTime: { type: "text" },
@@ -38,19 +44,31 @@ export const ArticleCardList: ComponentConfig<ArticleCardListProps> = {
   },
 
   defaultProps: {
-    cards: [ArticleCard.defaultProps],
+    cards:  [{
+      mainTitle: "Article Title",
+      date: "January 1, 2024",
+      image: {
+        src: "https://demo-source.imgix.net/puppy.jpg",
+        alt: "A cute puppy."
+      },
+      title: "Article Subtitle",
+      author: "Author Name",
+      readTime: "5 min read",
+      summary: "Article summary goes here",
+      link: "#"
+    }],
     stickyOffset: 0,
     stickyPosition: "top"
   },
 
-  render: ({ cards, stickyPosition, stickyOffset, puck }) => (
+  render: ({ cards, stickyPosition, stickyOffset }) => (
     <div 
       className={`w-full ${stickyPosition === "top" ? "sticky top-0" : "sticky bottom-0"}`}
       style={{ top: `${stickyOffset}px` }}
     >
       <div className="space-y-8">
         {cards.map((card, index) => (
-          <ArticleCard.render key={index} {...card} puck={puck} />
+          <ArticleCard.render key={index} {...card} id={`article-${index}`} />
         ))}
       </div>
     </div>
