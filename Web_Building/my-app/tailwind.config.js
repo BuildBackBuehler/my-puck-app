@@ -10,11 +10,10 @@ module.exports = {
   darkMode: "class",
   theme: {
     fontFamily: {
-      sans: ['Inter', 'sans-serif'],
-      display: ['Space Grotesk', 'sans-serif'],
-      serif: ['Playfair Display', 'serif'],
+      sans: ['Inter', "sans-serif"],
+      display: ['Space-Grotesk', "sans-serif"],
+      serif: ['Playfair-Display', "serif"],
       other: [
-        "Inter",
         "-apple-system",
         "BlinkMacSystemFont",
         '"Segoe UI"',
