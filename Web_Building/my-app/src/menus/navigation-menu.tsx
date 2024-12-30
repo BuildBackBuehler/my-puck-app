@@ -89,10 +89,10 @@ export const NavigationMenu: ComponentConfig<NavigationMenuProps> = {
       list: "flex flex-row rounded-lg bg-white dark:bg-gray-800 p-2 space-x-2",
       trigger: "px-3 py-2 text-sm rounded-md hover:bg-gray-100 dark:hover:bg-gray-900 text-sm font-medium text-gray-700 dark:text-gray-100 focus:outline-none focus-visible:ring",
       link: "px-3 py-2 text-sm rounded-md hover:bg-gray-100 dark:hover:bg-gray-900 text-sm font-medium text-gray-700 dark:text-gray-100",
-      content: "absolute w-auto top-0 left-0 rounded-lg",
+      content: "absolute w-auto top-0 left-0 rounded-lg radix-motion-from-start:animate-enter-from-left radix-motion-from-end:animate-enter-from-right radix-motion-to-start:animate-exit-to-left radix-motion-to-end:animate-exit-to-right",
       viewportWrapper: "absolute flex justify-center w-[140%] left-[-20%] top-[100%]",
-      viewport: "relative mt-2 shadow-lg rounded-md bg-white dark:bg-gray-800 overflow-hidden",
-      indicator: "z-10 top-[100%] flex items-end justify-center h-2 overflow-hidden"
+      viewport: "relative mt-2 shadow-lg rounded-md bg-white dark:bg-gray-800 overflow-hidden w-radix-navigation-menu-viewport h-radix-navigation-menu-viewport radix-state-open:animate-scale-in-content radix-state-closed:animate-scale-out-content origin-[top_center] transition-[width_height] duration-300 ease-[ease]",
+      indicator:"z-10 top-[100%] flex items-end justify-center h-2 overflow-hidden radix-state-visible:animate-fade-in radix-state-hidden:animate-fade-out transition-[width_transform] duration-[250ms] ease-[ease]",
     }
   },
 

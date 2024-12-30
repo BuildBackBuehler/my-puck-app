@@ -18,6 +18,7 @@ const iconOptions = Object.keys(dynamicIconImports).map((iconName) => ({
 }));
 
 export interface ContextMenuProps {
+  subContentClassName?: string;
   buttonText: string;
   menuClassName: string;
   items: {
@@ -42,6 +43,7 @@ export interface ContextMenuProps {
 
 export const ContextMenu: ComponentConfig<ContextMenuProps> = {
   fields: {
+    subContentClassName: { type: "text" },
     buttonText: { type: "text" },
     menuClassName: { type: "text" },
     items: {
@@ -90,7 +92,7 @@ export const ContextMenu: ComponentConfig<ContextMenuProps> = {
                 },
                 itemClassName: { type: "text" }
               }
-            }
+            },
           }
         }
       }
@@ -99,17 +101,22 @@ export const ContextMenu: ComponentConfig<ContextMenuProps> = {
 
   defaultProps: {
     buttonText: "Right Click",
-    menuClassName: "w-48 rounded-lg px-1.5 py-1 shadow-md md:w-56 bg-white dark:bg-gray-800",
+    menuClassName:clsx("radix-side-top:animate-slide-up radix-side-bottom:animate-slide-down",
+    "w-48 rounded-lg px-1.5 py-1 shadow-md md:w-56",
+    "bg-white dark:bg-gray-800"),
     items: [{
       label: "New File",
       icon: "File",
       shortcut: "⌘+N",
       itemClassName: "flex cursor-default select-none items-center rounded-md px-2 py-2 text-xs outline-none text-gray-400 focus:bg-gray-50 dark:text-gray-500 dark:focus:bg-gray-900",
       type: "item"
-    }]
+    }],
+    subContentClassName:clsx("origin-radix-context-menu radix-side-right:animate-scale-in",
+    "w-full rounded-md px-1 py-1 text-xs shadow-md",
+    "bg-white dark:bg-gray-800")
   },
 
-  render: function ContextMenuComponent({ buttonText, menuClassName, items }) {
+  render: function ContextMenuComponent({ buttonText, menuClassName, items, subContentClassName }) {
     const [checkboxStates, setCheckboxStates] = React.useState<Record<number, boolean>>({});
 
     const renderMenuItem = (item: ContextMenuProps["items"][0], index: number) => {
@@ -148,7 +155,7 @@ export const ContextMenu: ComponentConfig<ContextMenuProps> = {
               {icons["ChevronRight"]}
             </ContextMenuPrimitive.SubTrigger>
             <ContextMenuPrimitive.Portal>
-              <ContextMenuPrimitive.SubContent className={menuClassName}>
+              <ContextMenuPrimitive.SubContent className={subContentClassName}>
                 {item.submenuProps.items.map((subItem, i) => (
                   <ContextMenuPrimitive.Item key={i} className={subItem.itemClassName}>
                     {subItem.icon && icons[subItem.icon] && 

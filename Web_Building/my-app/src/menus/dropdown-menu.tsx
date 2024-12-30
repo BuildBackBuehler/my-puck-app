@@ -21,6 +21,7 @@ const iconOptions = Object.keys(dynamicIconImports).map((iconName) => ({
 export interface DropdownMenuProps {
   buttonText: string;
   contentClassName: string;
+  subcontentClassName: string;
   separatorClassName: string;
   items: {
     type: 'item' | 'checkbox' | 'separator' | 'submenu';
@@ -46,6 +47,7 @@ export const DropdownMenu: ComponentConfig<DropdownMenuProps> = {
   fields: {
     buttonText: { type: "text" },
     contentClassName: { type: "text" },
+    subcontentClassName: { type: "text" },
     separatorClassName: { type: "text" },
     items: {
       type: "array",
@@ -93,7 +95,8 @@ export const DropdownMenu: ComponentConfig<DropdownMenuProps> = {
 
   defaultProps: {
     buttonText: "Menu",
-    contentClassName: "w-48 rounded-lg px-1.5 py-1 shadow-md md:w-56 bg-white dark:bg-gray-800",
+    contentClassName: "radix-side-top:animate-slide-up radix-side-bottom:animate-slide-down w-48 rounded-lg px-1.5 py-1 shadow-md md:w-56 bg-white dark:bg-gray-800",
+    subcontentClassName:"origin-radix-dropdown-menu radix-side-right:animate-scale-in w-full rounded-md px-1 py-1 text-xs shadow-md bg-white dark:bg-gray-800",
     separatorClassName: "my-1 h-px bg-gray-200 dark:bg-gray-700",
     items: [{
       type: "item",
@@ -104,7 +107,7 @@ export const DropdownMenu: ComponentConfig<DropdownMenuProps> = {
     }]
   },
 
-  render: ({ buttonText, contentClassName, separatorClassName, items }) => {
+  render: ({ buttonText, contentClassName, subcontentClassName, separatorClassName, items }) => {
     const [checkboxStates, setCheckboxStates] = useState<Record<number, boolean>>({});
 
     const renderItem = (item: DropdownMenuProps["items"][0], index: number) => {
@@ -141,7 +144,7 @@ export const DropdownMenu: ComponentConfig<DropdownMenuProps> = {
               {icons["ChevronRight"]}
             </DropdownMenuPrimitive.SubTrigger>
             <DropdownMenuPrimitive.Portal>
-              <DropdownMenuPrimitive.SubContent className={contentClassName}>
+              <DropdownMenuPrimitive.SubContent className={subcontentClassName}>
                 {item.submenuItems.map((subItem, i) => (
                   <DropdownMenuPrimitive.Item key={i} className={subItem.itemClassName}>
                     {subItem.icon && icons[subItem.icon]}

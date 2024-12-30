@@ -8,16 +8,72 @@
   @font-face {
     font-family: 'Space-Grotesk';
     font-style: normal;
-    font-weight: 400, 500, 600, 700;
-    font-display: auto;
-    src: url('https://github.com/floriankarsten/space-grotesk/raw/master/fonts/variable/SpaceGrotesk-VariableFont_wght.ttf'), local('Space-Grotesk'),
+    font-weight: 400;
+    font-display: swap;
+    src: url('https://github.com/floriankarsten/space-grotesk/raw/master/fonts/variable/SpaceGrotesk-VariableFont_wght.ttf');
   }
   @font-face {
     font-family: 'Playfair-Display';
     font-style: normal;
-    font-weight: 400, 500;
+    font-weight: 400;
     font-display: swap;
-    src: url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,500&display=swap');
+    src: url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400&display=swap');
+  }
+  @font-face {
+    font-family: 'Playfair-Display';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,500&display=swap');
+  }
+  @font-face {
+    font-family: 'Space-Grotesk';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url('https://github.com/floriankarsten/space-grotesk/raw/master/fonts/variable/SpaceGrotesk-VariableFont_wght.ttf');
+  }
+  @font-face {
+    font-family: 'Playfair-Display';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400&display=swap');
+  }
+  @font-face {
+    font-family: 'Playfair-Display';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,500&display=swap');
+  }
+  @font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 300;
+    font-display: swap;
+    src: url('https://fonts.googleapis.com/css2?family=Inter:wght@300&display=swap');
+  }
+  @font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap');
+  }
+  @font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url('https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap');
+  }
+  @font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url('https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap');
   }
   @font-face {
     font-family: 'Inter';
@@ -73,6 +129,3 @@ button {
 
 @tailwind components;
 @tailwind utilities;
-/* body {
-  margin: 0;
-} */

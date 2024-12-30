@@ -37,11 +37,15 @@ export const Toast: ComponentConfig<ToastProps> = {
     actionUrl: "#",
     dismissText: "Dismiss",
     rootClassName: clsx(
-      "z-50 fixed bottom-4 inset-x-4 w-auto md:top-4 md:right-4 md:left-auto md:bottom-auto md:w-full md:max-w-sm",
-      "bg-white dark:bg-gray-800 rounded-lg shadow-lg",
+      "z-50 fixed bottom-4 inset-x-4 w-auto md:top-4 md:right-4 md:left-auto md:bottom-auto md:w-full md:max-w-sm shadow-lg rounded-lg",
+      "bg-white dark:bg-gray-800",
       "radix-state-open:animate-toast-slide-in-bottom md:radix-state-open:animate-toast-slide-in-right",
       "radix-state-closed:animate-toast-hide",
-      "radix-swipe-end:animate-toast-swipe-out",
+      "radix-swipe-direction-right:radix-swipe-end:animate-toast-swipe-out-x",
+      "radix-swipe-direction-right:translate-x-radix-toast-swipe-move-x",
+      "radix-swipe-direction-down:radix-swipe-end:animate-toast-swipe-out-y",
+      "radix-swipe-direction-down:translate-y-radix-toast-swipe-move-y",
+      "radix-swipe-cancel:translate-x-0 radix-swipe-cancel:duration-200 radix-swipe-cancel:ease-[ease]",
       "focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75"
     ),
     titleClassName: "text-sm font-medium text-gray-900 dark:text-gray-100",
