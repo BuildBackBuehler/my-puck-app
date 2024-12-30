@@ -1,3 +1,4 @@
+
 export { CommandMenu } from './command-menu';
 export type { CommandMenuProps } from './command-menu';
 
@@ -18,3 +19,6 @@ export type { ToolbarProps } from './toolbar';
 
 export { Menubar } from './menubar';
 export type { MenubarProps } from './menubar';
+
+export { VertNavMenu } from './vert-nav-menu';
+export type { VertNavMenuProps } from './vert-nav-menu';

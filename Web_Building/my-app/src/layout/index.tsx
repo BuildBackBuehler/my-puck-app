@@ -9,3 +9,6 @@ export type { SectionProps } from './section';
 
 export { ThemeToggler } from './theme-toggler';
 export type { ThemeTogglerProps } from './theme-toggler';
+
+export { FixedColumns} from './fixed-columns';
+export type { FixedColumnsProps } from './fixed-columns';

@@ -75,7 +75,7 @@ export const Columns: ComponentConfig<ColumnsProps> = {
     return (
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className={clsx(
-          "grid gap-4 w-full",
+          "grid w-full",
           distribution === "auto" 
             ? `grid-cols-${Math.min(columns.length, 12)}`
             : "grid-cols-12"

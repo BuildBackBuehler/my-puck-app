@@ -9,3 +9,6 @@ export type { FeaturedHeaderProps } from './header';
 
 export { Sidebar } from './nav-sidebar';
 export type { SidebarProps } from './nav-sidebar';
+
+export { IssueCard } from './issue-card';
+export type { IssueCardProps } from './issue-card';

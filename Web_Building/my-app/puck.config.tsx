@@ -1,8 +1,8 @@
 import type { Config } from "@measured/puck";
 // import { Divider, Heading, Paragraph, DemoCard, Icon } from './src/basics';
 
-import { Columns, Section, ThemeSwitcher, ThemeToggler } from './src/layout';
-import { ColumnsProps, SectionProps, ThemeSwitcherProps, ThemeTogglerProps } from "./src/layout";
+import { Columns, Section, ThemeSwitcher, ThemeToggler, FixedColumns } from './src/layout';
+import { ColumnsProps, SectionProps, ThemeSwitcherProps, ThemeTogglerProps, FixedColumnsProps } from "./src/layout";
 
 import { AlertDialog, Button, Dialog, Popover, RadioGroup, Select, Toggle, Toast, ToggleGroup, Tooltip } from './src/buttons';
 import { AlertDialogProps, ButtonProps, DialogProps, PopoverProps, RadioGroupProps, SelectProps, ToggleProps, ToastProps, ToggleGroupProps, TooltipProps } from './src/buttons';
@@ -10,14 +10,14 @@ import { AlertDialogProps, ButtonProps, DialogProps, PopoverProps, RadioGroupPro
 import { Accordion, AspectRatio, Avatar, Checkbox, Collapsible, HoverCard, Progress, Slider, Switch, Ticker } from './src/data-displays';
 import { AccordionProps, AspectRatioProps, AvatarProps, CheckboxProps, CollapsibleProps, HoverCardProps, ProgressProps, SliderProps, SwitchProps, TickerProps } from './src/data-displays';
 
-import { CommandMenu, ContextMenu, DropdownMenu, NavigationMenu, Menubar, Tabs, Toolbar } from './src/menus';
-import { CommandMenuProps, ContextMenuProps, DropdownMenuProps, MenubarProps, NavigationMenuProps, TabsProps, ToolbarProps } from "./src/menus";
+import { CommandMenu, ContextMenu, DropdownMenu, NavigationMenu, Menubar, Tabs, Toolbar, VertNavMenu } from './src/menus';
+import { CommandMenuProps, ContextMenuProps, DropdownMenuProps, MenubarProps, NavigationMenuProps, TabsProps, ToolbarProps, VertNavMenuProps } from "./src/menus";
 
-import { ArticleCard, ArticleCardList, DemoCard } from './src/basics';
-import { ArticleCardProps, ArticleCardListProps, DemoCardProps } from './src/basics';
+import { ArticleCard, ArticleCardList, DemoCard, Divider } from './src/basics';
+import { ArticleCardProps, ArticleCardListProps, DemoCardProps, DividerProps } from './src/basics';
 
-import { ArticleList, Circle, FeaturedHeader, Sidebar } from "./src/spec_parts";
-import { ArticleListProps, CircleProps, FeaturedHeaderProps, SidebarProps } from "./src/spec_parts";
+import { ArticleList, Circle, IssueCard, FeaturedHeader, Sidebar } from "./src/spec_parts";
+import { ArticleListProps, CircleProps, IssueCardProps, FeaturedHeaderProps, SidebarProps } from "./src/spec_parts";
 
 type Props = {
   HeadingBlock: { title: string };
@@ -59,6 +59,10 @@ type Props = {
   FeaturedHeader: FeaturedHeaderProps;
   ArticleCardList: ArticleCardListProps;
   Sidebar: SidebarProps;
+  IssueCard: IssueCardProps;
+  VertNavMenu: VertNavMenuProps;
+  Divider: DividerProps;
+  FixedColumns: FixedColumnsProps;
 };
 
 export const config: Config<Props> = {
@@ -113,7 +117,11 @@ export const config: Config<Props> = {
     RadioGroup,
     Menubar,
     ThemeToggler,
-    Sidebar
+    Sidebar,
+    IssueCard,
+    VertNavMenu,
+    Divider,
+    FixedColumns
   },
     categories: {
     basics: {
@@ -122,7 +130,7 @@ export const config: Config<Props> = {
     },
     layout: {
       title: 'Layout',
-      components: ['Columns', 'Section', 'ThemeSwitcher', 'ThemeToggler']
+      components: ['Columns', 'FixedColumns', 'Section', 'ThemeSwitcher', 'ThemeToggler']
     },
     'data-displays': {
       title: 'Data Displays',
@@ -130,7 +138,7 @@ export const config: Config<Props> = {
     },
     menus: {
       title: 'Menus',
-      components: ['CommandMenu', 'ContextMenu', 'DropdownMenu', 'NavigationMenu', 'Menubar', 'Tabs', 'Toolbar']
+      components: ['CommandMenu', 'ContextMenu', 'DropdownMenu', 'NavigationMenu', 'Menubar', 'Tabs', 'Toolbar', 'VertNavMenu']
     },
     buttons: {
       title: 'Buttons',

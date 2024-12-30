@@ -63,7 +63,7 @@ export const ArticleCardList: ComponentConfig<ArticleCardListProps> = {
 
   render: ({ cards, stickyPosition, stickyOffset }) => (
     <div 
-      className={`w-full ${stickyPosition === "top" ? "sticky top-0" : "sticky bottom-0"}`}
+      className={`w-full h-full ${stickyPosition === "top" ? "sticky top-0" : "sticky bottom-0"}`}
       style={{ top: `${stickyOffset}px` }}
     >
       <div className="space-y-8">
