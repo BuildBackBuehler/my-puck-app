@@ -86,7 +86,7 @@ export const VertNavMenu: ComponentConfig<VertNavMenuProps> = {
     }],
     styles: {
       menu: "relative w-64",
-      list: "flex flex-col rounded-lg bg-white dark:bg-gray-800 p-2 space-y-2",
+      list: "flex flex-col rounded-lg bg-white dark:bg-gray-800 p-2 space-y-2 pb-8",
       trigger: "w-full text-left px-3 py-2 text-sm rounded-md hover:bg-gray-100 dark:hover:bg-gray-900 text-sm font-medium text-gray-700 dark:text-gray-100 focus:outline-none focus-visible:ring",
       link: "w-full text-left px-3 py-2 text-sm rounded-md hover:bg-gray-100 dark:hover:bg-gray-900 text-sm font-medium text-gray-700 dark:text-gray-100",
       content: "absolute w-64 left-full top-0 ml-2 rounded-lg radix-motion-from-start:animate-enter-from-left radix-motion-from-end:animate-enter-from-right radix-motion-to-start:animate-exit-to-left radix-motion-to-end:animate-exit-to-right",

@@ -9,7 +9,21 @@
     font-family: 'Space-Grotesk';
     font-style: normal;
     font-weight: 400;
-    font-display: swap;
+    font-display: auto;
+    src: url('https://github.com/floriankarsten/space-grotesk/raw/master/fonts/variable/SpaceGrotesk-VariableFont_wght.ttf');
+  }
+  @font-face {
+    font-family: 'Space-Grotesk';
+    font-style: normal;
+    font-weight: 500;
+    font-display: auto;
+    src: url('https://github.com/floriankarsten/space-grotesk/raw/master/fonts/variable/SpaceGrotesk-VariableFont_wght.ttf');
+  }
+  @font-face {
+    font-family: 'Space-Grotesk';
+    font-style: normal;
+    font-weight: 700;
+    font-display: auto;
     src: url('https://github.com/floriankarsten/space-grotesk/raw/master/fonts/variable/SpaceGrotesk-VariableFont_wght.ttf');
   }
   @font-face {
@@ -25,13 +39,6 @@
     font-weight: 500;
     font-display: swap;
     src: url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,500&display=swap');
-  }
-  @font-face {
-    font-family: 'Space-Grotesk';
-    font-style: normal;
-    font-weight: 600;
-    font-display: swap;
-    src: url('https://github.com/floriankarsten/space-grotesk/raw/master/fonts/variable/SpaceGrotesk-VariableFont_wght.ttf');
   }
   @font-face {
     font-family: 'Playfair-Display';
@@ -75,33 +82,33 @@
     font-display: swap;
     src: url('https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap');
   }
-  @font-face {
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 300, 400, 500, 600;
-    font-display: swap;
-    src: url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
-  }
 }
 :root {
   @apply scroll-smooth font-display antialiased;
+  --color-primary: #e9e6e4;
+  --color-primary-Alt: #DAD5D2;
+  --color-secondary: #232323;
+  --color-secondary-Alt: #525252;
+  --color-accent: #9B2915;
 }
 
 html {
-  @apply bg-white;
-  scrollbar-color: #00000080 transparent;
+  /* @apply text-black;
+  @apply bg-white; */
+  scrollbar-color: #232323 transparent;
   scrollbar-width: auto;
 }
 
 html[class*="dark"] {
-  @apply bg-gray-900;
-  scrollbar-color: #ffffffb3 transparent;
+  /* @apply text-white;
+  @apply bg-black; */
+  scrollbar-color: #e9e6e4 transparent;
   scrollbar-width: auto;
 }
 
 ::-webkit-scrollbar {
-  height: 8px;
-  width: 8px;
+  height: 0px;
+  width: 0px;
 }
 
 ::-webkit-scrollbar-track {

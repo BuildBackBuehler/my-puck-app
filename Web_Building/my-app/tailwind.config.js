@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+// const plugin = require('tailwindcss/plugin')
 module.exports = {
   content: [
     "puck.config.tsx",
@@ -9,19 +10,33 @@ module.exports = {
   ],
   darkMode: "class",
   theme: {
+    colors: {
+      'transparent': 'transparent',
+      'black': {
+        light: '#525252',
+        DEFAULT: '#232323',
+        dark: '#141414'
+      },
+      'red': '#9B2915',
+      'white': {
+        DEFAULT: '#e9e6e4',
+        mid: '#DAD5D2',
+        dark: '#C8C1BC',
+      },
+      'cyan': '#28AFB0',
+      adaptive: {
+        primary: 'var(--color-primary)',
+        primaryAlt: 'var(--color-primary-Alt)',
+        secondary: 'var(--color-secondary)',
+        secondaryAlt: 'var(--color-secondary-Alt)',
+        accent: 'var(--color-accent)',
+      }
+    },
     fontFamily: {
       sans: ['Inter', "sans-serif"],
-      display: ['Space-Grotesk', "sans-serif"],
-      serif: ['Playfair-Display', "serif"],
+      display: ['Space Grotesk', "sans-serif"],
+      serif: ['Playfair Display', "serif"],
       other: [
-        "-apple-system",
-        "BlinkMacSystemFont",
-        '"Segoe UI"',
-        "Roboto",
-        '"Helvetica Neue"',
-        "Arial",
-        '"Noto Sans"',
-        "sans-serif",
         '"Apple Color Emoji"',
         '"Segoe UI Emoji"',
         '"Segoe UI Symbol"',
@@ -29,6 +44,15 @@ module.exports = {
       ],
     },
     extend: {
+      scrollSnapType: {
+        y: 'y',
+        mandatory: 'mandatory',
+        proximity: 'proximity'
+      },
+      scrollSnapAlign: {
+        start: 'start',
+        normal: 'normal',
+      },
       transitionDuration: {
         '400': '400ms',
       },
@@ -124,15 +148,11 @@ module.exports = {
             transform: "translateY(calc(100% + 1rem))",
           },
         },
-        // Ticker
-        "ticker-scroll": {
-          '0%': { transform: 'translateX(0)' },
-          '100%': { transform: 'translateX(-100%)' },
-        },
       },
       animation: {
         // Ticker
         'pause': 'animation-play-state: paused',
+        'ticker-scroll': 'ticker-scroll var(--duration) linear infinite var(--direction)',
         // Dropdown menu
         "scale-in": "scale-in 0.2s ease-in-out",
         "slide-down": "slide-down 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
@@ -164,7 +184,33 @@ module.exports = {
     },
   },
   variants: {
-    extend: {},
+    extend: { 
+      scrollSnapType: ['responsive'],
+      scrollSnapAlign: ['responsive']
+    },
   },
-  plugins: [require("@tailwindcss/forms"), require("tailwindcss-radix")()],
+  plugins: [
+    require("@tailwindcss/forms"), 
+    require("tailwindcss-radix"), 
+    require("@tailwindcss/typography"), 
+    require('tailwind-scrollbar-hide'), 
+    // plugin(function({ addBase }) {
+    //   addBase({
+    //     ':root': {
+    //       '--color-primary': '#e9e6e4', // White
+    //       '--color-primary-Alt': '#DAD5D2', // Off-White
+    //       '--color-secondary': '#232323', // Black
+    //       '--color-secondary-Alt': '#525252', // Dark Gray
+    //       '--color-accent': '#9B2915', // Red
+    //     },
+    //     '.dark': {
+    //       '--color-primary': '#232323', // Black
+    //       '--color-primary-Alt': '#525252', // Dark Gray
+    //       '--color-secondary': '#e9e6e4', // White
+    //       '--color-secondary-Alt': '#DAD5D2', // Off-White
+    //       '--color-accent': '#28AFB0', // Cyan
+    //     }
+    //   })
+    // })
+  ],
 };

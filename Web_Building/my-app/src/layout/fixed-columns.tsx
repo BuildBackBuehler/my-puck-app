@@ -6,6 +6,7 @@ export interface FixedColumnsProps {
   columns: {
     id?: string;
     width: number;
+    className: string;
   }[];
 }
 
@@ -15,6 +16,7 @@ export const FixedColumns: ComponentConfig<FixedColumnsProps> = {
 
     return {
       props: {
+        ...props,
         columns: props.columns.map(column => ({
           ...column,
           id: column.id ?? generateId()
@@ -25,10 +27,10 @@ export const FixedColumns: ComponentConfig<FixedColumnsProps> = {
 
   defaultProps: {
     columns: [
-      { width: 20 },
-      { width: 15 },
-      { width: 35 },
-      { width: 30 }
+      { width: 15, id: generateId(), className: 'flex-shrink h-full'},
+      { width: 20, id: generateId(), className: 'flex-grow h-full' },
+      { width: 35, id: generateId(), className: 'flex-grow h-full' },
+      { width: 30, id: generateId(), className: 'flex-shrink h-full'}
     ]
   },
 
@@ -36,10 +38,10 @@ export const FixedColumns: ComponentConfig<FixedColumnsProps> = {
     <div className="flex w-full h-screen">
       {columns.map((column) => (
         <div
-          key={column.id}
+          key={column.id || generateId()}
           style={{ width: `${column.width}%`, height: '100vh' }}
         >
-          <DropZone zone={`column-${column.id}`} className="h-full" />
+          <DropZone zone={`column-${column.id}-${column.className}`} />
         </div>
       ))}
     </div>

@@ -15,9 +15,9 @@ export type TickerProps = {
 };
 
 const speedMap = {
-  slow: "animate-[scroll_30s_linear_infinite]",
-  medium: "animate-[scroll_20s_linear_infinite]",
-  fast: "animate-[scroll_10s_linear_infinite]"
+  slow: "30s",
+  medium: "20s",
+  fast: "10s"
 };
 
 export const Ticker: ComponentConfig<TickerProps> = {
@@ -74,61 +74,85 @@ export const Ticker: ComponentConfig<TickerProps> = {
   },
 
   render: ({ items, direction, speed, pauseOnHover, theme }) => {
-    const [duplicatedItems, setDuplicatedItems] = useState(items);
-    const containerRef = useRef<HTMLDivElement>(null);
-
-    const duplicateItems = useCallback(() => {
-      if (!containerRef.current) return;
-      const containerWidth = containerRef.current.offsetWidth;
-      const contentWidth = containerRef.current.scrollWidth;
-      const duplicatesNeeded = Math.ceil(containerWidth / contentWidth) + 1;
-      setDuplicatedItems(Array(duplicatesNeeded).fill(items).flat());
-    }, [items]);
+    const [scrollWidth, setScrollWidth] = useState(0);
+    const contentRef = useRef<HTMLDivElement>(null);
+    const wrapperRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-      duplicateItems();
-      window.addEventListener('resize', duplicateItems);
-      return () => window.removeEventListener('resize', duplicateItems);
-    }, [duplicateItems]);
+      if (!contentRef.current || !wrapperRef.current) return;
+      
+      const calculateWidth = () => {
+        const contentWidth = contentRef.current?.offsetWidth || 0;
+        setScrollWidth(contentWidth);
+      };
+
+      calculateWidth();
+      window.addEventListener('resize', calculateWidth);
+      return () => window.removeEventListener('resize', calculateWidth);
+    }, [items]);
+
+    const scrollerStyle = {
+      '--duration': speedMap[speed],
+      '--direction': direction === 'left' ? 'forwards' : 'reverse'
+    } as React.CSSProperties;
 
     return (
-      <ScrollArea.Root className="w-full overflow-hidden">
+      <ScrollArea.Root className="w-full overflow-hidden sticky top-8 py-4">
         <ScrollArea.Viewport 
-          ref={containerRef}
+          ref={wrapperRef}
           className={clsx(
             "w-full overflow-hidden py-4",
-            theme === "dark" ? "bg-gray-900 text-white" : "bg-white text-gray-900"
+            theme === "dark" ? "bg-black-light text-white" : "bg-black text-white"
           )}
         >
-          <div 
-            className={clsx(
-              "inline-flex items-center",
-              speedMap[speed],
-              direction === "right" && "animate-[scroll_20s_linear_infinite_reverse]",
-              pauseOnHover && "hover:pause"
-            )}
-          >
-            {duplicatedItems.map((item, idx) => (
-              <div
-                key={`${item.text}-${idx}`}
-                className="whitespace-nowrap px-4"
-              >
-                {item.link ? (
-                  <a 
-                    href={item.link} 
-                    className={clsx(
-                      "hover:underline",
-                      theme === "dark" ? "text-blue-400" : "text-blue-600"
-                    )}
-                  >
-                    {item.text}
-                  </a>
-                ) : (
-                  item.text
-                )}
-              </div>
-            ))}
+          <div className="relative">
+            <div 
+              ref={contentRef}
+              className="inline-flex items-center"
+              style={{
+                animationDuration: speedMap[speed],
+                animationDirection: direction === 'left' ? 'normal' : 'reverse',
+                animationTimingFunction: 'linear',
+                animationIterationCount: 'infinite',
+                animationName: 'ticker-scroll',
+                animationPlayState: 'running'
+              }}
+              onMouseEnter={pauseOnHover ? (e) => e.currentTarget.style.animationPlayState = 'paused' : undefined}
+              onMouseLeave={pauseOnHover ? (e) => e.currentTarget.style.animationPlayState = 'running' : undefined}
+            >
+              {[...items, ...items].map((item, idx) => (
+                <div
+                  key={`${item.text}-${idx}`}
+                  className="whitespace-nowrap px-4"
+                >
+                  {item.link ? (
+                    <a 
+                      href={item.link}
+                      className={clsx(
+                        "hover:underline",
+                        theme === "dark" ? "text-red" : "text-cyan"
+                      )}
+                    >
+                      {item.text}
+                    </a>
+                  ) : (
+                    item.text
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
+
+          <style jsx>{`
+            @keyframes ticker-scroll {
+              0% {
+                transform: translateX(0);
+              }
+              100% {
+                transform: translateX(-${scrollWidth / 2}px);
+              }
+            }
+          `}</style>
         </ScrollArea.Viewport>
       </ScrollArea.Root>
     );

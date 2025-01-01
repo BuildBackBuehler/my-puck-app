@@ -1,10 +1,10 @@
 import { ComponentConfig } from "@measured/puck";
 import { ArticleCard, ArticleCardProps } from "./article-card";
+import { useEffect, useRef, useState } from "react";
 
 export interface ArticleCardListProps {
   cards: ArticleCardProps[];
   stickyOffset: number;
-  stickyPosition: "top" | "bottom";
 };
 
 export const ArticleCardList: ComponentConfig<ArticleCardListProps> = {
@@ -33,23 +33,16 @@ export const ArticleCardList: ComponentConfig<ArticleCardListProps> = {
       type: "number",
       min: 0,
       max: 100
-    },
-    stickyPosition: {
-      type: "select",
-      options: [
-        { label: "Top", value: "top" },
-        { label: "Bottom", value: "bottom" }
-      ]
     }
   },
 
   defaultProps: {
-    cards:  [{
-      mainTitle: "Article Title",
+    cards: [{
+      mainTitle: "First Article",
       date: "January 1, 2024",
       image: {
         src: "https://demo-source.imgix.net/puppy.jpg",
-        alt: "A cute puppy."
+        alt: "A cute puppy"
       },
       title: "Article Subtitle",
       author: "Author Name",
@@ -57,20 +50,28 @@ export const ArticleCardList: ComponentConfig<ArticleCardListProps> = {
       summary: "Article summary goes here",
       link: "#"
     }],
-    stickyOffset: 0,
-    stickyPosition: "top"
+    stickyOffset: 0
   },
 
-  render: ({ cards, stickyPosition, stickyOffset }) => (
-    <div 
-      className={`w-full h-full ${stickyPosition === "top" ? "sticky top-0" : "sticky bottom-0"}`}
-      style={{ top: `${stickyOffset}px` }}
-    >
-      <div className="space-y-8">
+  render: ({ cards, stickyOffset }) => {
+    return (
+      <div className="relative h-screen overflow-y-auto snap-y snap-mandatory scrollbar-hide xs:scrollbar-default">
+        <div className="absolute right-0 top-[10vh] w-px h-lvh bg-black-light" />
         {cards.map((card, index) => (
-          <ArticleCard.render key={index} {...card} id={`article-${index}`} />
+          <div 
+            key={`article-${index}`}
+            className="h-screen snap-start"
+          >
+            <div 
+              className="sticky"
+              style={{ top: `${stickyOffset}px` }}
+            >
+              <ArticleCard.render {...card} id={`article-${index}`} />
+            </div>
+        <div className="absolute right-0 top-[20vh] w-px h-full bg-black-light" />
+          </div>
         ))}
       </div>
-    </div>
-  )
+    );
+  }
 };

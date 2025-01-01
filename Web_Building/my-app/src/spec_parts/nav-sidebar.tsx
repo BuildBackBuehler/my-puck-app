@@ -48,12 +48,12 @@ export const Sidebar: ComponentConfig<SidebarProps> = {
     const [isOpen, setIsOpen] = useState(true);
 
     return (
-      <aside className={`fixed top-0 left-0 h-full bg-neutral-900 transition-all duration-300 ${isOpen ? 'w-64' : 'w-16'}`}>
-        <div className="flex flex-col h-full justify-between p-8">
+      <aside className={`fixed top-0 left-0 h-screen bg-white transition-all duration-300 ${isOpen ? 'w-64' : 'w-16'}`}>
+        <div className="flex-col h-screen justify-between p-8">
           <div>
             <button 
               onClick={() => setIsOpen(!isOpen)}
-              className="absolute top-1/2 -right-4 w-8 h-8 bg-neutral-900 rounded-full flex items-center justify-center cursor-pointer"
+              className="absolute top-1/2 right-2 w-6 h-6 border border-black text-black hover:text-red rounded-full flex items-center justify-center cursor-pointer"
             >
               {isOpen ? '←' : '→'}
             </button>
@@ -65,7 +65,7 @@ export const Sidebar: ComponentConfig<SidebarProps> = {
                 <Link 
                   key={index}
                   href={item.href}
-                  className="block text-2xl text-white hover:text-gray-300 transition-colors"
+                  className="block text-2xl text-black hover:text-red transition-colors"
                 >
                   {item.icon && <span className="inline-block w-8">{item.icon}</span>}
                   <span className={`transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0 hidden'}`}>
@@ -74,27 +74,27 @@ export const Sidebar: ComponentConfig<SidebarProps> = {
                 </Link>
               ))}
             </nav>
-            <div className={`space-y-4 transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}>
-              <DropZone zone="my-content 2" />
+            <div className={`space-y-2 items-end transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}>
+              <DropZone className="py-16" zone="my-content 2" />
             </div>
-            <div className="space-y-4">
-            <p className={`text-white text-lg transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}>{"Looking for Substance?"}</p>
-            <p><span className={`text-white text-lg italic line-through transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}>{"Subscribe"}</span></p>
-            <p><span className={`text-white italic text-lg transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}>{"Prescribe to us"}</span></p>
+            <div className="space-y-2">
+            <p className={`text-black text-md transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}>{"Looking for Substance?"}</p>
+            <p><span className={`text-black text-md italic line-through transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}>{"Subscribe"}</span></p>
+            <p><span className={`italic text-md transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}>{"Prescribe to us"}</span></p>
             {showSubscribe && (
               <div className={`flex ${isOpen ? 'gap-2' : 'flex-col gap-4'} ${!isOpen && 'mt-4'}`}>
-              <button className="bg-white text-black p-1.5 rounded hover:bg-gray-100 transition-colors flex items-center justify-center w-8 h-8">
+              <button className="bg-white text-black p-1.5 rounded hover:text-red transition-colors flex items-center justify-center w-8 h-8">
               <MailPlus size={16} />
               </button>
-              <button className="bg-white text-black p-1.5 rounded hover:bg-gray-100 transition-colors flex items-center justify-center w-8 h-8">
+              <button className="bg-white text-black p-1.5 rounded hover:text-red transition-colors flex items-center justify-center w-8 h-8">
               <Instagram size={16} />
               </button>
-              <button className="bg-white text-black p-1.5 rounded hover:bg-gray-100 transition-colors flex items-center justify-center w-8 h-8">
+              <button className="bg-white text-black p-1.5 rounded hover:text-red transition-colors flex items-center justify-center w-8 h-8">
               <Rss size={16} />
               </button>
               </div>
             )}
-            <p className={`text-white text-xs italic transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}>{"Not a cult!™"}</p>
+            <p className={`text-black text-xs italic transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}>{"Not a cult!™"}</p>
             </div>
           </div>
         </div>

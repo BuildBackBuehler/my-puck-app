@@ -64,14 +64,14 @@ export const ArticleCard: ComponentConfig<ArticleCardProps> = {
   }) => {
     if (!image?.src) return null;
     return (
-      <article className="w-full max-w-4xl mx-auto bg-gray-900 text-white">
+      <article className="w-full max-w-4xl mx-auto bg-white text-black">
+        <div className="absolute right-0 top-[10vh] w-px h-full bg-black-light" />
         <div className="py-8 space-y-4">
           <h1 className="font-display text-8xl font-bold tracking-tight">{mainTitle}</h1>
-          
           <time dateTime={date} className="px-4 block text-xl text-right">
             {date}
           </time>
-          <div className="mx-4 self-center px-8 h-px bg-neutral-800" />
+          <div className="mx-4 self-center px-8 h-px bg-black-light" />
           <div className="mx-4 relative aspect-[2/1] overflow-hidden rounded-lg">
             <Image 
               src={image.src} 
@@ -83,7 +83,7 @@ export const ArticleCard: ComponentConfig<ArticleCardProps> = {
             />
           </div>
 
-          <h2 className="font-sans px-8 text-4xl">{title}</h2>
+          <h2 className="font-sans px-8 text-4xl text-red">{title}</h2>
 
           <div className="flex justify-between items-center text-md">
             <span className="font-serif px-8 italic">{author}</span>
@@ -91,14 +91,14 @@ export const ArticleCard: ComponentConfig<ArticleCardProps> = {
           </div>
 
           <p className="font-sans px-8 text-lg leading-relaxed">{summary}</p>
-          <div className="mx-4 self-center px-8 h-px bg-neutral-800" />
+          <div className="mx-4 self-center px-8 h-px bg-black-light" />
             <div className="flex justify-end">
             <Link 
               href={link || "#"}
-              className="pr-4 group inline-flex items-center gap-2 text-3xl hover:text-gray-300 transition-colors"
+              className="pr-4 group inline-flex items-center gap-2 text-3xl hover:text-red transition-colors"
             >
               <CornerDownRight size={36} />
-              <span>See More</span>
+              <span className="text-red">See More</span>
             </Link>
             </div>
         </div>

@@ -1,3 +1,4 @@
+
 export { ArticleList } from './article-list';
 export type { ArticleListProps } from './article-list';
 
@@ -12,3 +13,6 @@ export type { SidebarProps } from './nav-sidebar';
 
 export { IssueCard } from './issue-card';
 export type { IssueCardProps } from './issue-card';
+
+export { Socials } from './socials';
+export type { SocialsProps } from './socials';

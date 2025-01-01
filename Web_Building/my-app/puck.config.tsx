@@ -1,8 +1,8 @@
 import type { Config } from "@measured/puck";
 // import { Divider, Heading, Paragraph, DemoCard, Icon } from './src/basics';
 
-import { Columns, Section, ThemeSwitcher, ThemeToggler, FixedColumns } from './src/layout';
-import { ColumnsProps, SectionProps, ThemeSwitcherProps, ThemeTogglerProps, FixedColumnsProps } from "./src/layout";
+import { Columns, Section, ThemeSwitcher, ThemeToggler, FixedColumns, DropColumn } from './src/layout';
+import { ColumnsProps, SectionProps, ThemeSwitcherProps, ThemeTogglerProps, FixedColumnsProps, DropColumnProps } from "./src/layout";
 
 import { AlertDialog, Button, Dialog, Popover, RadioGroup, Select, Toggle, Toast, ToggleGroup, Tooltip } from './src/buttons';
 import { AlertDialogProps, ButtonProps, DialogProps, PopoverProps, RadioGroupProps, SelectProps, ToggleProps, ToastProps, ToggleGroupProps, TooltipProps } from './src/buttons';
@@ -16,8 +16,9 @@ import { CommandMenuProps, ContextMenuProps, DropdownMenuProps, MenubarProps, Na
 import { ArticleCard, ArticleCardList, DemoCard, Divider } from './src/basics';
 import { ArticleCardProps, ArticleCardListProps, DemoCardProps, DividerProps } from './src/basics';
 
-import { ArticleList, Circle, IssueCard, FeaturedHeader, Sidebar } from "./src/spec_parts";
-import { ArticleListProps, CircleProps, IssueCardProps, FeaturedHeaderProps, SidebarProps } from "./src/spec_parts";
+import { ArticleList, Circle, IssueCard, FeaturedHeader, Sidebar, Socials } from "./src/spec_parts";
+import { ArticleListProps, CircleProps, IssueCardProps, FeaturedHeaderProps, SidebarProps, SocialsProps } from "./src/spec_parts";
+
 
 type Props = {
   HeadingBlock: { title: string };
@@ -63,6 +64,8 @@ type Props = {
   VertNavMenu: VertNavMenuProps;
   Divider: DividerProps;
   FixedColumns: FixedColumnsProps;
+  DropColumn: DropColumnProps;
+  Socials: SocialsProps;
 };
 
 export const config: Config<Props> = {
@@ -121,7 +124,9 @@ export const config: Config<Props> = {
     IssueCard,
     VertNavMenu,
     Divider,
-    FixedColumns
+    FixedColumns,
+    DropColumn,
+    Socials,
   },
     categories: {
     basics: {
@@ -130,9 +135,9 @@ export const config: Config<Props> = {
     },
     layout: {
       title: 'Layout',
-      components: ['Columns', 'FixedColumns', 'Section', 'ThemeSwitcher', 'ThemeToggler']
+      components: ['Columns', 'FixedColumns', 'Section', 'ThemeSwitcher', 'ThemeToggler', 'DropColumn']
     },
-    'data-displays': {
+    'data displays': {
       title: 'Data Displays',
       components: ['Accordion', 'AspectRatio', 'Avatar', 'Checkbox',`HoverCard`, 'Collapsible', 'Progress', 'Slider', 'Switch', 'Ticker']
     },
@@ -147,7 +152,7 @@ export const config: Config<Props> = {
   },
     root: {
         render: ({ children }: { children: React.ReactNode }) => (
-          <div className="min-h-screen bg-white text-gray-900 transition-colors duration-200 dark:bg-gray-900 dark:text-white">
+          <div className="min-h-screen bg-white text-black transition-colors duration-200 dark:bg-black dark:text-white">
             {children}
           </div>
         )

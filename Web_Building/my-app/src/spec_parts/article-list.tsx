@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { ComponentConfig } from "@measured/puck";
+import { ComponentConfig, DropZone } from "@measured/puck";
+import { Eye, Heart, MessageCircle } from 'lucide-react';
 
 export interface ArticleListProps {
   articles: {
@@ -8,7 +9,13 @@ export interface ArticleListProps {
     title: string;
     date: string;
     summary: string;
-    link: string
+    link: string;
+    engagement: {
+      views: number;
+      likes: number;
+      comments: number;
+      showStats?: boolean;
+    }
   }[];
   maxArticles?: number;
   showDivider?: boolean;
@@ -24,7 +31,22 @@ export const ArticleList: ComponentConfig<ArticleListProps> = {
         title: { type: "text" },
         date: { type: "text" },
         summary: { type: "textarea" },
-        link: { type: "text" }
+        link: { type: "text" },
+        engagement: {
+          type: "object",
+          objectFields: {
+            views: { type: "number" },
+            likes: { type: "number" },
+            comments: { type: "number" },
+            showStats: {
+              type: "radio",
+              options: [
+                { label: "Show", value: "true" },
+                { label: "Hide", value: "false" }
+              ]
+            }
+          }
+        }
       }
     },
     maxArticles: { type: "number" },
@@ -38,20 +60,26 @@ export const ArticleList: ComponentConfig<ArticleListProps> = {
   },
   defaultProps: {
     maxArticles: 5,
-    showDivider: "true",
+    showDivider: true,
     articles: Array(5).fill({}).map((_, i) => ({
       id: `article-${i}`,
       number: i + 1,
       title: `Article ${i + 1}`,
-      date: "12.06.2021", 
+      date: "12.06.2021",
       summary: "Sample summary text",
-      link: `/article/${i + 1}`
+      link: `/article/${i + 1}`,
+      engagement: {
+        views: Math.floor(Math.random() * 1000),
+        likes: Math.floor(Math.random() * 100),
+        comments: Math.floor(Math.random() * 50),
+        showStats: true
+      }
     }))
   },
   render: ({ articles, maxArticles = 5, showDivider }) => (
-    <section className="py-12 relative">
-      {showDivider && (
-        <div className="absolute left-0 top-0 w-px h-screen bg-neutral-800">
+    <section className="max-h-screen overflow-y-auto bg-white scrollbar-hide xs:scrollbar-default">
+      {showDivider === true && (
+        <div className="fixed left-0 w-px h-screen bg-black-light">
           {articles.slice(0, maxArticles).map((_, index) => (
             index !== maxArticles - 1 && (
               <div key={index} className="absolute w-px h-16 bg-transparent" style={{
@@ -64,30 +92,49 @@ export const ArticleList: ComponentConfig<ArticleListProps> = {
       <div className="space-y-16">
         {articles.slice(0, maxArticles).map((article) => (
           <article key={article.id} className="relative pl-16">
-            <div className="flex justify-between items-center mb-4">
-              <span className="font-display text-8xl opacity-80 select-none">
+            <div className="flex justify-between mb-4">
+              <span className="font-display text-8xl text-black-light select-none">
                 {article.number}
               </span>
-              <time className="font-sans text-md text-gray-400" dateTime={article.date}>
-                {article.date}
-              </time>
+              <div className="flex flex-col items-end justify-end gap-2 pb-2">
+                <time className="font-display text-md text-black" dateTime={article.date}>
+                  {article.date}
+                </time>
+                {article.engagement?.showStats === true && (
+                  <div className="flex gap-4 text-black-light text-sm">
+                    <div className="flex items-center gap-1">
+                      <Eye size={14} />
+                      <span>{article.engagement.views}</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Heart size={14} />
+                      <span>{article.engagement.likes}</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <MessageCircle size={14} />
+                      <span>{article.engagement.comments}</span>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
             <div className="space-y-4">
               <h2>
                 <Link 
                   href={article.link}
-                  className="font-serif text-5xl hover:text-gray-300 transition-all"
+                  className="font-serif text-5xl hover:text-red transition-all"
                 >
                   {article.title}
                 </Link>
               </h2>
-              <p className="font-sans text-lg text-gray-300 max-w-2xl">
+              <p className="font-display text-lg text-black-light max-w-2xl">
                 {article.summary}
               </p>
             </div>
           </article>
         ))}
       </div>
+      <DropZone zone="my-content 1" />
     </section>
   )
 };
