@@ -30,23 +30,23 @@ export const Socials: ComponentConfig<SocialsProps> = {
 
     return (
             <div className="pt-16 space-y-2">
-            <p className={`text-black text-md transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}>{"Looking for Substance?"}</p>
-            <p><span className={`text-black text-md italic line-through transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}>{"Subscribe"}</span></p>
+            <p className={`text-adaptive-secondary text-md transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}>{"Looking for Substance?"}</p>
+            <p><span className={`text-adaptive-secondary text-md italic line-through transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}>{"Subscribe"}</span></p>
             <p><span className={`italic text-md transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}>{"Prescribe to us"}</span></p>
             {showSubscribe && (
               <div className={`flex ${isOpen ? 'gap-2' : 'flex-col gap-4'} ${!isOpen && 'mt-4'}`}>
-              <button className="bg-white text-black p-1.5 rounded hover:text-red transition-colors flex items-center justify-center w-8 h-8">
+              <button className="bg-adaptive-primary text-adaptive-secondary p-1.5 rounded hover:text-red transition-colors flex items-center justify-center w-8 h-8">
               <MailPlus size={16} />
               </button>
-              <button className="bg-white text-black p-1.5 rounded hover:text-red transition-colors flex items-center justify-center w-8 h-8">
+              <button className="bg-adaptive-primary text-adaptive-secondary p-1.5 rounded hover:text-red transition-colors flex items-center justify-center w-8 h-8">
               <Instagram size={16} />
               </button>
-              <button className="bg-white text-black p-1.5 rounded hover:text-red transition-colors flex items-center justify-center w-8 h-8">
+              <button className="bg-adaptive-primary text-adaptive-secondary p-1.5 rounded hover:text-red transition-colors flex items-center justify-center w-8 h-8">
               <Rss size={16} />
               </button>
               </div>
             )}
-            <p className={`text-black text-xs italic transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}>{"Not a cult!™"}</p>
+            <p className={`text-adaptive-secondary text-xs italic transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}>{"Not a cult!™"}</p>
             </div>
     );
   }

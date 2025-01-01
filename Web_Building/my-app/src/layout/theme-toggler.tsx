@@ -81,7 +81,7 @@ export const ThemeToggler: ComponentConfig<ThemeTogglerProps> = {
           className={`
             ${sizeMap[size]}
             rounded-full 
-            bg-white dark:bg-gray-800 
+            bg-white dark:bg-black-light
             shadow-md hover:shadow-lg 
             transition-all duration-200 
             flex items-center justify-center
@@ -98,7 +98,7 @@ export const ThemeToggler: ComponentConfig<ThemeTogglerProps> = {
                 ${theme === "dark" ? "rotate-0 opacity-100" : "-rotate-90 opacity-0"}
               `}
             >
-              <Moon className="w-5 h-5 text-blue-400" />
+              <Moon className="w-5 h-5 text-adaptive-accent" />
             </span>
             <span
               className={`
@@ -107,7 +107,7 @@ export const ThemeToggler: ComponentConfig<ThemeTogglerProps> = {
                 ${theme === "light" ? "rotate-0 opacity-100" : "rotate-90 opacity-0"}
               `}
             >
-              <Sun className="w-5 h-5 text-yellow-500" />
+              <Sun className="w-5 h-5 text-adaptive-accent" />
             </span>
           </div>
         </Toggle.Root>

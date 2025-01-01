@@ -48,54 +48,69 @@ export const Sidebar: ComponentConfig<SidebarProps> = {
     const [isOpen, setIsOpen] = useState(true);
 
     return (
-      <aside className={`fixed top-0 left-0 h-screen bg-white transition-all duration-300 ${isOpen ? 'w-64' : 'w-16'}`}>
-        <div className="flex-col h-screen justify-between p-8">
+      <aside className={`fixed top-0 left-0 h-screen transition-all duration-300 ${isOpen ? 'w-64' : 'w-16'}`}>
+        <div className="flex flex-col h-full justify-between p-8">
           <div>
             <button 
               onClick={() => setIsOpen(!isOpen)}
-              className="absolute top-1/2 right-2 w-6 h-6 border border-black text-black hover:text-red rounded-full flex items-center justify-center cursor-pointer"
+              className="absolute top-1/2 right-2 w-6 h-6 border border-adaptive-secondary text-adaptive-secondary hover:text-adaptive-accent rounded-full flex items-center justify-center cursor-pointer"
             >
               {isOpen ? '←' : '→'}
             </button>
-            <div>
-              <DropZone zone="my-content 1" />
+            <div className="absolute mt-8 h-min-[100px] w-full rounded-md">
+              <DropZone zone="Toggle"/>
             </div>
-            <nav className="space-y-6 mt-8">
+            <nav className="space-y-4 mt-12">
               {navigation.map((item, index) => (
                 <Link 
                   key={index}
                   href={item.href}
-                  className="block text-2xl text-black hover:text-red transition-colors"
+                  className="block text-xl text-adaptive-secondary hover:text-adaptive-accent transition-colors"
                 >
-                  {item.icon && <span className="inline-block w-8">{item.icon}</span>}
                   <span className={`transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0 hidden'}`}>
                     {item.label}
                   </span>
+                  {item.icon && <span className="inline-block w-8">{item.icon}</span>}
                 </Link>
               ))}
             </nav>
-            <div className={`space-y-2 items-end transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}>
-              <DropZone className="py-16" zone="my-content 2" />
-            </div>
+          </div>
+          <div className={`transition-opacity flex items-center gap-2 mt-8 hover:text-adaptive-accent ${isOpen ? 'opacity-100' : 'opacity-0 hidden'}`}>
+            <DropZone zone="Contact Us"/>
+          </div>
+          <div className="mt-auto space-y-8">
             <div className="space-y-2">
-            <p className={`text-black text-md transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}>{"Looking for Substance?"}</p>
-            <p><span className={`text-black text-md italic line-through transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}>{"Subscribe"}</span></p>
-            <p><span className={`italic text-md transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}>{"Prescribe to us"}</span></p>
+              <p className={`text-adaptive-secondaryAlt text-sm transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}>
+                {"Looking for Substance?"}
+              </p>
+              <p>
+                <span className={`text-adaptive-secondaryAlt text-sm italic line-through transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}>
+                  {"Subscribe"}
+                </span>
+              </p>
+              <p>
+                <span className={`text-adaptive-secondaryAlt italic text-sm transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}>
+                  {"Prescribe to us"}
+                </span>
+              </p>
+            </div>
+            
             {showSubscribe && (
               <div className={`flex ${isOpen ? 'gap-2' : 'flex-col gap-4'} ${!isOpen && 'mt-4'}`}>
-              <button className="bg-white text-black p-1.5 rounded hover:text-red transition-colors flex items-center justify-center w-8 h-8">
-              <MailPlus size={16} />
-              </button>
-              <button className="bg-white text-black p-1.5 rounded hover:text-red transition-colors flex items-center justify-center w-8 h-8">
-              <Instagram size={16} />
-              </button>
-              <button className="bg-white text-black p-1.5 rounded hover:text-red transition-colors flex items-center justify-center w-8 h-8">
-              <Rss size={16} />
-              </button>
+                <button className=" text-adaptive-secondary p-1.5 rounded hover:text-adaptive-accent transition-colors flex items-center justify-center w-8 h-8">
+                  <MailPlus size={16} />
+                </button>
+                <button className=" text-adaptive-secondary p-1.5 rounded hover:text-adaptive-accent transition-colors flex items-center justify-center w-8 h-8">
+                  <Instagram size={16} />
+                </button>
+                <button className="text-adaptive-secondary p-1.5 rounded hover:text-adaptive-accent transition-colors flex items-center justify-center w-8 h-8">
+                  <Rss size={16} />
+                </button>
               </div>
             )}
-            <p className={`text-black text-xs italic transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}>{"Not a cult!™"}</p>
-            </div>
+            <p className={`text-adaptive-accent text-xs italic transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}>
+              {"Not a cult!™"}
+            </p>
           </div>
         </div>
       </aside>

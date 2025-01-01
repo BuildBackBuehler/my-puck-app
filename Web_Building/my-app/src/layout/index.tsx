@@ -15,3 +15,6 @@ export type { FixedColumnsProps } from './fixed-columns';
 
 export { DropColumn } from './drop-column';
 export type { DropColumnProps } from './drop-column';
+
+export { ThreeColumns } from './3-column';
+export type { ThreeColumnsProps } from './3-column';

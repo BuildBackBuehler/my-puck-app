@@ -9,7 +9,15 @@ module.exports = {
         port: '',
         pathname: '/puppy.jpg',
         search: '',
+      },      
+      {
+        protocol: 'https',
+        hostname: 'source.unsplash.com',
+        port: '',
+        pathname: '/random/800x600',
+        search: '',
       },
     ],
   },
 };
+

@@ -77,12 +77,12 @@ export const ArticleList: ComponentConfig<ArticleListProps> = {
     }))
   },
   render: ({ articles, maxArticles = 5, showDivider }) => (
-    <section className="max-h-screen overflow-y-auto bg-white scrollbar-hide xs:scrollbar-default">
+    <section className="max-h-screen overflow-y-auto scrollbar-hide xs:scrollbar-default">
       {showDivider === true && (
-        <div className="fixed left-0 w-px h-screen bg-black-light">
+        <div>
           {articles.slice(0, maxArticles).map((_, index) => (
             index !== maxArticles - 1 && (
-              <div key={index} className="absolute w-px h-16 bg-transparent" style={{
+              <div key={index} className="absolute left-0 w-px h-16 bg-transparent" style={{
                 top: `calc(${(100 / maxArticles) * (index + 1)}% - 8rem)`
               }} />
             )
@@ -93,15 +93,15 @@ export const ArticleList: ComponentConfig<ArticleListProps> = {
         {articles.slice(0, maxArticles).map((article) => (
           <article key={article.id} className="relative pl-16">
             <div className="flex justify-between mb-4">
-              <span className="font-display text-8xl text-black-light select-none">
+              <span className="font-display text-8xl text-adaptive-secondaryAlt select-none">
                 {article.number}
               </span>
               <div className="flex flex-col items-end justify-end gap-2 pb-2">
-                <time className="font-display text-md text-black" dateTime={article.date}>
+                <time className="pr-4 font-display text-md text-adaptive-secondaryAlt" dateTime={article.date}>
                   {article.date}
                 </time>
                 {article.engagement?.showStats === true && (
-                  <div className="flex gap-4 text-black-light text-sm">
+                  <div className="pr-4 flex gap-2 text-adaptive-accent text-sm">
                     <div className="flex items-center gap-1">
                       <Eye size={14} />
                       <span>{article.engagement.views}</span>
@@ -122,12 +122,12 @@ export const ArticleList: ComponentConfig<ArticleListProps> = {
               <h2>
                 <Link 
                   href={article.link}
-                  className="font-serif text-5xl hover:text-red transition-all"
+                  className="font-serif text-5xl hover:text-adaptive-accent transition-all"
                 >
                   {article.title}
                 </Link>
               </h2>
-              <p className="font-display text-lg text-black-light max-w-2xl">
+              <p className="font-display text-lg text-adaptive-secondaryAlt max-w-2xl">
                 {article.summary}
               </p>
             </div>

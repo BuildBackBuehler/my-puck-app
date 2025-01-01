@@ -2,7 +2,7 @@ import { ComponentConfig } from "@measured/puck";
 import { DropZone } from "@measured/puck";
 import { generateId } from "../../lib/generate-id";
 
-export interface FixedColumnsProps {
+export interface ThreeColumnsProps {
   columns: {
     id?: string;
     width: number;
@@ -10,7 +10,7 @@ export interface FixedColumnsProps {
   }[];
 }
 
-export const FixedColumns: ComponentConfig<FixedColumnsProps> = {
+export const ThreeColumns: ComponentConfig<ThreeColumnsProps> = {
   resolveData: ({ props }, { lastData }) => {
     if (lastData?.props.columns.length === props.columns.length) return { props };
 
@@ -27,7 +27,7 @@ export const FixedColumns: ComponentConfig<FixedColumnsProps> = {
 
   defaultProps: {
     columns: [
-      { width: 15, id: generateId(), className: 'grid grid-cols-[auto,1fr,1fr,auto] h-full'},
+      { width: 15, id: generateId(), className: 'grid grid-cols-[auto,1fr,1fr] h-full' },
       { width: 20, id: generateId() },
       { width: 35, id: generateId() },
       { width: 30, id: generateId() }

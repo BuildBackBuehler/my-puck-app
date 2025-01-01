@@ -1,8 +1,7 @@
 import type { Config } from "@measured/puck";
-// import { Divider, Heading, Paragraph, DemoCard, Icon } from './src/basics';
 
-import { Columns, Section, ThemeSwitcher, ThemeToggler, FixedColumns, DropColumn } from './src/layout';
-import { ColumnsProps, SectionProps, ThemeSwitcherProps, ThemeTogglerProps, FixedColumnsProps, DropColumnProps } from "./src/layout";
+import { Columns, Section, ThemeSwitcher, ThemeToggler, FixedColumns, DropColumn, ThreeColumns } from './src/layout';
+import { ColumnsProps, SectionProps, ThemeSwitcherProps, ThemeTogglerProps, FixedColumnsProps, DropColumnProps, ThreeColumnsProps } from "./src/layout";
 
 import { AlertDialog, Button, Dialog, Popover, RadioGroup, Select, Toggle, Toast, ToggleGroup, Tooltip } from './src/buttons';
 import { AlertDialogProps, ButtonProps, DialogProps, PopoverProps, RadioGroupProps, SelectProps, ToggleProps, ToastProps, ToggleGroupProps, TooltipProps } from './src/buttons';
@@ -13,11 +12,11 @@ import { AccordionProps, AspectRatioProps, AvatarProps, CheckboxProps, Collapsib
 import { CommandMenu, ContextMenu, DropdownMenu, NavigationMenu, Menubar, Tabs, Toolbar, VertNavMenu } from './src/menus';
 import { CommandMenuProps, ContextMenuProps, DropdownMenuProps, MenubarProps, NavigationMenuProps, TabsProps, ToolbarProps, VertNavMenuProps } from "./src/menus";
 
-import { ArticleCard, ArticleCardList, DemoCard, Divider } from './src/basics';
-import { ArticleCardProps, ArticleCardListProps, DemoCardProps, DividerProps } from './src/basics';
+import { Article, ArticleCard, ArticleCardList, DemoCard, Divider } from './src/basics';
+import { ArticleProps, ArticleCardProps, ArticleCardListProps, DemoCardProps, DividerProps } from './src/basics';
 
-import { ArticleList, Circle, IssueCard, FeaturedHeader, Sidebar, Socials } from "./src/spec_parts";
-import { ArticleListProps, CircleProps, IssueCardProps, FeaturedHeaderProps, SidebarProps, SocialsProps } from "./src/spec_parts";
+import { ArticleList, Circle, IssueCard, FeaturedHeader, Sidebar, Socials, ArchiveGrid, ArchivePage, FilterBar } from "./src/spec_parts";
+import { ArticleListProps, CircleProps, IssueCardProps, FeaturedHeaderProps, SidebarProps, SocialsProps, ArchiveGridProps, ArchivePageProps, FilterBarProps } from "./src/spec_parts";
 
 
 type Props = {
@@ -66,6 +65,11 @@ type Props = {
   FixedColumns: FixedColumnsProps;
   DropColumn: DropColumnProps;
   Socials: SocialsProps;
+  ThreeColumns: ThreeColumnsProps;
+  Article: ArticleProps;
+  ArchiveGrid: ArchiveGridProps;
+  ArchivePage: ArchivePageProps;
+  FilterBar: FilterBarProps;
 };
 
 export const config: Config<Props> = {
@@ -127,15 +131,20 @@ export const config: Config<Props> = {
     FixedColumns,
     DropColumn,
     Socials,
+    ThreeColumns,
+    Article,
+    ArchiveGrid,
+    ArchivePage,
+    FilterBar,
   },
     categories: {
     basics: {
       title: 'Basics',
-      components: [ 'ArticleCard', 'ArticleCardList', 'Divider', 'DemoCard', 'Icon']
+      components: [ 'Article', 'ArticleCard', 'ArticleCardList', 'Divider', 'DemoCard', 'Icon']
     },
     layout: {
       title: 'Layout',
-      components: ['Columns', 'FixedColumns', 'Section', 'ThemeSwitcher', 'ThemeToggler', 'DropColumn']
+      components: ['Columns', 'FixedColumns', 'Section', 'ThemeSwitcher', 'ThemeToggler', 'DropColumn', 'ThreeColumns']
     },
     'data displays': {
       title: 'Data Displays',
@@ -152,7 +161,7 @@ export const config: Config<Props> = {
   },
     root: {
         render: ({ children }: { children: React.ReactNode }) => (
-          <div className="min-h-screen bg-white text-black transition-colors duration-200 dark:bg-black dark:text-white">
+          <div className="min-h-screen bg-adaptive-primary text-adaptive-secondary transition-colors duration-200">
             {children}
           </div>
         )

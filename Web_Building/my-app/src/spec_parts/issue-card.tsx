@@ -27,9 +27,9 @@ export const IssueCard: ComponentConfig<IssueCardProps> = {
     link: "/issues/01"
   },
   render: ({ title, isPinned, issueNumber, link }) => (
-    <div className="absolute h-screen w-auto">
-      <div className="absolute left-0 top-[11vh] h-[90vh] w-px bg-black-light" />
-      {/* <a href={link} className="relative block bg-white text-black pr-4 py-8"> */}
+    <div className="flex-grow absolute h-screen w-auto">
+      <div className="absolute left-0 top-[11vh] h-[89vh] w-px bg-black-light" />
+      {/* <a href={link} className="relative block bg-white text-adaptive-secondary pr-4 py-8"> */}
         <div className="flex flex-col h-screen px-4">
           <div>
             <h2 className="mt-8 font-display text-8xl tracking-tight font-bold mb-4">{title}</h2>

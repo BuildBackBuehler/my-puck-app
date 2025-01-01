@@ -93,7 +93,7 @@
 }
 
 html {
-  /* @apply text-black;
+  /* @apply text-adaptive-secondary;
   @apply bg-white; */
   scrollbar-color: #232323 transparent;
   scrollbar-width: auto;
@@ -104,6 +104,11 @@ html[class*="dark"] {
   @apply bg-black; */
   scrollbar-color: #e9e6e4 transparent;
   scrollbar-width: auto;
+  --color-primary: #232323;
+  --color-primary-Alt: #525252;
+  --color-secondary: #e9e6e4;
+  --color-secondary-Alt: #DAD5D2;
+  --color-accent: #28AFB0;
 }
 
 ::-webkit-scrollbar {

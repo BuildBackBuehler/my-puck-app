@@ -1,8 +1,11 @@
-import { ComponentConfig } from "@measured/puck";
-import { CornerDownRight } from "lucide-react";
+import { ComponentConfig, DropZone } from "@measured/puck";
+import { MessageCircle, Heart, Eye } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-export interface ArticleCardProps {
+// import { Avatar } from "../data-displays/avatar";
+// const Avatar 
+
+export interface ArticleProps {
   mainTitle: string;
   date: string;
   image: {
@@ -16,7 +19,7 @@ export interface ArticleCardProps {
   link: string;
 };
 
-export const ArticleCard: ComponentConfig<ArticleCardProps> = {
+export const Article: ComponentConfig<ArticleProps> = {
   fields: {
     mainTitle: { type: "text" },
     date: { type: "text" },
@@ -67,10 +70,20 @@ export const ArticleCard: ComponentConfig<ArticleCardProps> = {
       <article className="w-full max-w-4xl mx-auto text-adaptive-secondary">
         <div className="absolute right-0 top-[10vh] w-px h-full bg-adaptive-secondaryAlt" />
         <div className="py-8 space-y-4">
-          <h1 className="font-display text-8xl font-bold tracking-tight">{mainTitle}</h1>
-          <time dateTime={date} className="px-4 block text-xl text-right">
-            {date}
-          </time>
+          <div className="flex justify-between items-center">
+            <h2 className="font-display text-6xl text-left tracking-tight">{mainTitle}</h2>
+            <div className="text-right">
+              <time dateTime={date} className="px-4 block text-md mt-2">
+                {date}
+              </time>
+              <div className="flex items-center space-x-2 text-xs pr-4">
+                <span className="inline-flex items-center gap-1"><Eye size={12}/> 1.2k</span>
+                <span className="inline-flex items-center gap-1"><Heart size={12}/> 847</span>
+                <span className="inline-flex items-center gap-1"><MessageCircle size={12}/> 23</span>
+              </div>
+              <span className="text-md font-serif italic px-4">{readTime}</span>
+            </div>
+          </div>
           <div className="mx-4 self-center px-8 h-px bg-adaptive-secondaryAlt" />
           <div className="mx-4 relative aspect-[2/1] overflow-hidden rounded-lg">
             <Image 
@@ -83,24 +96,14 @@ export const ArticleCard: ComponentConfig<ArticleCardProps> = {
             />
           </div>
 
-          <h2 className="font-sans px-8 text-4xl text-adaptive-accent">{title}</h2>
+          <h1 className="font-sans text-center text-5xl font-bold text-adaptive-accent">{title}</h1>
 
-          <div className="flex justify-between items-center text-md">
-            <span className="font-serif px-8 italic">{author}</span>
-            <span className="font-serif px-8 italic">{readTime}</span>
+          <div className="flex items-center text-center justify-center text-md">
+            <span className="font-serif italic items-center justify-center text-center px-2">{author}</span>
+            <DropZone zone="Avatar"></DropZone>
           </div>
 
           <p className="font-sans px-8 text-lg leading-relaxed">{summary}</p>
-          <div className="mx-4 self-center px-8 h-px bg-adaptive-secondaryAlt" />
-            <div className="flex justify-end">
-            <Link 
-              href={link || "#"}
-              className="pr-4 group inline-flex items-center gap-2 text-3xl hover:text-adaptive-accent transition-colors"
-            >
-              <CornerDownRight size={36} />
-              <span className="text-adaptive-accent">See More</span>
-            </Link>
-            </div>
         </div>
       </article>
     );
