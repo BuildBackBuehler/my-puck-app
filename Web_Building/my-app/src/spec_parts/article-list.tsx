@@ -77,12 +77,12 @@ export const ArticleList: ComponentConfig<ArticleListProps> = {
     }))
   },
   render: ({ articles, maxArticles = 5, showDivider }) => (
-    <section className="max-h-screen overflow-y-auto scrollbar-hide xs:scrollbar-default">
+    <section className="h-[80vh] overflow-y-auto scrollbar-hide xs:scrollbar-default">
       {showDivider === true && (
         <div>
           {articles.slice(0, maxArticles).map((_, index) => (
             index !== maxArticles - 1 && (
-              <div key={index} className="absolute left-0 w-px h-16 bg-transparent" style={{
+              <div key={index} className="absolute w-px h-16 bg-transparent" style={{
                 top: `calc(${(100 / maxArticles) * (index + 1)}% - 8rem)`
               }} />
             )
@@ -96,7 +96,7 @@ export const ArticleList: ComponentConfig<ArticleListProps> = {
               <span className="font-display text-8xl text-adaptive-secondaryAlt select-none">
                 {article.number}
               </span>
-              <div className="flex flex-col items-end justify-end gap-2 pb-2">
+              <div className="flex flex-col items-end justify-end gap-1 pb-2">
                 <time className="pr-4 font-display text-md text-adaptive-secondaryAlt" dateTime={article.date}>
                   {article.date}
                 </time>

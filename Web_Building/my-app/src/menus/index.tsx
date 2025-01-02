@@ -22,3 +22,6 @@ export type { MenubarProps } from './menubar';
 
 export { VertNavMenu } from './vert-nav-menu';
 export type { VertNavMenuProps } from './vert-nav-menu';
+
+export { LogoBar } from './logo-bar';
+export type { LogoBarProps } from './logo-bar';

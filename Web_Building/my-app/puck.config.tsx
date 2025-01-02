@@ -9,15 +9,14 @@ import { AlertDialogProps, ButtonProps, DialogProps, PopoverProps, RadioGroupPro
 import { Accordion, AspectRatio, Avatar, Checkbox, Collapsible, HoverCard, Progress, Slider, Switch, Ticker } from './src/data-displays';
 import { AccordionProps, AspectRatioProps, AvatarProps, CheckboxProps, CollapsibleProps, HoverCardProps, ProgressProps, SliderProps, SwitchProps, TickerProps } from './src/data-displays';
 
-import { CommandMenu, ContextMenu, DropdownMenu, NavigationMenu, Menubar, Tabs, Toolbar, VertNavMenu } from './src/menus';
-import { CommandMenuProps, ContextMenuProps, DropdownMenuProps, MenubarProps, NavigationMenuProps, TabsProps, ToolbarProps, VertNavMenuProps } from "./src/menus";
+import { CommandMenu, ContextMenu, DropdownMenu, NavigationMenu,LogoBar, Menubar, Tabs, Toolbar, VertNavMenu } from './src/menus';
+import { CommandMenuProps, ContextMenuProps, DropdownMenuProps, LogoBarProps, MenubarProps, NavigationMenuProps, TabsProps, ToolbarProps, VertNavMenuProps } from "./src/menus";
 
 import { Article, ArticleCard, ArticleCardList, DemoCard, Divider } from './src/basics';
 import { ArticleProps, ArticleCardProps, ArticleCardListProps, DemoCardProps, DividerProps } from './src/basics';
 
 import { ArticleList, Circle, IssueCard, FeaturedHeader, Sidebar, Socials, ArchiveGrid, ArchivePage, FilterBar } from "./src/spec_parts";
 import { ArticleListProps, CircleProps, IssueCardProps, FeaturedHeaderProps, SidebarProps, SocialsProps, ArchiveGridProps, ArchivePageProps, FilterBarProps } from "./src/spec_parts";
-
 
 type Props = {
   HeadingBlock: { title: string };
@@ -70,6 +69,7 @@ type Props = {
   ArchiveGrid: ArchiveGridProps;
   ArchivePage: ArchivePageProps;
   FilterBar: FilterBarProps;
+  LogoBar: LogoBarProps;
 };
 
 export const config: Config<Props> = {
@@ -136,6 +136,7 @@ export const config: Config<Props> = {
     ArchiveGrid,
     ArchivePage,
     FilterBar,
+    LogoBar,
   },
     categories: {
     basics: {
@@ -148,11 +149,11 @@ export const config: Config<Props> = {
     },
     'data displays': {
       title: 'Data Displays',
-      components: ['Accordion', 'AspectRatio', 'Avatar', 'Checkbox',`HoverCard`, 'Collapsible', 'Progress', 'Slider', 'Switch', 'Ticker']
+      components: ['Accordion', 'AspectRatio', 'Avatar', 'Checkbox', 'Collapsible',`HoverCard`, 'Progress', 'Slider', 'Switch', 'Ticker']
     },
     menus: {
       title: 'Menus',
-      components: ['CommandMenu', 'ContextMenu', 'DropdownMenu', 'NavigationMenu', 'Menubar', 'Tabs', 'Toolbar', 'VertNavMenu']
+      components: ['CommandMenu', 'ContextMenu', 'DropdownMenu', 'LogoBar', 'Menubar', 'NavigationMenu', 'Tabs', 'Toolbar', 'VertNavMenu']
     },
     buttons: {
       title: 'Buttons',

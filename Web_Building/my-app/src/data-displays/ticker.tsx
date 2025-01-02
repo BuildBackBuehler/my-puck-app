@@ -102,7 +102,7 @@ export const Ticker: ComponentConfig<TickerProps> = {
           ref={wrapperRef}
           className={clsx(
             "w-full overflow-hidden py-4",
-            theme === "dark" ? "bg-black-light text-white" : "bg-black text-white"
+            theme === "dark" ? "bg-black-light text-white border-t-2 border-b-2 border-white" : "bg-black text-white"
           )}
         >
           <div className="relative">
@@ -130,7 +130,7 @@ export const Ticker: ComponentConfig<TickerProps> = {
                       href={item.link}
                       className={clsx(
                         "hover:underline",
-                        theme === "dark" ? "text-red" : "text-cyan"
+                        theme === "dark" ? "text-cyan" : "text-red"
                       )}
                     >
                       {item.text}

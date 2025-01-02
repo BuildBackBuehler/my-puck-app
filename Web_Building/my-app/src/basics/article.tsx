@@ -2,8 +2,8 @@ import { ComponentConfig, DropZone } from "@measured/puck";
 import { MessageCircle, Heart, Eye } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-// import { Avatar } from "../data-displays/avatar";
-// const Avatar 
+import { FacebookShare, RedditShare, TwitterShare, LinkedinShare } from 'react-share-kit';
+import { performRequest } from '../../lib/dato';
 
 export interface ArticleProps {
   mainTitle: string;
@@ -15,7 +15,7 @@ export interface ArticleProps {
   title: string;
   author: string;
   readTime: string;
-  summary: string;
+  post: string;
   link: string;
 };
 
@@ -33,7 +33,7 @@ export const Article: ComponentConfig<ArticleProps> = {
     title: { type: "text" },
     author: { type: "text" },
     readTime: { type: "text" },
-    summary: { type: "textarea" },
+    post: { type: "textarea" },
     link: { 
       type: "text",
       defaultValue: "#",
@@ -51,7 +51,7 @@ export const Article: ComponentConfig<ArticleProps> = {
     title: "Sharing The Widespread Acclaim",
     author: "By Richard Carnation",
     readTime: "5 Min Read",
-    summary: "Blonde received widespread acclaim, with critics praising Ocean's introspective lyrics",
+    post: "Blonde received widespread acclaim, with critics praising Ocean's introspective lyrics",
     link: "#"
   },
 
@@ -62,7 +62,7 @@ export const Article: ComponentConfig<ArticleProps> = {
     title,
     author,
     readTime,
-    summary,
+    post,
     link
   }) => {
     if (!image?.src) return null;
@@ -102,12 +102,15 @@ export const Article: ComponentConfig<ArticleProps> = {
             <span className="font-serif italic items-center justify-center text-center px-2">{author}</span>
             <DropZone zone="Avatar"></DropZone>
           </div>
-
-          <p className="font-sans px-8 text-lg leading-relaxed">{summary}</p>
+          <p className="font-sans px-8 text-lg leading-relaxed">{post}</p>
+          <div className="flex justify-right items-right"> 
+            <FacebookShare url={link} quote={title} round={true} size={32} blankTarget={true} />
+            <LinkedinShare url={link} round={true} size={32} blankTarget={true}  />
+            <RedditShare url={link} title={title} round={true} size={32} blankTarget={true} />
+            <TwitterShare url={link} title={title} round={true} size={32} blankTarget={true} />
+          </div>
         </div>
       </article>
     );
   }
 };
-
-// className="w-6 h-6 transition-transform group-hover:translate-x-1"

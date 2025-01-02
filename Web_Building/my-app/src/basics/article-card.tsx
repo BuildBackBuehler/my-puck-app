@@ -78,7 +78,7 @@ export const ArticleCard: ComponentConfig<ArticleCardProps> = {
               alt={image.alt}
               fill
               className="object-cover"
-              sizes="px-8 (max-width: 896px) 100vw, 896px"
+              sizes="px-4 (max-width: 896px) 100vw, 896px"
               priority
             />
           </div>
@@ -106,5 +106,3 @@ export const ArticleCard: ComponentConfig<ArticleCardProps> = {
     );
   }
 };
-
-// className="w-6 h-6 transition-transform group-hover:translate-x-1"
