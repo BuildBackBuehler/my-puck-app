@@ -1,6 +1,7 @@
 import { ComponentConfig } from "@measured/puck";
 import { DropZone } from "@measured/puck";
 import { generateId } from "../../lib/generate-id";
+import { useLayoutState } from '../../lib/layout-state'
 
 export interface ThreeColumnsProps {
   columns: {
@@ -27,9 +28,8 @@ export const ThreeColumns: ComponentConfig<ThreeColumnsProps> = {
 
   defaultProps: {
     columns: [
-      { width: 15, id: generateId(), className: 'grid grid-cols-[auto,1fr,1fr] h-full' },
-      { width: 20, id: generateId() },
-      { width: 35, id: generateId() },
+      { width: 15, id: generateId() },
+      { width: 55, id: generateId() },
       { width: 30, id: generateId() }
     ]
   },

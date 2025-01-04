@@ -58,7 +58,7 @@ export const ArchivePage: ComponentConfig<ArchivePageProps> = {
 
   render: ({ articles = [], authors = [], categories = [] }) => {
     return (
-      <div className="col-auto min-h-screen">
+      <div className="col-auto flex-grow min-h-screen">
         <FilterBar 
           authors={authors}
           categories={categories}

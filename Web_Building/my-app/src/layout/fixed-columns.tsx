@@ -42,7 +42,7 @@ export const FixedColumns: ComponentConfig<FixedColumnsProps> = {
           className={`transition-all duration-300 ${column.className || ''}`}
           style={{ 
             width: `${column.width}%`,
-            minWidth: column.className?.includes('grid') ? 'min-content' : undefined
+            // minWidth: column.className?.includes('grid') ? 'min-content' : '15vw'
           }}
         >
           <DropZone zone={`column-${column.id}`} />

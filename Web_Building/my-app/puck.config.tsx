@@ -1,13 +1,13 @@
 import type { Config } from "@measured/puck";
 
-import { Columns, Section, ThemeSwitcher, ThemeToggler, FixedColumns, DropColumn, ThreeColumns } from './src/layout';
-import { ColumnsProps, SectionProps, ThemeSwitcherProps, ThemeTogglerProps, FixedColumnsProps, DropColumnProps, ThreeColumnsProps } from "./src/layout";
+import { Section, ThemeSwitcher, ThemeToggler, FixedColumns, DropColumn, ThreeColumns } from './src/layout';
+import { SectionProps, ThemeSwitcherProps, ThemeTogglerProps, FixedColumnsProps, DropColumnProps, ThreeColumnsProps } from "./src/layout";
 
 import { AlertDialog, Button, Dialog, Popover, RadioGroup, Select, Toggle, Toast, ToggleGroup, Tooltip } from './src/buttons';
 import { AlertDialogProps, ButtonProps, DialogProps, PopoverProps, RadioGroupProps, SelectProps, ToggleProps, ToastProps, ToggleGroupProps, TooltipProps } from './src/buttons';
 
-import { Accordion, AspectRatio, Avatar, Checkbox, Collapsible, HoverCard, Progress, Slider, Switch, Ticker } from './src/data-displays';
-import { AccordionProps, AspectRatioProps, AvatarProps, CheckboxProps, CollapsibleProps, HoverCardProps, ProgressProps, SliderProps, SwitchProps, TickerProps } from './src/data-displays';
+import { Accordion, AspectRatio, Avatar, Carousel, Checkbox, Collapsible, HoverCard, Progress, Slider, Switch } from './src/data-displays';
+import { AccordionProps, AspectRatioProps, AvatarProps, CarouselProps, CheckboxProps, CollapsibleProps, HoverCardProps, ProgressProps, SliderProps, SwitchProps } from './src/data-displays';
 
 import { CommandMenu, ContextMenu, DropdownMenu, NavigationMenu,LogoBar, Menubar, Tabs, Toolbar, VertNavMenu } from './src/menus';
 import { CommandMenuProps, ContextMenuProps, DropdownMenuProps, LogoBarProps, MenubarProps, NavigationMenuProps, TabsProps, ToolbarProps, VertNavMenuProps } from "./src/menus";
@@ -15,8 +15,11 @@ import { CommandMenuProps, ContextMenuProps, DropdownMenuProps, LogoBarProps, Me
 import { Article, ArticleCard, ArticleCardList, DemoCard, Divider } from './src/basics';
 import { ArticleProps, ArticleCardProps, ArticleCardListProps, DemoCardProps, DividerProps } from './src/basics';
 
-import { ArticleList, Circle, IssueCard, FeaturedHeader, Sidebar, Socials, ArchiveGrid, ArchivePage, FilterBar } from "./src/spec_parts";
-import { ArticleListProps, CircleProps, IssueCardProps, FeaturedHeaderProps, SidebarProps, SocialsProps, ArchiveGridProps, ArchivePageProps, FilterBarProps } from "./src/spec_parts";
+import { IssueCard, Sidebar, Socials, ArchiveGrid, ArchivePage, FilterBar } from "./src/spec_parts";
+import { IssueCardProps, SidebarProps, SocialsProps, ArchiveGridProps, ArchivePageProps, FilterBarProps } from "./src/spec_parts";
+
+import { ArticleList, Circle, FeaturedHeader, Ticker } from "./src/right-bar";
+import { ArticleListProps, CircleProps, FeaturedHeaderProps, TickerProps } from "./src/right-bar";
 
 type Props = {
   HeadingBlock: { title: string };
@@ -30,7 +33,6 @@ type Props = {
   Accordion: AccordionProps;
   Collapsible: CollapsibleProps;
   ThemeSwitcher: ThemeSwitcherProps;
-  Columns: ColumnsProps;
   AlertDialog: AlertDialogProps;
   Popover: PopoverProps;
   Select: SelectProps;
@@ -70,6 +72,7 @@ type Props = {
   ArchivePage: ArchivePageProps;
   FilterBar: FilterBarProps;
   LogoBar: LogoBarProps;
+  Carousel: CarouselProps;
 };
 
 export const config: Config<Props> = {
@@ -102,7 +105,6 @@ export const config: Config<Props> = {
     Accordion,
     Collapsible,
     ThemeSwitcher,
-    Columns,
     Section,
     AlertDialog,
     Popover,
@@ -137,6 +139,7 @@ export const config: Config<Props> = {
     ArchivePage,
     FilterBar,
     LogoBar,
+    Carousel,
   },
     categories: {
     basics: {
@@ -145,11 +148,11 @@ export const config: Config<Props> = {
     },
     layout: {
       title: 'Layout',
-      components: ['Columns', 'FixedColumns', 'Section', 'ThemeSwitcher', 'ThemeToggler', 'DropColumn', 'ThreeColumns']
+      components: [ 'FixedColumns', 'Section', 'ThemeSwitcher', 'ThemeToggler', 'DropColumn', 'ThreeColumns']
     },
     'data displays': {
       title: 'Data Displays',
-      components: ['Accordion', 'AspectRatio', 'Avatar', 'Checkbox', 'Collapsible',`HoverCard`, 'Progress', 'Slider', 'Switch', 'Ticker']
+      components: ['Accordion', 'AspectRatio', 'Avatar', 'Carousel', 'Checkbox', 'Collapsible',`HoverCard`, 'Progress', 'Slider', 'Switch', 'Ticker']
     },
     menus: {
       title: 'Menus',
@@ -158,11 +161,15 @@ export const config: Config<Props> = {
     buttons: {
       title: 'Buttons',
       components: ['AlertDialog', 'Button', 'Dialog', 'RadioGroup', 'Popover', 'Select', 'Toggle', 'Toast', 'ToggleGroup', 'Tooltip']
-    }
+    },
+    'right-side-bar': {
+      title: 'Right Side Bar',
+      components: ['ArticleList', 'Circle', 'FeaturedHeader', 'Ticker']
+    },
   },
     root: {
         render: ({ children }: { children: React.ReactNode }) => (
-          <div className="min-h-screen bg-adaptive-primary text-adaptive-secondary transition-colors duration-200">
+          <div className="min-h-screen bg-adaptive-primary text-adaptive-secondary transition-colors duration-300">
             {children}
           </div>
         )

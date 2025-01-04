@@ -2,6 +2,12 @@
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { type NextRequest, NextResponse } from "next/server";
 
+export { default } from "next-auth/middleware"
+
+export const config = {
+  matcher: ["/admin/:path*"]
+}
+
 export const createClient = (request: NextRequest) => {
   // Create an unmodified response
   let supabaseResponse = NextResponse.next({

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Rss, Instagram, MailPlus } from "lucide-react";
 import Image from 'next/image';
 import NewsletterIcon from '../misc/reshot-icon-newsletter-DVKLPRYUF6.svg';
+import { useLayoutState } from "../../lib/layout-state";
 
 export interface NavItem {
   label: string;
@@ -45,7 +46,7 @@ export const Sidebar: ComponentConfig<SidebarProps> = {
     showSubscribe: true
   },
   render: ({ navigation = [], socialHandle, showSubscribe }) => {
-    const [isOpen, setIsOpen] = useState(true);
+    const { isSidebarOpen: isOpen, setSidebarOpen: setIsOpen } = useLayoutState()
 
     return (
       <aside className={`fixed top-0 left-0 h-screen transition-all duration-300 ${isOpen ? 'w-64' : 'w-16'}`}>
@@ -53,7 +54,7 @@ export const Sidebar: ComponentConfig<SidebarProps> = {
           <div>
             <button 
               onClick={() => setIsOpen(!isOpen)}
-              className="absolute top-1/2 right-2 w-6 h-6 border border-adaptive-secondary text-adaptive-secondary hover:text-adaptive-accent rounded-full flex items-center justify-center cursor-pointer"
+              className="absolute top-1/2 right-2 w-6 h-6 border border-adaptive-secondary text-adaptive-secondary hover:text-adaptive-accent hover:border-adaptive-accent rounded-full flex items-center justify-center cursor-pointer"
             >
               {isOpen ? '←' : '→'}
             </button>

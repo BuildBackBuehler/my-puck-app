@@ -30,9 +30,9 @@ export const IssueCard: ComponentConfig<IssueCardProps> = {
     <div className="absolute h-screen w-auto">
       <div className="absolute left-0 top-[11vh] h-[89vh] w-px bg-adaptive-secondaryAlt" />
       {/* <a href={link} className="relative block bg-white text-adaptive-secondary pr-4 py-8"> */}
-        <div className="flex flex-col h-screen px-4">
+        <div className="flex flex-col h-screen px-4 pt-3">
           <div>
-            <h2 className="mt-8 font-display text-8xl tracking-tight font-bold mb-4">{title}</h2>
+            <h2 className="mt-8 font-display text-8xl tracking-tight font-bold mb-2">{title}</h2>
             {isPinned && (
               <div className="flex items-center gap-2 mb-4">
                 <span className="w-4 h-4 bg-adaptive-secondary rounded-full" />

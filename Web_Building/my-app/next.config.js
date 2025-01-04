@@ -2,6 +2,9 @@ module.exports = {
   reactStrictMode: true,
   transpilePackages: ["ui"],
   images: {
+    domains: [
+      `${process.env.NEXT_PUBLIC_SUPABASE_PROJECT_ID}.supabase.co` 
+    ],
     remotePatterns: [
       {
         protocol: 'https',
@@ -17,7 +20,14 @@ module.exports = {
         pathname: '/random/800x600',
         search: '',
       },
-    ],
+      {
+        protocol: 'https',
+        hostname: 'uywhaywnylcjrvkcsdem.supabase.co',
+        port: '',
+        pathname: '/storage/v1/object/sign/Images',
+        search: '**',
+      },
+    ]
   },
 };
 

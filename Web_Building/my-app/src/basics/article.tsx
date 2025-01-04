@@ -3,7 +3,7 @@ import { MessageCircle, Heart, Eye } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { FacebookShare, RedditShare, TwitterShare, LinkedinShare } from 'react-share-kit';
-import { performRequest } from '../../lib/dato';
+
 
 export interface ArticleProps {
   mainTitle: string;
@@ -67,18 +67,19 @@ export const Article: ComponentConfig<ArticleProps> = {
   }) => {
     if (!image?.src) return null;
     return (
-      <article className="w-full max-w-4xl mx-auto text-adaptive-secondary">
+      <article className="w-full mx-auto text-adaptive-secondary relative pt-[6.7vh]">
         <div className="absolute right-0 top-[10vh] w-px h-full bg-adaptive-secondaryAlt" />
+        <div className="absolute left-0 top-[10vh] w-px h-full bg-adaptive-secondaryAlt" />
         <div className="py-8 space-y-4">
           <div className="flex justify-between items-center">
-            <h2 className="font-display text-6xl text-left tracking-tight">{mainTitle}</h2>
+            <h2 className="font-display text-6xl text-left tracking-tight pl-4">{mainTitle}</h2>
             <div className="text-right">
               <time dateTime={date} className="px-4 block text-md mt-2">
                 {date}
               </time>
               <div className="flex items-center space-x-2 text-xs pr-4">
                 <span className="inline-flex items-center gap-1"><Eye size={12}/> 1.2k</span>
-                <span className="inline-flex items-center gap-1"><Heart size={12}/> 847</span>
+                <span className="inline-flex items-center gap-1"><Heart size={12} className="text-transparent fill-adaptive-accent"/> 847</span>
                 <span className="inline-flex items-center gap-1"><MessageCircle size={12}/> 23</span>
               </div>
               <span className="text-md font-serif italic px-4">{readTime}</span>
@@ -103,7 +104,7 @@ export const Article: ComponentConfig<ArticleProps> = {
             <DropZone zone="Avatar"></DropZone>
           </div>
           <p className="font-sans px-8 text-lg leading-relaxed">{post}</p>
-          <div className="flex justify-right items-right"> 
+          <div className="flex justify-end gap-2 px-8"> 
             <FacebookShare url={link} quote={title} round={true} size={32} blankTarget={true} />
             <LinkedinShare url={link} round={true} size={32} blankTarget={true}  />
             <RedditShare url={link} title={title} round={true} size={32} blankTarget={true} />

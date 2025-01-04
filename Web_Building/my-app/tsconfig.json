@@ -8,6 +8,6 @@
     "declaration": true,
     "esModuleInterop": true,
   },
-  "include": ["src","src/**/*.tsx", "next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "tailwind.config.js", "src/layout/FUCK.tsx", "src/layout/columns.tsx", "src/layout/columns.tsx"],
+  "include": ["src","src/**/*.tsx", "next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "tailwind.config.js", "src/layout/FUCK.tsx", "columns.tsx", "columns.tsx"],
   "exclude": ["node_modules"]
 }

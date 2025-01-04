@@ -64,10 +64,9 @@ export const ArticleCard: ComponentConfig<ArticleCardProps> = {
   }) => {
     if (!image?.src) return null;
     return (
-      <article className="w-full max-w-4xl mx-auto text-adaptive-secondary">
-        <div className="absolute right-0 top-[10vh] w-px h-full bg-adaptive-secondaryAlt" />
-        <div className="py-8 space-y-4">
-          <h1 className="font-display text-8xl font-bold tracking-tight">{mainTitle}</h1>
+      <article className="w-full max-w-4xl mx-auto text-adaptive-secondary relative">
+        <div className="py-8 space-y-2">
+          <h1 className="font-display text-8xl font-bold tracking-tight pt-4">{mainTitle}</h1>
           <time dateTime={date} className="px-4 block text-xl text-right">
             {date}
           </time>
@@ -95,10 +94,10 @@ export const ArticleCard: ComponentConfig<ArticleCardProps> = {
             <div className="flex justify-end">
             <Link 
               href={link || "#"}
-              className="pr-4 group inline-flex items-center gap-2 text-3xl hover:text-adaptive-accent transition-colors"
+              className="pr-4 group inline-flex items-center gap-2 text-3xl text-adaptive-accent transition-colors"
             >
               <CornerDownRight size={36} />
-              <span className="text-adaptive-accent">See More</span>
+              <span className="text-adaptive-secondary hover:text-adaptive-accent">See More</span>
             </Link>
             </div>
         </div>

@@ -1,6 +1,6 @@
 import { ComponentConfig } from "@measured/puck";
 import { DropZone } from "@measured/puck";
-import { generateId } from "../../lib/generate-id";
+import { generateId } from "./lib/generate-id";
 import clsx from "clsx";
 
 const gridColsMap = {
@@ -73,7 +73,7 @@ export const Columns: ComponentConfig<ColumnsProps> = {
 
   render: ({ columns, distribution }) => {
     return (
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl">
         <div className={clsx(
           "grid w-full",
           distribution === "auto" 

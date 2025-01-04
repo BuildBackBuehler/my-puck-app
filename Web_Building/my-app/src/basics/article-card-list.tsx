@@ -56,7 +56,6 @@ export const ArticleCardList: ComponentConfig<ArticleCardListProps> = {
   render: ({ cards, stickyOffset }) => {
     return (
       <div className="relative h-screen w-full overflow-y-auto snap-y snap-mandatory scrollbar-hide xs:scrollbar-default">
-        <div className="absolute right-0 top-[10vh] w-px h-lvh bg-adaptive-secondaryAlt" />
         {cards.map((card, index) => (
           <div 
             key={`article-${index}`}
@@ -68,7 +67,6 @@ export const ArticleCardList: ComponentConfig<ArticleCardListProps> = {
             >
               <ArticleCard.render {...card} id={`article-${index}`} />
             </div>
-        <div className="absolute right-0 top-[20vh] w-px h-full bg-adaptive-secondaryAlt" />
           </div>
         ))}
       </div>

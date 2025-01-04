@@ -2,7 +2,6 @@ import { ComponentConfig } from "@measured/puck";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import * as logo from "src/misc/TransLogo3000.png";
 
 export interface LogoBarProps {
   siteLogo: {
@@ -33,13 +32,13 @@ export const LogoBar: ComponentConfig<LogoBarProps> = {
 
   defaultProps: {
     siteLogo: {
-      src: '/Users/zack/.home/gitrepos/Web_Building/my-app/src/misc/TransLogo3000.png',
+      src: "/BevelLotus.svg",
       alt: "Site Logo",
-      width: 120,
-      height: 40
+      width: 48,
+      height: 48
     },
     siteUrl: "/",
-    height: "64px"
+    height: "48 px"
   },
 
   render: ({ siteLogo, siteUrl, height = "64px" }) => (
@@ -50,7 +49,7 @@ export const LogoBar: ComponentConfig<LogoBarProps> = {
       className="fixed top-0 left-0 right-0 z-50 px-4"
       style={{ height }}
     >
-      <div className="h-full flex items-center max-w-7xl mx-auto">
+      <div className="h-full flex items-center justify-center max-w-7xl mx-auto pt-2">
         <Link href={siteUrl}>
           <motion.div
             whileHover={{ scale: 1.05 }}
@@ -62,7 +61,7 @@ export const LogoBar: ComponentConfig<LogoBarProps> = {
               alt={siteLogo.alt}
               width={siteLogo.width}
               height={siteLogo.height}
-              className="object-contain"
+              className="object-contain dark:invert"
               priority
             />
           </motion.div>

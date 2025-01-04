@@ -101,13 +101,13 @@ export const ArticleList: ComponentConfig<ArticleListProps> = {
                   {article.date}
                 </time>
                 {article.engagement?.showStats === true && (
-                  <div className="pr-4 flex gap-2 text-adaptive-accent text-sm">
+                  <div className="pr-4 flex gap-2 text-adaptive-secondaryAlt text-sm">
                     <div className="flex items-center gap-1">
                       <Eye size={14} />
                       <span>{article.engagement.views}</span>
                     </div>
                     <div className="flex items-center gap-1">
-                      <Heart size={14} />
+                      <Heart size={14} className="text-transparent fill-adaptive-accent" />
                       <span>{article.engagement.likes}</span>
                     </div>
                     <div className="flex items-center gap-1">
