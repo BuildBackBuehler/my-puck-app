@@ -11,9 +11,9 @@ export type ThemeTogglerProps = {
 };
 
 const sizeMap = {
-  sm: "h-8 w-8",
-  md: "h-10 w-10",
-  lg: "h-12 w-12"
+  sm: "lg:h-6 lg:w-6 md:h-4 md:w-4 h-2 w-2",
+  md: "lg:h-8 lg:w-8 md:h-6 md:w-6 h-4 w-4",
+  lg: "lg:h-10 lg:w-10 md:h-8 md:w-8 h-6 w-6"
 };
 
 export const ThemeToggler: ComponentConfig<ThemeTogglerProps> = {
@@ -51,12 +51,12 @@ export const ThemeToggler: ComponentConfig<ThemeTogglerProps> = {
 
   defaultProps: {
     defaultTheme: "light",
-    size: "md",
-    position: "right",
+    size: "lg",
+    position: "left",
     persistent: true
   },
 
-  render: ({ defaultTheme, size = "md", position = "right", persistent }) => {
+  render: ({ defaultTheme, size = "md", position = "left", persistent }) => {
     const [theme, setTheme] = useState(defaultTheme);
 
     useEffect(() => {
@@ -80,13 +80,14 @@ export const ThemeToggler: ComponentConfig<ThemeTogglerProps> = {
           onPressedChange={(pressed) => setTheme(pressed ? "dark" : "light")}
           className={`
             ${sizeMap[size]}
-            rounded-full 
-            bg-white dark:bg-black-light
+            rounded-full
+            bg-white dark:bg-black
             shadow-md hover:shadow-lg 
             transition-all duration-200 
             flex items-center justify-center
-            ring-1 ring-black/5 hover:ring-black/10
-            dark:ring-white/10 dark:hover:ring-white/20
+            ring-1 ring-black/10 hover:ring-black/20
+            dark:ring-gold/15 dark:hover:ring-gold/40
+            group
           `}
           aria-label="Toggle theme"
         >
@@ -98,7 +99,7 @@ export const ThemeToggler: ComponentConfig<ThemeTogglerProps> = {
                 ${theme === "dark" ? "rotate-0 opacity-100" : "-rotate-90 opacity-0"}
               `}
             >
-              <Moon className="w-5 h-5 text-adaptive-accent" />
+              <Moon className="w-5 h-5 text-adaptive-accent group-hover:fill-adaptive-accent3 group-hover:text-adaptive-accent3 hover:fill-adaptive-accent3 hover:text-adaptive-accent3" />
             </span>
             <span
               className={`
@@ -107,7 +108,7 @@ export const ThemeToggler: ComponentConfig<ThemeTogglerProps> = {
                 ${theme === "light" ? "rotate-0 opacity-100" : "rotate-90 opacity-0"}
               `}
             >
-              <Sun className="w-5 h-5 text-adaptive-accent" />
+              <Sun className="w-5 h-5 text-adaptive-accent group-hover:text-purple hover:text-purple" />
             </span>
           </div>
         </Toggle.Root>

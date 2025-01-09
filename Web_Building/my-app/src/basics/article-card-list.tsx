@@ -1,6 +1,7 @@
 import { ComponentConfig } from "@measured/puck";
 import { ArticleCard, ArticleCardProps } from "./article-card";
 import { useEffect, useRef, useState } from "react";
+import { useLayoutState } from "../../lib/layout-state";
 
 export interface ArticleCardListProps {
   cards: ArticleCardProps[];
@@ -54,8 +55,11 @@ export const ArticleCardList: ComponentConfig<ArticleCardListProps> = {
   },
 
   render: ({ cards, stickyOffset }) => {
+    const { isSidebarOpen, isRightSidebarOpen } = useLayoutState()
+
     return (
-      <div className="relative h-screen w-full overflow-y-auto snap-y snap-mandatory scrollbar-hide xs:scrollbar-default">
+      <div className= {`relative h-screen w-full overflow-y-auto snap-y snap-mandatory scrollbar-hide xs:scrollbar-default transition-all duration-300 ${isSidebarOpen ? 'pl-4' : 'pl-2'}
+        ${isRightSidebarOpen ? 'pr-4' : 'pr-2'}`}>
         {cards.map((card, index) => (
           <div 
             key={`article-${index}`}

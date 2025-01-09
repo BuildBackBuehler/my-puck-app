@@ -59,7 +59,7 @@ export const AlertDialog: ComponentConfig<AlertDialogProps> = {
     confirmText: "Yes, delete account",
     overlayClassName: "fixed inset-0 z-20 bg-black/50",
     contentClassName: clsx(
-      "fixed z-50 w-[95vw] max-w-md rounded-lg p-4 md:w-full",
+      "fixed z-50 w-[95vw] max-w-md rounded-lg p-4 lg:w-full",
       "top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",
       "bg-white dark:bg-gray-800",
       "focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75"

@@ -3,10 +3,10 @@ import { ComponentConfig } from "@measured/puck";
 import { clsx } from "clsx";
 
 const sizeClassMap = {
-  sm: "h-8 w-8",
-  md: "h-10 w-10",
-  lg: "h-12 w-12",
-  xl: "h-14 w-14"
+  sm: "h-4 w-4 md:h-6 md:w-6 lg:h-8 lg:w-8",
+  md: "h-6 w-6 md:h-8 md:w-8 lg:h-10 lg:w-10",
+  lg: "h-8 w-8 md:h-10 md:w-10 lg:h-12 lg:w-12",
+  xl: "h-10 w-10 md:h-12 md:w-12 lg:h-14 lg:w-14"
 };
 
 export interface AvatarProps {

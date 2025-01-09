@@ -3,19 +3,29 @@ import { useEffect, useRef } from "react"
 import gsap from "gsap"
 
 export interface CarouselProps {
-  images: Array<{ url: string; alt: string }>
+  title: string;
+  images: Array<{ 
+    url: string; 
+    alt: string;
+    text?: string; 
+  }>
   height?: string
   perspective?: string
-  containerSize?: { width: string; height: string }
+  containerSize?: { 
+    width: string; 
+    height: string 
+  }
 }
 
 export const Carousel: ComponentConfig<CarouselProps> = {
   fields: {
+    title: { type: "text" },
     images: {
       type: "array",
       arrayFields: {
         url: { type: "text" },
-        alt: { type: "text" }
+        alt: { type: "text" },
+        text: { type: "text" }
       }
     },
     height: { type: "text" },
@@ -26,13 +36,15 @@ export const Carousel: ComponentConfig<CarouselProps> = {
         width: { type: "text" },
         height: { type: "text" }
       }
-    }
+    },
   },
   defaultProps: {
-    images: Array(10).fill({}).map((_, i) => ({
-      url: `https://picsum.photos/id/${i + 32}/600/400`,
-      alt: `Image ${i + 1}`
-    })),
+    title: "Zack",
+    images: [
+      { url: "/image1.jpg", alt: "Image 1", text: "First Slide" },
+      { url: "/image2.jpg", alt: "Image 2", text: "Second Slide" },
+      { url: "/image3.jpg", alt: "Image 3", text: "Third Slide" }
+    ],
     height: "100vh",
     perspective: "2000px",
     containerSize: {
@@ -40,7 +52,8 @@ export const Carousel: ComponentConfig<CarouselProps> = {
       height: "400px"
     }
   },
-  render: ({ images, height, perspective, containerSize }) => {
+
+  render: ({ title, images, height, perspective = "1000px", containerSize = { width: "80vw", height: "60vh" } }) => {
     const stageRef = useRef<HTMLDivElement>(null)
     const ringRef = useRef<HTMLDivElement>(null)
     const imageRefs = useRef<HTMLDivElement[]>([])
@@ -48,11 +61,25 @@ export const Carousel: ComponentConfig<CarouselProps> = {
 
     useEffect(() => {
       if (!stageRef.current || !ringRef.current) return
-
+      
       const getBgPos = (i: number) => {
         const rotation = gsap.getProperty(ringRef.current, "rotationY") as number
         return `${100 - gsap.utils.wrap(0, 360, rotation - 180 - i * 36) / 360 * 500}px 0px`
       }
+
+      const initCarousel = () => {
+        gsap.set(ringRef.current, { rotationY: 180, cursor: "grab" })
+        gsap.set(imageRefs.current, {
+          rotateY: (i) => i * -36,
+          transformOrigin: "50% 50% 500px",
+          z: -500,
+          backgroundImage: (i) => `url(${images[i].url})`,
+          backgroundPosition: (i) => getBgPos(i),
+          backfaceVisibility: "hidden"
+        })
+      }
+
+      initCarousel()
 
       const dragStart = (e: MouseEvent | TouchEvent) => {
         const clientX = "touches" in e ? e.touches[0].clientX : e.clientX
@@ -60,6 +87,7 @@ export const Carousel: ComponentConfig<CarouselProps> = {
         gsap.set(ringRef.current, { cursor: "grabbing" })
         window.addEventListener("mousemove", drag)
         window.addEventListener("touchmove", drag)
+        e.stopPropagation()
       }
 
       const drag = (e: MouseEvent | TouchEvent) => {
@@ -73,6 +101,7 @@ export const Carousel: ComponentConfig<CarouselProps> = {
           }
         })
         xPos = Math.round(clientX)
+        e.stopPropagation()
       }
 
       const dragEnd = () => {
@@ -81,121 +110,43 @@ export const Carousel: ComponentConfig<CarouselProps> = {
         gsap.set(ringRef.current, { cursor: "grab" })
       }
 
-      gsap.timeline()
-        .set(ringRef.current, { rotationY: 180, cursor: "grab" })
-        .set(imageRefs.current, {
-          rotateY: (i) => i * -36,
-          transformOrigin: "50% 50% 500px",
-          z: -500,
-          backgroundImage: (i) => `url(${images[i].url})`,
-          backgroundPosition: (i) => getBgPos(i),
-          backfaceVisibility: "hidden"
-        })
-        .from(imageRefs.current, {
-          duration: 1.5,
-          y: 200,
-          opacity: 0,
-          stagger: 0.1,
-          ease: "expo"
-        })
-        .add(() => {
-          imageRefs.current.forEach(img => {
-            img.addEventListener("mouseenter", () => {
-              gsap.to(imageRefs.current, {
-                opacity: (i, t) => t === img ? 1 : 0.5,
-                ease: "power3"
-              })
-            })
-            img.addEventListener("mouseleave", () => {
-              gsap.to(imageRefs.current, {
-                opacity: 1,
-                ease: "power2.inOut"
-              })
-            })
-          })
-        }, "-=0.5")
-
-      window.addEventListener("mousedown", dragStart)
-      window.addEventListener("touchstart", dragStart)
+      stageRef.current.addEventListener("mousedown", dragStart)
+      stageRef.current.addEventListener("touchstart", dragStart)
       window.addEventListener("mouseup", dragEnd)
       window.addEventListener("touchend", dragEnd)
 
       return () => {
-        window.removeEventListener("mousedown", dragStart)
-        window.removeEventListener("touchstart", dragStart)
+        stageRef.current?.removeEventListener("mousedown", dragStart)
+        stageRef.current?.removeEventListener("touchstart", dragStart)
         window.removeEventListener("mouseup", dragEnd)
         window.removeEventListener("touchend", dragEnd)
-      }
-    }, [images])
-
-    useEffect(() => {
-      if (!stageRef.current || !imageRefs.current?.length) return;
-
-      const tl = gsap.timeline()
-      
-      tl.fromTo(imageRefs.current, {
-        opacity: 0
-      }, {
-        opacity: 1,
-        stagger: 0.2,
-        ease: "power2.inOut",
-        onComplete: () => {
-          imageRefs.current?.forEach(img => {
-            if (!img) return;
-            
-            img.addEventListener("mouseenter", () => {
-              gsap.to(imageRefs.current, {
-                opacity: (i, t) => t === img ? 1 : 0.5,
-                ease: "power3"
-              })
-            })
-            
-            img.addEventListener("mouseleave", () => {
-              gsap.to(imageRefs.current, {
-                opacity: 1,
-                ease: "power2.inOut"
-              })
-            })
-          })
-        }
-      }, "-=0.5")
-
-      const dragStart = (e: MouseEvent | TouchEvent) => {
-        if (!stageRef.current) return;
-        // ...existing drag code...
-      }
-
-      const dragEnd = () => {
-        if (!stageRef.current) return;
-        // ...existing drag code...
-      }
-
-      window.addEventListener("mousedown", dragStart)
-      window.addEventListener("touchstart", dragStart)
-      window.addEventListener("mouseup", dragEnd)
-      window.addEventListener("touchend", dragEnd)
-
-      return () => {
-        window.removeEventListener("mousedown", dragStart)
-        window.removeEventListener("touchstart", dragStart)
-        window.removeEventListener("mouseup", dragEnd)
-        window.removeEventListener("touchend", dragEnd)
-        imageRefs.current?.forEach(img => {
-          img?.removeEventListener("mouseenter", () => {})
-          img?.removeEventListener("mouseleave", () => {})
-        })
       }
     }, [images])
 
     return (
-      <div 
-        ref={stageRef} 
-        style={{ 
-          height,
-          overflow: "hidden",
-          background: "#000"
-        }}
-      >
+      <div ref={stageRef} className="relative h-screen">
+        <div className="absolute inset-0 flex items-center text-adaptive-secondary justify-center z-[0]"
+             ref={(el) => {
+               if (el) {
+           const moveTitle = (e: MouseEvent) => {
+             const xMove = (e.clientX - window.innerWidth / 2) * 0.1;
+             const yMove = (e.clientY - window.innerHeight / 2) * 0.15;
+             gsap.to(el, {
+               x: xMove,
+               y: yMove,
+               duration: 1,
+               ease: "power2.out"
+             });
+           };
+           
+           window.addEventListener('mousemove', moveTitle);
+           return () => window.removeEventListener('mousemove', moveTitle);
+               }
+             }}>
+            <h1 className="text-9xl font-display text-adaptive-secondary font-bold pb-64 z-[0]">
+              {title}
+            </h1>
+        </div>
         <div style={{
           perspective,
           width: containerSize.width,
@@ -224,7 +175,13 @@ export const Carousel: ComponentConfig<CarouselProps> = {
                   height: "100%",
                   transformStyle: "preserve-3d"
                 }}
-              />
+              >
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <h2 className="text-4xl font-bold text-white bg-black-light/30 z-10 drop-shadow-lg">
+                    {image.text}
+                  </h2>
+                </div>
+              </div>
             ))}
           </div>
         </div>

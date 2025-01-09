@@ -58,7 +58,7 @@ export const Popover: ComponentConfig<PopoverProps> = {
     ],
     styles: {
       content:clsx ("radix-side-top:animate-slide-up radix-side-bottom:animate-slide-down",
-        "z-50 w-48 rounded-lg p-4 shadow-md md:w-56",
+        "z-50 w-48 rounded-lg p-4 shadow-md lg:w-56",
         "bg-white dark:bg-gray-800"),
       arrow: "fill-current text-white dark:text-gray-800",
       title: "text-sm font-medium text-gray-900 dark:text-gray-100",

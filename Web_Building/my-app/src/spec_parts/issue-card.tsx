@@ -1,4 +1,5 @@
 import { ComponentConfig } from "@measured/puck";
+import { DropZone } from "@measured/puck";
 
 export interface IssueCardProps {
   title: string;
@@ -26,28 +27,25 @@ export const IssueCard: ComponentConfig<IssueCardProps> = {
     issueNumber: "01",
     link: "/issues/01"
   },
-  render: ({ title, isPinned, issueNumber, link }) => (
-    <div className="absolute h-screen w-auto">
-      <div className="absolute left-0 top-[11vh] h-[89vh] w-px bg-adaptive-secondaryAlt" />
-      {/* <a href={link} className="relative block bg-white text-adaptive-secondary pr-4 py-8"> */}
-        <div className="flex flex-col h-screen px-4 pt-3">
-          <div>
-            <h2 className="mt-8 font-display text-8xl tracking-tight font-bold mb-2">{title}</h2>
-            {isPinned && (
-              <div className="flex items-center gap-2 mb-4">
-                <span className="w-4 h-4 bg-adaptive-secondary rounded-full" />
-                <span className="text-xl">Pinned Issue</span>
-              </div>
-              
-            )}
-            <div className="w-full h-px bg-adaptive-secondaryAlt" />
-            <div className="absolute right-0 top-[20vh] h-4/5 pt-8 w-px bg-adaptive-secondaryAlt" />
+  render: ({ title, isPinned, issueNumber }) => (
+    <div className="relative h-screen w-full flex flex-col">
+      {/* <div className="absolute left-0 top-[11vh] h-[89vh] w-px bg-adaptive-secondaryAlt" /> */}
+      <div className="absolute right-0  top-[18vh] h-[88vh] lg:top-[24vh] lg:h-4/5 w-px bg-adaptive-secondaryAlt" />
+      
+      <div className="flex-1 px-4 pt-4">
+        <h2 className="mt-8 lg:mt-8 font-display text-4xl lg:text-9xl tracking-tight font-bold mb-2">{title}</h2>
+        {isPinned && (
+          <div className="flex items-center gap-0.5 md:gap-1 lg:gap-2">
+            <span className="w-2 h-2 lg:w-4 lg:h-4 bg-adaptive-secondary rounded-full" />
+            <span className="-mt-1 lg:mt-0 text-2xs lg:text-2xl">Pinned Issue</span>
           </div>
-          <div className="flex justify-center items-end flex-grow">
-            <span className="font-display text-7xl">NO. {issueNumber}</span>
-          </div>
-        </div>
-      {/* </a> */}
+        )}
+      <div className="lg:mt-2 w-full h-px bg-adaptive-secondaryAlt" />
+      <DropZone zone="Poll" />
+      </div>
+      <div className="flex-none pb-8 px-4">
+        <span className="font-display text-3xl lg:text-7xl text-center bold">NO. {issueNumber}</span>
+      </div>
     </div>
   )
 };

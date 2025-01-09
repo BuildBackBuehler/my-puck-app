@@ -12,3 +12,9 @@ export type { DividerProps } from './divider';
 
 export { Article } from './article';
 export type { ArticleProps } from './article';
+
+export { MiniCard } from './mini-card';
+export type { MiniCardProps } from './mini-card';
+
+export { ArticleDialog } from './article-dialog';
+export type { ArticleDialogProps } from './article-dialog';

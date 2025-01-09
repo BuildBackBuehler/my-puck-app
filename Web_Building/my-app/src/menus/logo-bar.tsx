@@ -7,66 +7,111 @@ export interface LogoBarProps {
   siteLogo: {
     src: string;
     alt: string;
-    width: number;
-    height: number;
+    width: string;
+    height: string;
   };
   siteUrl: string;
-  backgroundColor?: string;
-  height?: string;
+  headerHeight?: string;
+  animationStyle: "fade" | "hover";
 }
 
 export const LogoBar: ComponentConfig<LogoBarProps> = {
   fields: {
     siteLogo: {
-      type: "object",
+      type: "object", 
       objectFields: {
         src: { type: "text" },
         alt: { type: "text" },
-        width: { type: "number" },
-        height: { type: "number" }
+        width: { 
+          type: "text",
+          label: "Width (include px)"
+        },
+        height: { 
+          type: "text",
+          label: "Height (include px)"
+        }
       }
     },
     siteUrl: { type: "text" },
-    height: { type: "text" }
+    headerHeight: { type: "text" },
+    animationStyle: {
+      type: "radio",
+      options: [
+        { label: "Fade Animation", value: "fade" },
+        { label: "Hover Animation", value: "hover" }
+      ]
+    }
   },
 
   defaultProps: {
     siteLogo: {
-      src: "/BevelLotus.svg",
+      src: "/BevelLotus.svg", 
       alt: "Site Logo",
-      width: 48,
-      height: 48
+      width: "48px",
+      height: "48px"
     },
     siteUrl: "/",
-    height: "48 px"
+    headerHeight: "48px",
+    animationStyle: "hover"
   },
 
-  render: ({ siteLogo, siteUrl, height = "64px" }) => (
-    <motion.header
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      className="fixed top-0 left-0 right-0 z-50 px-4"
-      style={{ height }}
-    >
-      <div className="h-full flex items-center justify-center max-w-7xl mx-auto pt-2">
-        <Link href={siteUrl}>
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="relative"
-          >
-            <Image
-              src={siteLogo.src}
-              alt={siteLogo.alt}
-              width={siteLogo.width}
-              height={siteLogo.height}
-              className="object-contain dark:invert"
-              priority
-            />
-          </motion.div>
-        </Link>
-      </div>
-    </motion.header>
-  )
+  render: ({ siteLogo, siteUrl, headerHeight = "64px", animationStyle }) => {
+    const width = parseInt(siteLogo.width);
+    const height = parseInt(siteLogo.height);
+    
+
+    return (
+      <header className="fixed top-0 left-0 right-0 z-50 px-4" style={{ height: headerHeight }}>
+        <div className="h-full flex items-center justify-center max-w-7xl mx-auto pt-2">
+          <Link href={siteUrl}>
+            {animationStyle === "fade" ? (
+              <motion.div
+                initial={{ maskImage: "linear-gradient(to right, transparent 100%, black 100%)" }}
+                animate={{ maskImage: "linear-gradient(to right, black 100%, black 100%)" }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  repeatDelay: 5,
+                  ease: "linear"
+                }}
+                className="relative"
+                style={{
+                  width: siteLogo.width,
+                  height: siteLogo.height
+                }}
+              >
+                <Image
+                  src={siteLogo.src}
+                  alt={siteLogo.alt}
+                  width={width}
+                  height={height}
+                  className="w-full h-full object-contain dark:invert"
+                  priority
+                />
+              </motion.div>
+            ) : (
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="relative"
+                style={{
+                  width: siteLogo.width,
+                  height: siteLogo.height
+                }}
+              >
+                <Image
+                  src={siteLogo.src}
+                  alt={siteLogo.alt}
+                  width={width}
+                  height={height} 
+                  className="w-full h-full object-contain dark:invert"
+                  priority
+                />
+              </motion.div>
+            )}
+          </Link>
+        </div>
+      </header>
+    );
+  }
 };

@@ -25,6 +25,7 @@ export const ArchivePage: ComponentConfig<ArchivePageProps> = {
           }
         },
         title: { type: "text" },
+        subtitle: { type: "text" },
         author: { type: "text" },
         readTime: { type: "text" },
         date: { type: "text" },

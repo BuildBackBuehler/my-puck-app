@@ -95,7 +95,7 @@ export const DropdownMenu: ComponentConfig<DropdownMenuProps> = {
 
   defaultProps: {
     buttonText: "Menu",
-    contentClassName: "radix-side-top:animate-slide-up radix-side-bottom:animate-slide-down w-48 rounded-lg px-1.5 py-1 shadow-md md:w-56 bg-white dark:bg-gray-800",
+    contentClassName: "radix-side-top:animate-slide-up radix-side-bottom:animate-slide-down w-48 rounded-lg px-1.5 py-1 shadow-md lg:w-56 bg-white dark:bg-gray-800",
     subcontentClassName:"origin-radix-dropdown-menu radix-side-right:animate-scale-in w-full rounded-md px-1 py-1 text-xs shadow-md bg-white dark:bg-gray-800",
     separatorClassName: "my-1 h-px bg-gray-200 dark:bg-gray-700",
     items: [{

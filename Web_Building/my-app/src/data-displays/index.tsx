@@ -1,3 +1,4 @@
+
 export { Accordion } from './accordion';
 export type { AccordionProps } from './accordion';
 
@@ -27,3 +28,12 @@ export type { HoverCardProps } from './hover-card';
 
 export { Carousel } from './carousel';
 export type { CarouselProps } from './carousel';
+
+export { MusicCarousel } from './music-carousel';
+export type { MusicCarouselProps } from './music-carousel';
+
+export { ScrollArticles } from './horizontal-scroll';
+export type { ScrollArticlesProps } from './horizontal-scroll';
+
+export { Poll } from './poll'
+export type { PollProps } from './poll'

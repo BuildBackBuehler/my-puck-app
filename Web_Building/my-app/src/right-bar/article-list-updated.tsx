@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { ComponentConfig, DropZone } from "@measured/puck"
 import { Eye, Heart, MessageCircle } from 'lucide-react'
-import { useArticles } from '../hooks/useArticles'
+import { useArticles } from '../../hooks/useArticles'
 
 export interface ArticleListProps {
   source: 'dynamic' | 'static'
@@ -30,7 +30,7 @@ const ArticleItem = ({ article }: { article: ArticleListProps['staticArticles'][
         {article.number}
       </span>
       <div className="flex flex-col items-end justify-end gap-1 pb-2">
-        <time className="pr-4 font-display text-md text-adaptive-secondaryAlt" dateTime={article.date}>
+        <time className="pr-4 font-display text-base text-adaptive-secondaryAlt" dateTime={article.date}>
           {article.date}
         </time>
         {article.engagement?.showStats === true && (

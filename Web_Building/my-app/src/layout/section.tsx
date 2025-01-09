@@ -30,7 +30,7 @@ export const Section: ComponentConfig<SectionProps> = {
   render: ({ children, className, padding, maxWidth, height }) => (
     <div
       className={clsx(
-        "px-4 md:px-6 not-[.Section_.Section]",
+        "px-4 lg:px-6 not-[.Section_.Section]",
         className
       )}
       style={{

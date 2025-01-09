@@ -1,7 +1,8 @@
-import { ComponentConfig } from "@measured/puck";
+import { ComponentConfig, DropZone } from "@measured/puck";
 import { CornerDownRight } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+
 export interface ArticleCardProps {
   mainTitle: string;
   date: string;
@@ -14,6 +15,7 @@ export interface ArticleCardProps {
   readTime: string;
   summary: string;
   link: string;
+  post: string;
 };
 
 export const ArticleCard: ComponentConfig<ArticleCardProps> = {
@@ -35,7 +37,8 @@ export const ArticleCard: ComponentConfig<ArticleCardProps> = {
       type: "text",
       defaultValue: "#",
       required: true
-    }
+    },
+    post: { type: "textarea" }
   },
 
   defaultProps: {
@@ -49,57 +52,61 @@ export const ArticleCard: ComponentConfig<ArticleCardProps> = {
     author: "By Richard Carnation",
     readTime: "5 Min Read",
     summary: "Blonde received widespread acclaim, with critics praising Ocean's introspective lyrics",
-    link: "#"
+    link: "#",
+    post: "Blonde received widespread acclaim, with critics praising Ocean's introspective lyrics"
   },
 
-  render: ({
-    mainTitle,
-    date,
-    image,
-    title,
-    author,
-    readTime,
-    summary,
-    link
-  }) => {
+  render: ({ mainTitle, date, image, title, author, readTime, summary, link, post }) => {
+
     if (!image?.src) return null;
+      
     return (
-      <article className="w-full max-w-4xl mx-auto text-adaptive-secondary relative">
-        <div className="py-8 space-y-2">
-          <h1 className="font-display text-8xl font-bold tracking-tight pt-4">{mainTitle}</h1>
-          <time dateTime={date} className="px-4 block text-xl text-right">
-            {date}
-          </time>
-          <div className="mx-4 self-center px-8 h-px bg-adaptive-secondaryAlt" />
-          <div className="mx-4 relative aspect-[2/1] overflow-hidden rounded-lg">
+      <article className="overflow-hidden">
+        <div className="h-full flex flex-col justify-center py-8 space-y-1 px-3 lg:py-8 lg:space-y-2 lg:px-6">
+          <h1 className="font-display text-4xl lg:text-9xl font-bold tracking-tight pt-4 lg:pt-4">{mainTitle}</h1>
+          <time dateTime={date} className="block text-sm lg:text-2xl text-right pr-4">{date}</time>
+          
+          <div className="w-full h-px bg-adaptive-secondaryAlt" />
+          
+          <div className="relative aspect-[2/1] overflow-hidden rounded-sm top-2 lg:rounded-lg lg:top-4">
             <Image 
               src={image.src} 
               alt={image.alt}
               fill
               className="object-cover"
-              sizes="px-4 (max-width: 896px) 100vw, 896px"
+              sizes="100vw"
               priority
             />
           </div>
+          <div className="flex flex-col gap-2 md:gap-3">
+          <h2 className="text-xl sm:text-center sm:max-md:text-center lg:text-left lg:text-4xl pl-4 lg:pl-0 font-bold text-adaptive-secondary hover:text-adaptive-accent focus:text-adaptive-accent transition-colors pt-4">
+            <Link 
+                        href={link || '#'} 
+                      >
+                        {title}
+                      </Link>
+          </h2>
 
-          <h2 className="font-sans px-8 text-4xl text-adaptive-accent">{title}</h2>
-
-          <div className="flex justify-between items-center text-md">
-            <span className="font-serif px-8 italic">{author}</span>
-            <span className="font-serif px-8 italic">{readTime}</span>
+          <div className="flex justify-between items-center">
+            <span className="font-serif text-3xs md:text-xs lg:text-base">{author}</span>
+            <span className="font-serif text-3xs md:text-xs lg:text-base">{readTime}</span>
           </div>
 
-          <p className="font-sans px-8 text-lg leading-relaxed">{summary}</p>
-          <div className="mx-4 self-center px-8 h-px bg-adaptive-secondaryAlt" />
-            <div className="flex justify-end">
-            <Link 
-              href={link || "#"}
-              className="pr-4 group inline-flex items-center gap-2 text-3xl text-adaptive-accent transition-colors"
-            >
+          <p className="font-sans text-sm lg:text-xl leading-relaxed">{summary}</p>
+          </div>
+          <div className="w-full h-px bg-adaptive-secondaryAlt" />
+          
+          <div className="flex justify-end">
+            <DropZone zone="SeeMore"/>
+            {/* <button 
+              onClick={() => setIsDialogOpen(true)}
+              
               <CornerDownRight size={36} />
-              <span className="text-adaptive-secondary hover:text-adaptive-accent">See More</span>
-            </Link>
-            </div>
+              <span className="text-adaptive-secondary group-hover:text-adaptive-accent">
+                See More
+              </span>
+            </button> */}
+          </div>
         </div>
       </article>
     );

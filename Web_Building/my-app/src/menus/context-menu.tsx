@@ -102,7 +102,7 @@ export const ContextMenu: ComponentConfig<ContextMenuProps> = {
   defaultProps: {
     buttonText: "Right Click",
     menuClassName:clsx("radix-side-top:animate-slide-up radix-side-bottom:animate-slide-down",
-    "w-48 rounded-lg px-1.5 py-1 shadow-md md:w-56",
+    "w-48 rounded-lg px-1.5 py-1 shadow-md lg:w-56",
     "bg-white dark:bg-gray-800"),
     items: [{
       label: "New File",

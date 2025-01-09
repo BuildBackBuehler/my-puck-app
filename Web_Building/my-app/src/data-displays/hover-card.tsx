@@ -58,7 +58,7 @@ export const HoverCard: ComponentConfig<HoverCardProps> = {
       description: "Description",
       icon: "Code",
       className: clsx("radix-side-top:animate-slide-up radix-side-bottom:animate-slide-down",
-        "max-w-md rounded-lg p-4 md:w-full",
+        "max-w-md rounded-lg p-4 lg:w-full",
         "bg-white dark:bg-gray-800",
         "focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75"),
       containerClassName: "flex h-full w-full space-x-4",

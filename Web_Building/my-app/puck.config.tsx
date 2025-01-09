@@ -1,19 +1,19 @@
 import type { Config } from "@measured/puck";
 
-import { Section, ThemeSwitcher, ThemeToggler, FixedColumns, DropColumn, ThreeColumns } from './src/layout';
-import { SectionProps, ThemeSwitcherProps, ThemeTogglerProps, FixedColumnsProps, DropColumnProps, ThreeColumnsProps } from "./src/layout";
+import { Section, ThemeSwitcher, ThemeToggler, FixedColumns, DropColumn, FullWidthRow, ThreeColumns, ScrollColumn, TwoColumns } from './src/layout';
+import { SectionProps, ThemeSwitcherProps, ThemeTogglerProps, FixedColumnsProps, DropColumnProps, FullWidthRowProps, ThreeColumnsProps, ScrollColumnProps, TwoColumnsProps } from "./src/layout";
 
 import { AlertDialog, Button, Dialog, Popover, RadioGroup, Select, Toggle, Toast, ToggleGroup, Tooltip } from './src/buttons';
 import { AlertDialogProps, ButtonProps, DialogProps, PopoverProps, RadioGroupProps, SelectProps, ToggleProps, ToastProps, ToggleGroupProps, TooltipProps } from './src/buttons';
 
-import { Accordion, AspectRatio, Avatar, Carousel, Checkbox, Collapsible, HoverCard, Progress, Slider, Switch } from './src/data-displays';
-import { AccordionProps, AspectRatioProps, AvatarProps, CarouselProps, CheckboxProps, CollapsibleProps, HoverCardProps, ProgressProps, SliderProps, SwitchProps } from './src/data-displays';
+import { Accordion, AspectRatio, Avatar, Carousel, Checkbox, Collapsible, HoverCard, MusicCarousel, Progress, Poll, ScrollArticles, Slider, Switch } from './src/data-displays';
+import { AccordionProps, AspectRatioProps, AvatarProps, CarouselProps, CheckboxProps, CollapsibleProps, HoverCardProps, MusicCarouselProps, ProgressProps, PollProps, ScrollArticlesProps, SliderProps, SwitchProps } from './src/data-displays';
 
 import { CommandMenu, ContextMenu, DropdownMenu, NavigationMenu,LogoBar, Menubar, Tabs, Toolbar, VertNavMenu } from './src/menus';
 import { CommandMenuProps, ContextMenuProps, DropdownMenuProps, LogoBarProps, MenubarProps, NavigationMenuProps, TabsProps, ToolbarProps, VertNavMenuProps } from "./src/menus";
 
-import { Article, ArticleCard, ArticleCardList, DemoCard, Divider } from './src/basics';
-import { ArticleProps, ArticleCardProps, ArticleCardListProps, DemoCardProps, DividerProps } from './src/basics';
+import { Article, ArticleCard, ArticleCardList, ArticleDialog, DemoCard, Divider } from './src/basics';
+import { ArticleProps, ArticleCardProps, ArticleCardListProps, ArticleDialogProps, DemoCardProps, DividerProps } from './src/basics';
 
 import { IssueCard, Sidebar, Socials, ArchiveGrid, ArchivePage, FilterBar } from "./src/spec_parts";
 import { IssueCardProps, SidebarProps, SocialsProps, ArchiveGridProps, ArchivePageProps, FilterBarProps } from "./src/spec_parts";
@@ -73,6 +73,13 @@ type Props = {
   FilterBar: FilterBarProps;
   LogoBar: LogoBarProps;
   Carousel: CarouselProps;
+  ScrollColumn: ScrollColumnProps;
+  MusicCarousel: MusicCarouselProps;
+  TwoColumns: TwoColumnsProps;
+  ScrollArticles: ScrollArticlesProps;
+  ArticleDialog: ArticleDialogProps;
+  FullWidthRow: FullWidthRowProps;
+  Poll: PollProps;
 };
 
 export const config: Config<Props> = {
@@ -140,19 +147,26 @@ export const config: Config<Props> = {
     FilterBar,
     LogoBar,
     Carousel,
+    ScrollColumn,
+    MusicCarousel,
+    TwoColumns,
+    ScrollArticles,
+    ArticleDialog,
+    FullWidthRow,
+    Poll,
   },
     categories: {
     basics: {
       title: 'Basics',
-      components: [ 'Article', 'ArticleCard', 'ArticleCardList', 'Divider', 'DemoCard', 'Icon']
+      components: [ 'Article', 'ArticleCard', 'ArticleCardList','ArticleDialog', 'Divider', 'DemoCard', 'Icon']
     },
     layout: {
       title: 'Layout',
-      components: [ 'FixedColumns', 'Section', 'ThemeSwitcher', 'ThemeToggler', 'DropColumn', 'ThreeColumns']
+      components: [ 'DropColumn', 'FixedColumns', 'FullWidthRow', 'ScrollColumn', 'Section', 'ThemeSwitcher', 'ThemeToggler',  'ThreeColumns',  'TwoColumns']
     },
     'data displays': {
       title: 'Data Displays',
-      components: ['Accordion', 'AspectRatio', 'Avatar', 'Carousel', 'Checkbox', 'Collapsible',`HoverCard`, 'Progress', 'Slider', 'Switch', 'Ticker']
+      components: ['Accordion', 'AspectRatio', 'Avatar', 'Carousel', 'Checkbox', 'Collapsible',`HoverCard`, 'MusicCarousel', 'Progress', 'Poll', 'ScrollArticles', 'Slider', 'Switch', 'Ticker']
     },
     menus: {
       title: 'Menus',

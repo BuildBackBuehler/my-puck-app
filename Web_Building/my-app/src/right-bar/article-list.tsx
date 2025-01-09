@@ -89,45 +89,47 @@ export const ArticleList: ComponentConfig<ArticleListProps> = {
           ))}
         </div>
       )}
-      <div className="space-y-16">
+      <div className="space-y-4 md:space-y-8 lg:space-y-16">
         {articles.slice(0, maxArticles).map((article) => (
-          <article key={article.id} className="relative pl-16">
+          <article key={article.id} className="relative pl-2 md:pl-8 lg:pl-16">
             <div className="flex justify-between mb-4">
-              <span className="font-display text-8xl text-adaptive-secondaryAlt select-none">
+              <span className="font-display text-4xl lg:text-8xl text-adaptive-secondaryAlt select-none">
                 {article.number}
               </span>
-              <div className="flex flex-col items-end justify-end gap-1 pb-2">
-                <time className="pr-4 font-display text-md text-adaptive-secondaryAlt" dateTime={article.date}>
+              <div className="sm:mt-4 flex flex-col items-end justify-end gap-1 pb-2">
+                <time className="pr-1 md:pr-2 lg:pr-4 font-display text-3xs md:text-sm lg:text-base text-adaptive-secondaryAlt" dateTime={article.date}>
                   {article.date}
                 </time>
                 {article.engagement?.showStats === true && (
-                  <div className="pr-4 flex gap-2 text-adaptive-secondaryAlt text-sm">
+                  <div className="pr-1 md:pr-2 lg:pr-4 flex gap-0.5 md:gap-1 lg:gap-2 text-adaptive-secondaryAlt text-3xs md:text-xs lg:text-sm">
                     <div className="flex items-center gap-1">
-                      <Eye size={14} />
+                      <Eye className="w-2 md:w-3 lg:w-4" />
                       <span>{article.engagement.views}</span>
                     </div>
                     <div className="flex items-center gap-1">
-                      <Heart size={14} className="text-transparent fill-adaptive-accent" />
+                      <Heart 
+                        className="w-2 md:w-3 lg:w-4 text-transparent fill-adaptive-accent dark:fill-adaptive-accent3" 
+                      />
                       <span>{article.engagement.likes}</span>
                     </div>
                     <div className="flex items-center gap-1">
-                      <MessageCircle size={14} />
+                      <MessageCircle className="w-2 md:w-3.5 lg:w-4" />
                       <span>{article.engagement.comments}</span>
                     </div>
                   </div>
                 )}
               </div>
             </div>
-            <div className="space-y-4">
+            <div className="space-y-1 md:space-y-2 lg:space-y-4">
               <h2>
                 <Link 
                   href={article.link}
-                  className="font-serif text-5xl hover:text-adaptive-accent transition-all"
+                  className="font-serif text-base md:text-lg lg:text-3xl font-bold hover:text-adaptive-accent transition-all"
                 >
                   {article.title}
                 </Link>
               </h2>
-              <p className="font-display text-lg text-adaptive-secondaryAlt max-w-2xl">
+              <p className="font-sans text-xs md:text-sm lg:text-base text-adaptive-secondaryAlt max-w-2xl">
                 {article.summary}
               </p>
             </div>

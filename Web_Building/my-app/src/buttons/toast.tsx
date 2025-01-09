@@ -89,10 +89,10 @@ export const Toast: ComponentConfig<ToastProps> = {
             {
               "bg-white": variant === "light",
               "bg-gray-800": variant === "dark",
-              "inset-x-4 bottom-4 md:top-4 md:right-4 md:left-auto md:bottom-auto md:w-full md:max-w-sm": position === "bottom",
-              "inset-x-4 top-4 md:top-4 md:right-4 md:left-auto md:w-full md:max-w-sm": position === "top",
-              "radix-state-open:animate-toast-slide-in-bottom md:radix-state-open:animate-toast-slide-in-right": position === "bottom",
-              "radix-state-open:animate-toast-slide-in-top md:radix-state-open:animate-toast-slide-in-right": position === "top"
+              "inset-x-4 bottom-4 lg:top-4 lg:right-4 lg:left-auto lg:bottom-auto lg:w-full lg:max-w-sm": position === "bottom",
+              "inset-x-4 top-4 lg:top-4 lg:right-4 lg:left-auto lg:w-full lg:max-w-sm": position === "top",
+              "radix-state-open:animate-toast-slide-in-bottom lg:radix-state-open:animate-toast-slide-in-right": position === "bottom",
+              "radix-state-open:animate-toast-slide-in-top lg:radix-state-open:animate-toast-slide-in-right": position === "top"
             }
           )}
         >

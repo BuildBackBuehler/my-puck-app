@@ -13,8 +13,8 @@ export type { SelectProps } from './select';
 export { Toggle } from './toggle';
 export type { ToggleProps } from './toggle';
 
-export { ToggleGroup } from './oldtoggle-group';
-export type { ToggleGroupProps } from './oldtoggle-group';
+export { ToggleGroup } from './toggle-group';
+export type { ToggleGroupProps } from './toggle-group';
 
 export { Toast } from './toast';
 export type { ToastProps } from './toast';
