@@ -38,9 +38,10 @@ export const FixedColumns: ComponentConfig<FixedColumnsProps> = {
 
   render: ({ columns }) => {
     const { isSidebarOpen, isRightSidebarOpen } = useLayoutState()
+    
     const sidebarWidth = isSidebarOpen 
-      ? 'calc(7rem + ((100vw - 768px) * 0.15))' // w-28 -> w-64
-      : 'calc(2.5rem + ((100vw - 768px) * 0.05))' // w-10 -> w-16
+      ? 'calc(7rem + ((100vw - 768px) * 0.15))'
+      : 'calc(2.5rem + ((100vw - 768px) * 0.05))'
 
     const rightSidebarWidth = isRightSidebarOpen 
       ? `${columns[3].width}%` 
@@ -50,11 +51,10 @@ export const FixedColumns: ComponentConfig<FixedColumnsProps> = {
 
     return (
       <div 
-        className="flex h-screen w-full overflow-hidden"
+        className="flex h-screen w-full overflow-hidden md:pl-[--sidebar-width]"
         style={{ 
-          paddingLeft: `${sidebarWidth}`,
-          transition: 'padding-left 300ms'
-        }}
+          '--sidebar-width': sidebarWidth,
+        } as any}
       >
         <div className="flex-none" style={{ width: `${columns[1].width}%` }}>
           <DropZone zone={`column-${columns[1].id}`} />

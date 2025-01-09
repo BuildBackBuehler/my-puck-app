@@ -1,5 +1,5 @@
 import { ComponentConfig } from "@measured/puck";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -58,16 +58,15 @@ export const LogoBar: ComponentConfig<LogoBarProps> = {
   render: ({ siteLogo, siteUrl, headerHeight = "64px", animationStyle }) => {
     const width = parseInt(siteLogo.width);
     const height = parseInt(siteLogo.height);
-    
 
     return (
       <header className="fixed top-0 left-0 right-0 z-50 px-4" style={{ height: headerHeight }}>
         <div className="h-full flex items-center justify-center max-w-7xl mx-auto pt-2">
           <Link href={siteUrl}>
-            {animationStyle === "fade" ? (
+          {animationStyle === "fade" ? (
               <motion.div
-                initial={{ maskImage: "linear-gradient(to right, transparent 100%, black 100%)" }}
-                animate={{ maskImage: "linear-gradient(to right, black 100%, black 100%)" }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
                 transition={{
                   duration: 3,
                   repeat: Infinity,
@@ -85,11 +84,11 @@ export const LogoBar: ComponentConfig<LogoBarProps> = {
                   alt={siteLogo.alt}
                   width={width}
                   height={height}
-                  className="w-full h-full object-contain dark:invert"
+                  className="w-full h-full object-contain"
                   priority
                 />
               </motion.div>
-            ) : (
+            )  : (
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -104,7 +103,7 @@ export const LogoBar: ComponentConfig<LogoBarProps> = {
                   alt={siteLogo.alt}
                   width={width}
                   height={height} 
-                  className="w-full h-full object-contain dark:invert"
+                  className="w-full h-full object-contain"
                   priority
                 />
               </motion.div>

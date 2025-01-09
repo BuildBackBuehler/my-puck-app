@@ -8,6 +8,12 @@ import { Transition, TransitionChild } from "@headlessui/react"
 import { FacebookShare, RedditShare, TwitterShare, LinkedinShare } from 'react-share-kit'
 import { Avatar } from "../data-displays/avatar"
 
+interface Author {
+  id: string;
+  name: string;
+  avatarUrl: string;
+}
+
 export interface ArticleDialogProps {
   article: {
     mainTitle: string
@@ -102,6 +108,7 @@ export const ArticleDialog: ComponentConfig<ArticleDialogProps> = {
     }
   },
 
+
   render: ({ article, ...props }) => {
     const shareLinks = article.shareLinks || {};
     const [isOpen, setIsOpen] = useState(false)
@@ -158,7 +165,7 @@ export const ArticleDialog: ComponentConfig<ArticleDialogProps> = {
               enter="ease-out duration-300"
               enterFrom="opacity-0"
               enterTo="opacity-100"
-              leave="ease-in duration-200"
+              leave="ease-in duration-300"
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
@@ -170,31 +177,31 @@ export const ArticleDialog: ComponentConfig<ArticleDialogProps> = {
               enter="ease-out duration-300"
               enterFrom="opacity-0 scale-95"
               enterTo="opacity-100 scale-100"
-              leave="ease-in duration-200"
+              leave="ease-in duration-300"
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
               <DialogPrimitive.Content 
-                className="fixed z-50 w-[110vw] max-w-6xl rounded-sm lg:rounded-lg p-3 lg:p-6 lg:w-full top-[5%] left-1/2 -translate-x-1/2 bg-adaptive-primary max-h-[90vh] overflow-y-auto shadow-md"
+                className="fixed z-50 w-full lg:w-[110vw] max-w-6xl rounded-sm lg:rounded-lg p-3 lg:p-6 top-[5%] left-1/2 -translate-x-1/2 bg-adaptive-primary max-h-[90vh] overflow-y-auto shadow-md scrollbar-hide"
               >
-                  <div className="py-4 relative">
+                  <div className="py-1 md:py-4 relative">
                         <div className="flex justify-between items-center">
-                          <h2 className="font-display text-4xl lg:text-6xl text-left tracking-tight pl-4">{article.mainTitle}</h2>
+                          <h2 className="font-display text-adaptive-secondary text-2xl md:text-4xl lg:text-6xl text-left tracking-tight pl-4">{article.mainTitle}</h2>
                           <div className="text-right">
-                            <time dateTime={article.date} className="px-4 block text-xs lg:text-base mt-2">
+                            <time dateTime={article.date} className="text-adaptive-secondaryAlt px-4 block text-3xs md:text-xs lg:text-base mt-2">
                               {article.date}
                             </time>
-                              <div className="flex items-center space-x-2 text-xs">
-                                <span className="inline-flex items-center gap-1"><Eye size={12}/> {currentEngagement?.views ?? 0}</span>
-                                <span className="inline-flex items-center gap-1"><Heart size={12} className="text-transparent fill-adaptive-secondaryAccent"/> {currentEngagement?.likes ?? 0}</span>
-                                <span className="inline-flex items-center gap-1"><MessageCircle size={12}/> {currentEngagement?.comments ?? 0}</span>
+                              <div className="text-adaptive-secondaryAlt flex items-center text-3xs mx-4 md:mx-0 space-x-0.5 md:space-x-1 lg:space-x-2 md:text-xs">
+                                <span className="inline-flex items-center gap-0.5 md:gap-1"><Eye size={12}/> {currentEngagement?.views ?? 0}</span>
+                                <span className="inline-flex items-center gap-0.5 md:gap-1"><Heart size={12} className="text-transparent fill-adaptive-accent dark:fill-adaptive-accent3"/> {currentEngagement?.likes ?? 0}</span>
+                                <span className="inline-flex items-center gap-0.5 md:gap-1"><MessageCircle size={12}/> {currentEngagement?.comments ?? 0}</span>
                               </div>
-                            <span className="text-xs lg:text-base font-serif px-4">{article.readTime}</span>
+                            <span className="text-adaptive-secondary text-3xs md:text-xs lg:text-base font-serif px-4">{article.readTime}</span>
                           </div>
                         </div>
                         </div>
                     <div className="mx-4 self-center px-4 h-px bg-adaptive-secondaryAlt" />
-                <div className="space-y-8">
+                <div className="space-y-2 md:space-y-8">
                   {article.imageUrl && (
                     <div className="relative aspect-video w-full rounded-sm lg:rounded-lg overflow-hidden">
                       <Image
@@ -211,23 +218,23 @@ export const ArticleDialog: ComponentConfig<ArticleDialogProps> = {
                   <article className="space-y-2 lg:space-y-4">
                     <header className="space-y-2 lg:space-y-4">
                       <div className="flex flex-col items-center justify-center w-full">
-                        <h1 className="font-display text-2xl lg:text-5xl font-bold text-adaptive-secondaryAccent text-center">
+                        <h1 className="font-display text-3xl md:text-5xl font-bold text-adaptive-accent text-center">
                           {article.title}
                         </h1>
                       </div>
-                        <div className="flex gap-2 lg:gap-4 text-base justify-center items-center">
+                        <div className="text-adaptive-secondary flex gap-1 md:gap-2 lg:gap-4 text-sm md:text-base lg:text-lg justify-center items-center">
                           <span>{article.author}</span>
                       </div>
                     </header>
-                    <div className="mx-4 self-center px-4 h-px bg-adaptive-secondaryAlt" />
-                    <main className="prose lg:prose-lg text-adaptive-secondary max-w-none">
+                    <div className="mx-16 self-center px-16 h-px bg-adaptive-secondaryAlt" />
+                    <main className="prose-sm md:prose-lg text-adaptive-secondary max-w-none">
                       {article.content}
                     </main>
 
                     <footer className="mt-8">
-                    <div className="mx-16 self-center px-16 h-px bg-adaptive-secondaryAlt" />
-                      <div className="flex justify-between items-center gap-4 px-8 pt-4">
-                        <div className="flex gap-2">
+                    <div className="mx-4 self-center px-4 h-px bg-adaptive-secondaryAlt" />
+                      <div className="flex justify-between items-center gap-1 px-8 pt-2 md:pt-4">
+                        <div className="flex gap-1">
                           <FacebookShare url={shareLinks.facebook || ''} quote={article.title} round={true} size={30} blankTarget={true} />
                           <LinkedinShare url={shareLinks.linkedin || ''} round={true} size={30} blankTarget={true} />
                           <RedditShare url={shareLinks.reddit || ''} title={article.title} round={true} size={30} blankTarget={true} />
@@ -237,15 +244,15 @@ export const ArticleDialog: ComponentConfig<ArticleDialogProps> = {
                         <button 
                           onClick={handleLike}
                           className={`p-2 rounded-full transition-all duration-300 ${
-                            isLiked ? 'text-adaptive-secondaryAccent fill-adaptive-secondaryAccent' : 'text-adaptive-secondary hover:text-adaptive-secondaryAccent'
+                            isLiked ? '' : ''
                           }`}
                         >
                           <Heart 
                             size={30}
                             className={`transition-all duration-300 ${
                               isLiked 
-                                ? 'text-adaptive-secondaryAccent fill-adaptive-secondaryAccent stroke-adaptive-secondaryAccent' 
-                                : 'text-adaptive-secondary hover:text-adaptive-secondaryAccent stroke-current'
+                                ? 'text-adaptive-accent dark:text-adaptive-accent3 fill-adaptive-accent dark:fill-adaptive-accent3 stroke-adaptive-accent dark:stroke-adaptive-accent3' 
+                                : 'text-adaptive-secondary hover:text-adaptive-accent dark:text-adaptive-accent3 stroke-current'
                             }`}
                             fill={isLiked ? 'currentColor' : 'none'}
                           />
@@ -254,7 +261,7 @@ export const ArticleDialog: ComponentConfig<ArticleDialogProps> = {
                     </footer>
                   </article>
 
-                  <DialogPrimitive.Close className="absolute -top-6 right-1 p-2 rounded-full fill-adaptive-secondary text-adaptive-secondary hover:bg-adaptive-primaryAlt hover:text-adaptive-secondaryAccent focus:text-adaptive-accent transition-colors">
+                  <DialogPrimitive.Close className="absolute -top-6 right-1 p-2 rounded-full fill-adaptive-secondary text-adaptive-secondary hover:bg-adaptive-primaryAlt hover:text-adaptive-accent3 focus:text-adaptive-accent transition-colors">
                     <Cross1Icon className="h-6 w-6" />
                   </DialogPrimitive.Close>
                 </div>

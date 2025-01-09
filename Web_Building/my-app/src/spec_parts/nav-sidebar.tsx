@@ -53,14 +53,6 @@ export interface NavItem {
 
 export interface SidebarProps {
   navigation: NavItem[]
-  // Icons:{ 
-  //   Lemmy: string
-  //   About: string
-  //   Arts: string
-  //   Archive: string
-  //   Essentials: string
-  //   Manifesto: string
-  // }
   socialHandle?: string
   showSubscribe?: boolean
   initialState?: 'open' | 'closed'
@@ -83,47 +75,6 @@ export const Sidebar: ComponentConfig<SidebarProps> = {
         },
       },
     },
-  //   Icons: {
-  //   type: "object",
-  //   objectFields: {
-  //     Lemmy: {
-  //       type: "select",
-  //       options: Object.keys(dynamicIconImports).map(name => ({
-  //         label: name, value: name
-  //       }))
-  //     },
-  //     About: {
-  //       type: "select", 
-  //       options: Object.keys(dynamicIconImports).map(name => ({
-  //         label: name, value: name
-  //       }))
-  //     },
-  //     Arts: {
-  //       type: "select",
-  //       options: Object.keys(dynamicIconImports).map(name => ({
-  //         label: name, value: name
-  //       }))
-  //     },
-  //     Archive: {
-  //       type: "select", 
-  //       options: Object.keys(dynamicIconImports).map(name => ({
-  //         label: name, value: name
-  //       }))
-  //     },
-  //     Essentials: {
-  //       type: "select",
-  //       options: Object.keys(dynamicIconImports).map(name => ({
-  //         label: name, value: name
-  //       }))
-  //     },
-  //     Manifesto: {
-  //       type: "select", 
-  //       options: Object.keys(dynamicIconImports).map(name => ({
-  //         label: name, value: name
-  //       }))
-  //     },
-  //   },
-  // },
     socialHandle: { type: "text" },
     showSubscribe: { 
       type: "radio", 
@@ -254,10 +205,7 @@ export const Sidebar: ComponentConfig<SidebarProps> = {
         {/* Desktop/Tablet Sidebar - Hiding on Mobile */}
         <aside className={`
           hidden md:block absolute inset-y-0 left-0 h-full transition-all duration-200 ease-in-out
-          ${isSidebarOpen 
-            ? 'w-36 lg:w-64' 
-            : 'w-12 lg:w-16'
-          }
+          ${isSidebarOpen ? 'w-36 lg:w-64' : 'w-12 lg:w-16'}
         `}>
           {/* Existing sidebar content */}
           {showDivider && (
@@ -286,26 +234,27 @@ export const Sidebar: ComponentConfig<SidebarProps> = {
 
               <nav className={`mt-12 ${isSidebarOpen ? 'space-y-1 md:space-y-3 lg:space-y-4' : 'md:space-y-3 lg:space-y-6'}`}>
                 {navigation.map((item, index) => (
-                  <Link 
-                    key={index}
-                    href={item.href}
-                    className="block text-lg lg:text-xl first-letter:text-2xl first-letter:bold text-adaptive-secondary"
-                  >
-                    <span className={clsx(
-                      "transition-all hover:scale-110 hover:text-adaptive-accent ease-in-out transform-gpu duration-300",
-                      isSidebarOpen ? 'opacity-100' : 'opacity-0 hidden'
-                    )}>
-                      {item.label}
-                    </span>
-                    
-                    <span className={clsx(
-                      "transition-opacity",
-                      isSidebarOpen ? 'opacity-0 hidden' : 'opacity-100 block hover:scale-[1.1] hover:text-adaptive-accent transition-all duration-300 transform-gpu ease-in-out'
-                    )}>
-                      {item.icon && dynamicIconImports[item.icon] && 
-                        dynamicIconImports[item.icon]({ isSidebarOpen })}
+                  <div key={index} className="transform-gpu">
+                    <Link 
+                      href={item.href}
+                      className="block text-lg lg:text-xl first-letter:text-2xl first-letter:bold text-adaptive-secondary group"
+                    >
+                      <span className={clsx(
+                        "block transform-gpu transition-all duration-300 ease-in-out group-hover:scale-[1.035] group-hover:text-adaptive-accent",
+                        isSidebarOpen ? 'opacity-100' : 'opacity-0 hidden'
+                      )}>
+                        {item.label}
+                      </span>
+                      
+                      <span className={clsx(
+                        "block transform-gpu transition-all duration-300 ease-in-out group-hover:scale-110 group-hover:text-adaptive-accent",
+                        isSidebarOpen ? 'opacity-0 hidden' : 'opacity-100'
+                      )}>
+                        {item.icon && dynamicIconImports[item.icon] && 
+                          dynamicIconImports[item.icon]({ isSidebarOpen })}
                     </span>
                   </Link>
+                  </div>
                 ))}
               </nav>
             </div>

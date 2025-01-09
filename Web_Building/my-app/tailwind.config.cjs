@@ -69,12 +69,12 @@ module.exports = {
           "0 0px 65px var(--color-accent3 / 25%)",
         ],
         glow: [
-          "0 0px 20px var(--color-accent / 35%)",
-          "0 0px 65px var(--color-accent / 20%)",
+          "0 0px 20px var(--color-accent / 40%)",
+          "0 0px 65px var(--color-accent / 25%)",
         ],
         glowP: [
-          "0 0px 20px var(--color-accent2 / 35%)",
-          "0 0px 65px var(--color-accent2 / 20%)",
+          "0 0px 20px var(--color-accent2 / 40%)",
+          "0 0px 65px var(--color-accent2 / 25%)",
         ],
       },
       fontSize: {

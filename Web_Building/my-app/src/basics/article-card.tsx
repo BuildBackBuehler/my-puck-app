@@ -88,8 +88,8 @@ export const ArticleCard: ComponentConfig<ArticleCardProps> = {
           </h2>
 
           <div className="flex justify-between items-center">
-            <span className="font-serif text-3xs md:text-xs lg:text-base">{author}</span>
-            <span className="font-serif text-3xs md:text-xs lg:text-base">{readTime}</span>
+            <span className="font-serif text-3xs md:text-xs lg:text-sm">{author}</span>
+            <span className="font-serif text-3xs md:text-xs lg:text-sm">{readTime}</span>
           </div>
 
           <p className="font-sans text-sm lg:text-xl leading-relaxed">{summary}</p>

@@ -233,7 +233,7 @@ export const Article: ComponentConfig<ArticleProps> = {
           </div>
           <div className="mx-16 self-center px-16 h-px bg-adaptive-secondaryAlt" />
           <p className="font-sans px-8 text-sm md:text-md lg:text-xl leading-relaxed">{post}</p>
-          <div className="mx-16 self-center px-16 h-px bg-adaptive-secondaryAlt" />
+          <div className="mx-4 self-center px-8 h-px bg-adaptive-secondaryAlt" />
 
           <div className="flex justify-between items-center gap-4 px-4 sm:px-6 lg:px-8">
             <div className="flex gap-0.5 md:hidden">

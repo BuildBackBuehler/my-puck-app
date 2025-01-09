@@ -3,33 +3,61 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import * as ScrollArea from "@radix-ui/react-scroll-area";
 import { clsx } from "clsx";
 
+interface NewsItem {
+  source: string;
+  title: string;
+  link: string;
+}
+
 export type TickerProps = {
-  items: {
-    text: string;
-    link?: string;
-  }[];
+  sources: {
+    guardian: boolean;
+    foreignPolicy: boolean;
+    proPub: boolean;
+  };
+  guardianApiKey?: string;
   direction: "left" | "right";
   speed: "slow" | "medium" | "fast";
   pauseOnHover: boolean;
   theme: "light" | "dark";
+  maxArticlesPerSource: number;
 };
 
 const speedMap = {
-  slow: "30s",
-  medium: "20s",
-  fast: "10s"
+  slow: "40s",
+  medium: "30s",
+  fast: "20s"
 };
 
 export const Ticker: ComponentConfig<TickerProps> = {
   fields: {
-    items: {
-      type: "array",
-      getItemSummary: (item) => item.text,
-      arrayFields: {
-        text: { type: "text" },
-        link: { type: "text", label: "URL (optional)" }
+    sources: {
+      type: "object",
+      objectFields: {
+        guardian: {
+          type: "radio",
+          options: [
+            { label: "Enable", value: true },
+            { label: "Disable", value: false }
+          ]
+        },
+        foreignPolicy: {
+          type: "radio",
+          options: [
+            { label: "Enable", value: true },
+            { label: "Disable", value: false }
+          ]
+        },
+        proPub: {
+          type: "radio",
+          options: [
+            { label: "Enable", value: true },
+            { label: "Disable", value: false }
+          ]
+        }
       }
     },
+    guardianApiKey: { type: "text" },
     direction: {
       type: "select",
       options: [
@@ -49,7 +77,7 @@ export const Ticker: ComponentConfig<TickerProps> = {
       type: "radio",
       options: [
         { label: "Pause", value: "true" },
-        { label: "Continuous", value: "false" },
+        { label: "Continuous", value: "false" }
       ]
     },
     theme: {
@@ -58,25 +86,142 @@ export const Ticker: ComponentConfig<TickerProps> = {
         { label: "Light", value: "light" },
         { label: "Dark", value: "dark" }
       ]
+    },
+    maxArticlesPerSource: {
+      type: "number",
+      min: 1,
+      max: 10
     }
   },
 
   defaultProps: {
-    items: [
-      { text: "Breaking News" },
-      { text: "Latest Updates" },
-      { text: "Featured Story" }
-    ],
+    sources: {
+      guardian: true,
+      foreignPolicy: true,
+      proPub: true
+    },
     direction: "right",
     speed: "medium",
     pauseOnHover: true,
-    theme: "light"
+    theme: "light",
+    maxArticlesPerSource: 3
   },
 
-  render: ({ items, direction, speed, pauseOnHover, theme }) => {
+  render: ({ 
+    sources, 
+    guardianApiKey, 
+    direction, 
+    speed, 
+    pauseOnHover, 
+    theme,
+    maxArticlesPerSource = 3
+  }) => {
+    const [newsItems, setNewsItems] = useState<NewsItem[]>([]);
     const [scrollWidth, setScrollWidth] = useState(0);
     const contentRef = useRef<HTMLDivElement>(null);
     const wrapperRef = useRef<HTMLDivElement>(null);
+
+    // Fetch Guardian news
+    const fetchGuardianNews = async () => {
+      const guardianApiKey = process.env.NEXT_PUBLIC_GUARDIAN_API_KEY;
+      
+      if (!guardianApiKey || !sources.guardian) {
+        console.warn('Guardian API key not found or source disabled');
+        return [];
+      }
+    
+      try {
+        const response = await window.fetch(
+          `https://content.guardianapis.com/search?api-key=${guardianApiKey}&show-fields=headline,shortUrl&page-size=${maxArticlesPerSource}`
+        );
+        const data = await response.json();
+        return data.response.results.map((item: any) => ({
+          title: item.fields.headline,
+          link: item.fields.shortUrl,
+          source: "The Guardian"
+        }));
+      } catch (error) {
+        console.error("Error fetching Guardian news:", error);
+        return [];
+      }
+    };
+
+    // Fetch ProPublica RSS
+    const fetchProPubNews = async () => {
+      if (!sources.proPub) return [];
+      try {
+        const response = await window.fetch(
+          'https://www.propublica.org/feed/main',
+          { 
+            headers: { 
+              Accept: 'application/rss+xml',
+              'Content-Type': 'application/xml'
+            }
+          }
+        );
+        const text = await response.text();
+        const parser = new DOMParser();
+        const xml = parser.parseFromString(text, "text/xml");
+        const items = xml.querySelectorAll("item");
+        
+        return Array.from(items).slice(0, maxArticlesPerSource).map((item) => ({
+          title: item.querySelector("title")?.textContent || "",
+          link: item.querySelector("link")?.textContent || "",
+          source: "ProPublica"
+        }));
+      } catch (error) {
+        console.error("Error fetching ProPublica news:", error);
+        return [];
+      }
+    };
+
+    // Fetch Foreign Policy RSS
+    const fetchFPNews = async () => {
+      if (!sources.foreignPolicy) return [];
+      try {
+        const response = await window.fetch(
+          'https://foreignpolicy.com/feed/',
+          { 
+            headers: { 
+              Accept: 'application/rss+xml',
+              'Content-Type': 'application/xml'
+            }
+          }
+        );
+        const text = await response.text();
+        const parser = new DOMParser();
+        const xml = parser.parseFromString(text, "text/xml");
+        const items = xml.querySelectorAll("item");
+        
+        return Array.from(items).slice(0, maxArticlesPerSource).map((item) => ({
+          title: item.querySelector("title")?.textContent || "",
+          link: item.querySelector("link")?.textContent || "",
+          source: "Foreign Policy"
+        }));
+      } catch (error) {
+        console.error("Error fetching Foreign Policy news:", error);
+        return [];
+      }
+    };
+
+    // Fetch all enabled news sources
+    useEffect(() => {
+      const fetchNews = async () => {
+        if (typeof window === 'undefined') return; // Guard against SSR
+
+        const [guardianNews, proPubNews, fpNews] = await Promise.all([
+          fetchGuardianNews(),
+          fetchProPubNews(),
+          fetchFPNews()
+        ]);
+
+        setNewsItems([...guardianNews, ...proPubNews, ...fpNews]);
+      };
+
+      fetchNews();
+      const interval = setInterval(fetchNews, 300000); // Refresh every 5 minutes
+      return () => clearInterval(interval);
+    }, [sources, guardianApiKey]);
 
     useEffect(() => {
       if (!contentRef.current || !wrapperRef.current) return;
@@ -89,12 +234,7 @@ export const Ticker: ComponentConfig<TickerProps> = {
       calculateWidth();
       window.addEventListener('resize', calculateWidth);
       return () => window.removeEventListener('resize', calculateWidth);
-    }, [items]);
-
-    const scrollerStyle = {
-      '--duration': speedMap[speed],
-      '--direction': direction === 'left' ? 'forwards' : 'reverse'
-    } as React.CSSProperties;
+    }, [newsItems]);
 
     return (
       <ScrollArea.Root className="w-full sticky top-2 pt-12 lg:pt-10 lg:top-8 md:py-4 lg:py-8">
@@ -102,7 +242,8 @@ export const Ticker: ComponentConfig<TickerProps> = {
           ref={wrapperRef}
           className={clsx(
             "w-full overflow-hidden py-2 md:py-3 lg:py-4 text-xs md:text-sm lg:text-lg tracking-tight",
-            theme === "dark" ? "bg-black-light text-white border-t-2 border-b-2 border-white" : "bg-black text-white"
+            "dark( bg-adaptive-primaryAlt text-white border-t border-b border-l border-white hover:text-cyan )",
+            "bg-black text-white-mid hover:text-adaptive-accent3 border-t border-b border-l border-black-light"
           )}
         >
           <div className="relative">
@@ -120,24 +261,24 @@ export const Ticker: ComponentConfig<TickerProps> = {
               onMouseEnter={pauseOnHover ? (e) => e.currentTarget.style.animationPlayState = 'paused' : undefined}
               onMouseLeave={pauseOnHover ? (e) => e.currentTarget.style.animationPlayState = 'running' : undefined}
             >
-              {[...items, ...items].map((item, idx) => (
+              {[...newsItems, ...newsItems].map((item, idx) => (
                 <div
-                  key={`${item.text}-${idx}`}
+                  key={`${item.title}-${idx}`}
                   className="whitespace-nowrap px-4"
                 >
-                  {item.link ? (
-                    <a 
-                      href={item.link}
-                      className={clsx(
-                        "hover:underline",
-                        theme === "dark" ? "text-cyan" : "text-red"
-                      )}
-                    >
-                      {item.text}
-                    </a>
-                  ) : (
-                    item.text
-                  )}
+                  <span className={clsx(
+                    "font-display md:font-lg lg:font-xl font-bold mr-2 text-adaptive-accent dark:text-adaptive-accent3"
+                  )}>
+                    {item.source}:
+                  </span>
+                  <a 
+                    href={item.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:underline"
+                  >
+                    {item.title}
+                  </a>
                 </div>
               ))}
             </div>

@@ -39,8 +39,8 @@ export const ThreeColumns: ComponentConfig<ThreeColumnsProps> = {
     const { isSidebarOpen, isRightSidebarOpen } = useLayoutState()
     
     const sidebarWidth = isSidebarOpen 
-      ? 'calc(7rem + ((100vw - 430px) * 0.15))' // Mobile to Desktop: 7rem -> 9rem -> 16rem
-      : 'calc(2.5rem + ((100vw - 430px) * 0.05))' // Mobile to Desktop: 2.5rem -> 3rem -> 4rem
+      ? 'calc(7rem + ((100vw - 430px) * 0.15))' 
+      : 'calc(2.5rem + ((100vw - 430px) * 0.05))'
       
     const rightSidebarWidth = isRightSidebarOpen 
       ? `${columns[2].width}%` 
@@ -50,11 +50,10 @@ export const ThreeColumns: ComponentConfig<ThreeColumnsProps> = {
 
     return (
       <div 
-        className="flex h-screen w-full overflow-hidden" 
+        className="flex h-screen w-full overflow-hidden md:pl-[--sidebar-width]" 
         style={{ 
-          paddingLeft: sidebarWidth,
-          transition: 'padding-left 300ms'
-        }}
+          '--sidebar-width': sidebarWidth,
+        } as any}
       >
         <div className="flex-1 transition-all duration-300" style={{ width: `${mainWidth}%` }}>
           <DropZone zone={`column-${columns[1].id}`} />

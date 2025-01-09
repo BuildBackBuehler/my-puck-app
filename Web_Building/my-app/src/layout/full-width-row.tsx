@@ -1,7 +1,7 @@
 import { ComponentConfig } from "@measured/puck"
 import { DropZone } from "@measured/puck"
 
-interface FullWidthRowProps {
+export interface FullWidthRowProps {
   backgroundColor: string
   padding: string
   maxWidth: string
