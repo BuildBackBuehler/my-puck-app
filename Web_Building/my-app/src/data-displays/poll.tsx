@@ -100,7 +100,7 @@ export const Poll: Config["components"]["Poll"] = {
 
     return (
       <div className="max-w-lg mx-auto p-0.5 sm:p-1 md:p-6">
-        <h2 className="text-xs sm:text-lg md:text-xl sm:font-bold mb-4 text-adaptive-secondary">{question}</h2>
+        <h2 className="text-xs sm:text-base lg:text-xl sm:font-bold mb-4 text-adaptive-secondary">{question}</h2>
         
         {!showResults ? (
           <form onSubmit={handleSubmit} className="space-y-4">

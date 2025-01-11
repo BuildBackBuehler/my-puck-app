@@ -1,10 +1,6 @@
 // lib/supabase.ts
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = 'https://uywhaywnylcjrvkcsdem.supabase.co'
-const supabaseKey = process.env.SUPABASE_KEY
-const supabase = createClient(supabaseUrl, supabaseKey)
-
 export type Article = {
   id: string
   title: string
@@ -13,6 +9,16 @@ export type Article = {
   views: number
   likes: number
   comments: number
+}
+
+export type Author = {
+  id: string
+  first_name: string
+  last_name: string
+  pen_name: string
+  initials: string
+  bio: string
+  avatar_url: string
 }
 
 export const supabase = createClient(

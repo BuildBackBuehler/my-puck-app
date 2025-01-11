@@ -9,9 +9,6 @@ module.exports = {
   reactStrictMode: true,
   transpilePackages: ["ui"],
   images: {
-    domains: [
-      `${process.env.NEXT_PUBLIC_SUPABASE_PROJECT_ID}.supabase.co` 
-    ],
     remotePatterns: [
       {
         protocol: 'https',
@@ -19,20 +16,32 @@ module.exports = {
         port: '',
         pathname: '/puppy.jpg',
         search: '',
-      },      
+      },     
+      { 
+        protocol: 'https',
+        hostname: `${process.env.NEXT_PUBLIC_SUPABASE_PROJECT_ID}.supabase.co`, 
+        port: '',
+        pathname: '/storage/v1/object/public/Images',   
+        search: '**',
+      }, 
+      { 
+        protocol: 'https',
+        hostname: `${process.env.NEXT_PUBLIC_SUPABASE_PROJECT_ID}.supabase.co`, 
+        port: '',
+        pathname: '',   
+        search: '**',
+      }, 
       {
         protocol: 'https',
-        hostname: 'source.unsplash.com',
+        hostname: 'uywhaywnylcjrvkcsdem.supabase.co',
         port: '',
-        pathname: '/random/800x600',
-        search: '',
+        pathname: '/storage/v1/object/sign/**',
       },
       {
         protocol: 'https',
         hostname: 'uywhaywnylcjrvkcsdem.supabase.co',
         port: '',
-        pathname: '/storage/v1/object/sign/Images',
-        search: '**',
+        pathname: '/storage/v1/object/public/**',
       },
     ]
   },

@@ -25,3 +25,6 @@ export type { TwoColumnsProps } from './2-columns';
 
 export { FullWidthRow } from "./full-width-row"
 export type { FullWidthRowProps } from "./full-width-row"
+
+export { ScrollFree } from "./scroll-free"
+export type { ScrollFreeProps } from "./scroll-free"

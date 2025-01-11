@@ -64,11 +64,11 @@ export const ArticleCard: ComponentConfig<ArticleCardProps> = {
       <article className="overflow-hidden">
         <div className="h-full flex flex-col justify-center py-8 space-y-1 px-3 lg:py-8 lg:space-y-2 lg:px-6">
           <h1 className="font-display text-4xl lg:text-9xl font-bold tracking-tight pt-4 lg:pt-4">{mainTitle}</h1>
-          <time dateTime={date} className="block text-sm lg:text-2xl text-right pr-4">{date}</time>
+          <time dateTime={date} className="block text-sm md:text-sm lg:text-2xl text-right pr-4">{date}</time>
           
           <div className="w-full h-px bg-adaptive-secondaryAlt" />
           
-          <div className="relative aspect-[2/1] overflow-hidden rounded-sm top-2 lg:rounded-lg lg:top-4">
+          <div className="relative aspect-[2/1] overflow-hidden rounded-sm top-4 lg:rounded-lg lg:top-4">
             <Image 
               src={image.src} 
               alt={image.alt}

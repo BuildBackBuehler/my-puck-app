@@ -2,7 +2,7 @@
 'use client'
 
 import { useState } from 'react'
-import { uploadImage } from '../../hooks/upload'
+import { uploadImage } from '../../utils/hooks/upload'
 import { supabase } from '../../lib/supabase'
 
 export default function AdminPage() {

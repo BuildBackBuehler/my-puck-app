@@ -1,4 +1,4 @@
-import { supabase } from "../lib/supabase"
+import { supabase } from "../../lib/supabase"
 
 // utils/upload.ts
 export async function uploadImage(file: File) {

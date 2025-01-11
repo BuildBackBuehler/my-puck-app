@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { usePathname } from "next/navigation";
-import "./styles.css";
+import './styles.css';
 
 export default function RootLayout({
   children,

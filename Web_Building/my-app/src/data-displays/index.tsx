@@ -25,3 +25,9 @@ export type { ScrollArticlesProps } from './horizontal-scroll';
 
 export { Poll } from './poll'
 export type { PollProps } from './poll'
+
+export { Author } from './author'
+export type { AuthorProps } from './author'
+
+export { AboutCard } from './about-card'
+export type { AboutCardProps } from './about-card'

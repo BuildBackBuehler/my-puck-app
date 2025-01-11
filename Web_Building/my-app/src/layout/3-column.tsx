@@ -50,7 +50,7 @@ export const ThreeColumns: ComponentConfig<ThreeColumnsProps> = {
 
     return (
       <div 
-        className="flex h-screen w-full overflow-hidden md:pl-[--sidebar-width]" 
+        className="flex mb-16 md:mb-0 h-screen w-full overflow-hidden md:pl-[--sidebar-width]" 
         style={{ 
           '--sidebar-width': sidebarWidth,
         } as any}

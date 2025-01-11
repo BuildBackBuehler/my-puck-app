@@ -30,8 +30,8 @@ export const FeaturedHeader: ComponentConfig<FeaturedHeaderProps> = {
   render: ({ title, linkText, linkUrl, showDivider }) => (
     <header className="flex-grow sticky top-0 z-10">
       <nav className="max-w-7xl md:mx-auto px-2 md:px-6 lg:px-8">
-        <div className="flex justify-center items-center pt-4 md:justify-between md:items-end lg:pt-[4.75vh] md:pb-2">
-          <h1 className="text-sm sm:text-center md:text-xl lg:text-3xl font-serif italic">{title}</h1>
+        <div className="flex justify-center items-center pt-1.5 md:justify-between md:items-end lg:pt-[4.5vh] md:pb-2">
+          <h1 className="text-sm sm:text-center md:text-lg lg:text-3xl font-serif italic">{title}</h1>
           <div className="hidden md:flex items-center gap-2">
             <span className="w-3 h-3 lg:w-4 lg:h-4 bg-adaptive-secondary rounded-full" />
             <Link 

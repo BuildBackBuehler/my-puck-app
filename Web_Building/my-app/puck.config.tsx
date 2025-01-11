@@ -1,13 +1,13 @@
 import type { Config } from "@measured/puck";
 
-import {  Section, ThemeToggler, FixedColumns, DropColumn, FullWidthRow, ThreeColumns, ScrollColumn, TwoColumns } from './src/layout';
-import {  SectionProps, ThemeTogglerProps, FixedColumnsProps, DropColumnProps, FullWidthRowProps, ThreeColumnsProps, ScrollColumnProps, TwoColumnsProps } from "./src/layout";
+import {  Section, ThemeToggler, FixedColumns, DropColumn, FullWidthRow, ThreeColumns, ScrollColumn, TwoColumns, ScrollFree } from './src/layout';
+import {  SectionProps, ThemeTogglerProps, FixedColumnsProps, DropColumnProps, FullWidthRowProps, ThreeColumnsProps, ScrollColumnProps, TwoColumnsProps, ScrollFreeProps } from "./src/layout";
 
 import { Button, ContactDialog } from './src/buttons';
 import { ButtonProps, ContactDialogProps } from './src/buttons';
 
-import { Accordion, AspectRatio, Avatar, Carousel, Collapsible, HoverCard, MusicCarousel, Poll, ScrollArticles } from './src/data-displays';
-import { AccordionProps, AspectRatioProps, AvatarProps, CarouselProps, CollapsibleProps, HoverCardProps, MusicCarouselProps, PollProps, ScrollArticlesProps } from './src/data-displays';
+import { AboutCard, Accordion, Author, AspectRatio, Avatar, Carousel, Collapsible, HoverCard, MusicCarousel, Poll, ScrollArticles } from './src/data-displays';
+import { AboutCardProps, AccordionProps, AuthorProps, AspectRatioProps, AvatarProps, CarouselProps, CollapsibleProps, HoverCardProps, MusicCarouselProps, PollProps, ScrollArticlesProps } from './src/data-displays';
 
 import { CommandMenu, ContextMenu, DropdownMenu, NavigationMenu,LogoBar, Menubar, Tabs, Toolbar, VertNavMenu } from './src/menus';
 import { CommandMenuProps, ContextMenuProps, DropdownMenuProps, LogoBarProps, MenubarProps, NavigationMenuProps, TabsProps, ToolbarProps, VertNavMenuProps } from "./src/menus";
@@ -65,6 +65,9 @@ type Props = {
   FullWidthRow: FullWidthRowProps;
   Poll: PollProps;
   ContactDialog: ContactDialogProps;
+  Author: AuthorProps;
+  AboutCard: AboutCardProps;
+  ScrollFree: ScrollFreeProps;
 };
 
 export const config: Config<Props> = {
@@ -124,6 +127,9 @@ export const config: Config<Props> = {
     FullWidthRow,
     Poll,
     ContactDialog,
+    Author,
+    AboutCard,
+    ScrollFree,
   },
     categories: {
     basics: {
@@ -132,19 +138,19 @@ export const config: Config<Props> = {
     },
     layout: {
       title: 'Layout',
-      components: [ 'DropColumn', 'FixedColumns', 'FullWidthRow', 'ScrollColumn', 'ThemeToggler',  'ThreeColumns',  'TwoColumns']
-    },
-    'data displays': {
-      title: 'Data Displays',
-      components: ['Accordion', 'AspectRatio', 'Avatar', 'Carousel', 'Collapsible',`HoverCard`, 'MusicCarousel', 'Poll', 'ScrollArticles', 'Ticker']
-    },
-    menus: {
-      title: 'Menus',
-      components: ['CommandMenu', 'ContextMenu', 'DropdownMenu', 'LogoBar', 'Menubar', 'NavigationMenu', 'Tabs', 'Toolbar', 'VertNavMenu']
+      components: [ 'DropColumn', 'FixedColumns', 'FullWidthRow', 'ScrollColumn','ScrollFree', 'ThemeToggler',  'ThreeColumns',  'TwoColumns']
     },
     buttons: {
       title: 'Buttons',
       components: [ 'Button', 'ContactDialog']
+    },
+    'data displays': {
+      title: 'Data Displays',
+      components: ['AboutCard', 'Accordion', 'Author', 'AspectRatio', 'Avatar', 'Carousel', 'Collapsible',`HoverCard`, 'MusicCarousel', 'Poll', 'ScrollArticles', 'Ticker']
+    },
+    menus: {
+      title: 'Menus',
+      components: ['CommandMenu', 'ContextMenu', 'DropdownMenu', 'LogoBar', 'Menubar', 'NavigationMenu', 'Tabs', 'Toolbar', 'VertNavMenu']
     },
     'right-side-bar': {
       title: 'Right Side Bar',

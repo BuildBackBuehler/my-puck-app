@@ -7,7 +7,11 @@
     "module": "commonjs",
     "declaration": true,
     "esModuleInterop": true,
+    "baseUrl": ".",
+  "paths": {
+      "@/*": ["./*"]
+    }
   },
-  "include": ["src","src/**/*.tsx", "next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "tailwind.config.cjs", "svg.d.ts", "lib/**/*.tsx", "lib/**/*.ts", "hooks/**/*.ts", "hooks/**/*.tsx", "utils/**/*.tsx", "utils/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "tailwind.config.cjs", "svg.d.ts", "lib/**/*.tsx", "lib/**/*.ts", "utils/hooks/**/*.ts", "utils/hooks/**/*.tsx", "utils/**/*.tsx", "utils/**/*.ts"],
   "exclude": ["node_modules"]
 }

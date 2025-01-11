@@ -191,7 +191,7 @@ export const ArticleDialog: ComponentConfig<ArticleDialogProps> = {
                             <time dateTime={article.date} className="text-adaptive-secondaryAlt px-4 block text-3xs md:text-xs lg:text-base mt-2">
                               {article.date}
                             </time>
-                              <div className="text-adaptive-secondaryAlt flex items-center text-3xs mx-4 md:mx-0 space-x-0.5 md:space-x-1 lg:space-x-2 md:text-xs">
+                              <div className="mt-1 -mb-1 md:mt-0 md:mb-0 text-adaptive-secondaryAlt flex items-center text-3xs mx-4 md:mx-0 space-x-0.5 md:space-x-1 lg:space-x-2 md:text-xs">
                                 <span className="inline-flex items-center gap-0.5 md:gap-1"><Eye size={12}/> {currentEngagement?.views ?? 0}</span>
                                 <span className="inline-flex items-center gap-0.5 md:gap-1"><Heart size={12} className="text-transparent fill-adaptive-accent dark:fill-adaptive-accent3"/> {currentEngagement?.likes ?? 0}</span>
                                 <span className="inline-flex items-center gap-0.5 md:gap-1"><MessageCircle size={12}/> {currentEngagement?.comments ?? 0}</span>
@@ -223,11 +223,12 @@ export const ArticleDialog: ComponentConfig<ArticleDialogProps> = {
                         </h1>
                       </div>
                         <div className="text-adaptive-secondary flex gap-1 md:gap-2 lg:gap-4 text-sm md:text-base lg:text-lg justify-center items-center">
-                          <span>{article.author}</span>
+                          <Avatar src={article.author.avatarUrl} alt={article.author.name} size="sm" />
+                          <span>By {article.author}</span>
                       </div>
                     </header>
-                    <div className="mx-16 self-center px-16 h-px bg-adaptive-secondaryAlt" />
-                    <main className="prose-sm md:prose-lg text-adaptive-secondary max-w-none">
+                    <div className="mx-8 px-8 md:mx-12 md:px-12 lg:mx-16 self-center lg:px-16 h-px bg-adaptive-secondaryAlt" />
+                    <main className="px-4 prose-sm md:prose-lg text-adaptive-secondary max-w-none">
                       {article.content}
                     </main>
 
@@ -261,8 +262,8 @@ export const ArticleDialog: ComponentConfig<ArticleDialogProps> = {
                     </footer>
                   </article>
 
-                  <DialogPrimitive.Close className="absolute -top-6 right-1 p-2 rounded-full fill-adaptive-secondary text-adaptive-secondary hover:bg-adaptive-primaryAlt hover:text-adaptive-accent3 focus:text-adaptive-accent transition-colors">
-                    <Cross1Icon className="h-6 w-6" />
+                  <DialogPrimitive.Close className="absolute -top-2 lg:-top-6 right-1 p-2 rounded-full fill-adaptive-secondary text-adaptive-secondary hover:bg-adaptive-primaryAlt hover:text-adaptive-accent3 focus:text-adaptive-accent transition-colors">
+                    <Cross1Icon className="h-3 w-3 md:h-4 md:w-4 lg:h-6 lg:w-6" />
                   </DialogPrimitive.Close>
                 </div>
               </DialogPrimitive.Content>

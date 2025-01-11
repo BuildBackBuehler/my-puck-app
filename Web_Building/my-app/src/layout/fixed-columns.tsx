@@ -51,7 +51,7 @@ export const FixedColumns: ComponentConfig<FixedColumnsProps> = {
 
     return (
       <div 
-        className="flex h-screen w-full overflow-hidden md:pl-[--sidebar-width]"
+        className="flex mb-8 md:mb-0 h-screen w-full overflow-hidden md:pl-[--sidebar-width]"
         style={{ 
           '--sidebar-width': sidebarWidth,
         } as any}

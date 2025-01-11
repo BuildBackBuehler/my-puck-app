@@ -101,14 +101,14 @@ export const DropColumn: ComponentConfig<DropColumnProps> = {
     return (
       <div className="h-full relative">
         {showDivider && (
-          <div className={`absolute left-0 top-[10vh] w-px h-[90vh] bg-adaptive-secondaryAlt transition-opacity duration-300 ${
+          <div className={`absolute mb-16 md:mb-0 left-0 top-[10vh] w-px h-[90vh] bg-adaptive-secondaryAlt transition-opacity duration-300 ${
             isRightSidebarOpen ? 'opacity-100' : 'opacity-0'
           }`} />
         )}
         <button 
           onClick={() => setRightSidebarOpen(!isRightSidebarOpen)}
           className={`
-            absolute top-[52vh] w-3.5 h-3.5 md:w-4 md:h-4 lg:w-6 lg:h-6 
+            absolute top-[51vh] md:top-[52vh] lg:top-[53vh] w-3.5 h-3.5 md:w-4 md:h-4 lg:w-6 lg:h-6 
             border border-adaptive-secondary text-adaptive-secondary 
             hover:text-adaptive-accent hover:border-adaptive-accent rounded-full 
             flex items-center justify-center cursor-pointer z-50

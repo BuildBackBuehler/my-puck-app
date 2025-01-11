@@ -1,6 +1,6 @@
 // hooks/useArticles.ts
 import { useQuery } from '@tanstack/react-query'
-import { Article, supabase } from '../lib/supabase'
+import { Article, supabase } from '../../lib/supabase'
 
 export const useArticles = (limit = 5) => {
   return useQuery({

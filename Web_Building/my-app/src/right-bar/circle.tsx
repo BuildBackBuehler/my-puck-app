@@ -32,7 +32,7 @@ export const Circle: ComponentConfig<CircleProps> = {
           <p className="text-3xs lg:text-xl text-red mb-8 leading-relaxed">
             {blurb}
           </p>
-          <span className="text-adaptive-primary text-xs lg:text-2xl font-serif italic">{subtitle}</span>
+          <span className="text-adaptive-primary text-xs lg:text-2xl font-serif italic pb-2">{subtitle}</span>
         </div>
       </div>
     </section>

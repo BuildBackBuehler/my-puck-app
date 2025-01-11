@@ -1,6 +1,9 @@
 import * as AvatarPrimitive from "@radix-ui/react-avatar";
 import { ComponentConfig } from "@measured/puck";
 import { clsx } from "clsx";
+import type { Author as AuthorType } from "../../lib/supabase";
+import { getAuthors } from "../../utils/supabase/client";
+import React from "react";
 
 const sizeClassMap = {
   sm: "h-4 w-4 md:h-6 md:w-6 lg:h-8 lg:w-8",
@@ -9,25 +12,34 @@ const sizeClassMap = {
   xl: "h-10 w-10 md:h-12 md:w-12 lg:h-14 lg:w-14"
 };
 
+export type AuthorProps = {
+  authorId?: string;
+  showBio?: boolean;
+  showRole?: boolean;
+  pen_name?: string;
+  initials?: string;
+};
+
 export interface AvatarProps {
-  items: {
-    image: string;
-    fallbackText: string;
-  }[];
+  authorId?: string;
   variant: "circle" | "rounded";
   size: keyof typeof sizeClassMap;
   isOnline?: boolean;
+  pen_name?: string;
+  showPenName?: boolean;
 }
 
 export const Avatar: ComponentConfig<AvatarProps> = {
   fields: {
-    items: {
-      type: "array",
-      getItemSummary: (item) => item.fallbackText,
-      arrayFields: {
-        image: { type: "text" },
-        fallbackText: { type: "text" }
-      }
+    authorId: {
+      type: "external",
+      label: "Select Author",
+      fetchList: async () => {
+        const authors = await getAuthors();
+        return authors;
+      },
+      getItemSummary: (item: AuthorType) => item.initials,
+      mapProp: (item: AuthorType) => item.id,
     },
     variant: {
       type: "radio",
@@ -49,54 +61,71 @@ export const Avatar: ComponentConfig<AvatarProps> = {
         { label: "Online", value: true },
         { label: "Offline", value: false }
       ]
-    }
+    },
+    showPenName: {
+      type: "radio",
+      options: [
+        { label: "Show", value: true },
+        { label: "Hide", value: false }
+      ],
+      defaultValue: true
+    },
   },
 
   defaultProps: {
-    items: [{
-      image: "https://images.unsplash.com/photo-1573607217032-18299406d100",
-      fallbackText: "JD"
-    }],
     variant: "circle",
     size: "md",
-    isOnline: false
+    isOnline: false,
+    showPenName: true
   },
 
-  render: ({ items, variant, size, isOnline }) => {
-    const variantClass = variant === "circle" ? "rounded-full" : "rounded";
-    const sizeClass = sizeClassMap[size];
+  render: ({ authorId, variant, size, isOnline, showPenName = true }) => {
+    const [author, setAuthor] = React.useState<AuthorType | null>(null);
+
+    React.useEffect(() => {
+      if (authorId) {
+        getAuthors().then(authors => {
+          const selectedAuthor = authors.find(a => a.id === authorId);
+          setAuthor(selectedAuthor || null);
+        });
+      }
+    }, [authorId]);
 
     return (
-      <div className="flex gap-2 items-center">
-        {items.map((item, index) => (
-          <div key={index} className="relative inline-flex">
-            <AvatarPrimitive.Root className={clsx("relative inline-flex", sizeClass)}>
-              <AvatarPrimitive.Image
-                src={item.image}
-                alt={item.fallbackText}
-                className={clsx("aspect-square object-cover", variantClass)}
-              />
-              <AvatarPrimitive.Fallback
-                className={clsx(
-                  "flex items-center justify-center bg-gray-100",
-                  variantClass
-                )}
-                delayMs={600}
-              >
-                <span className="text-sm font-medium text-gray-700">
-                  {item.fallbackText}
-                </span>
-              </AvatarPrimitive.Fallback>
-            </AvatarPrimitive.Root>
-            
-            {isOnline && (
-              <span className={clsx(
-                "absolute bottom-0 right-0 block h-2.5 w-2.5 rounded-full bg-green-400 ring-2 ring-white",
-                variant === "circle" && "translate-x-1/6 translate-y-1/6"
-              )} />
+      <div className="flex items-center gap-3">
+        <div className="relative">
+          <AvatarPrimitive.Root
+            className={clsx(
+              sizeClassMap[size],
+              variant === "circle" ? "rounded-full" : "rounded-md",
+              "relative inline-flex items-center justify-center overflow-hidden bg-adaptive-secondary"
             )}
-          </div>
-        ))}
+          >
+            <AvatarPrimitive.Image
+              src={author?.avatar_url}
+              className="h-full w-full object-cover"
+            />
+            <AvatarPrimitive.Fallback
+              className={clsx(
+                "flex items-center justify-center bg-adaptive",
+                variant === "circle" ? "rounded-full" : "rounded-md"
+              )}
+              delayMs={600}
+            >
+              <span className="text-sm font-medium text-adaptive-secondary">
+                {author?.initials}
+              </span>
+            </AvatarPrimitive.Fallback>
+          </AvatarPrimitive.Root>
+          {isOnline && (
+            <span className="absolute -bottom-0.5 -right-0.5 h-2 w-2 rounded-full bg-green-500 ring-1 ring-white" />
+          )}
+        </div>
+        {showPenName && author?.pen_name && (
+          <span className="text-adaptive-secondaryAlt hover:text-adaptive-accent text-sm md:text-base lg:text-lg transition-colors">
+            {author.pen_name}
+          </span>
+        )}
       </div>
     );
   }

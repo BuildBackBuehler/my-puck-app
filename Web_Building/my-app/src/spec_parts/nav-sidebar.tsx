@@ -27,7 +27,7 @@ const dynamicIconImports = {
   'Archive': () => <Archive size={16} />,
   'Sparkles': () => <Sparkles size={16} />,
   'Unabomber': ({ isSidebarOpen }: { isSidebarOpen: boolean }) => (
-    <div className="w-5 h-5 flex items-center">
+    <div className="w-4 h-4 md:w-5 md:h-5 flex items-center">
       <Image
         src="/unabomber.svg"
         alt="Unabomber"
@@ -55,7 +55,7 @@ export interface SidebarProps {
   navigation: NavItem[]
   socialHandle?: string
   showSubscribe?: boolean
-  initialState?: 'open' | 'closed'
+  initialState?: boolean
   showDivider?: boolean
 }
 
@@ -79,22 +79,22 @@ export const Sidebar: ComponentConfig<SidebarProps> = {
     showSubscribe: { 
       type: "radio", 
       options: [
-        { label: "Show", value: "true" },
-        { label: "Hide", value: "false" }
+        { label: "Show", value: true },
+        { label: "Hide", value: false }
       ]
     },
     initialState: {
       type: "radio",
       options: [
-        { label: "Open", value: "open" },
-        { label: "Closed", value: "closed" }
+        { label: "Open", value: true },
+        { label: "Closed", value: false }
       ]
     },
     showDivider: { 
       type: "radio", 
       options: [
-        { label: "Show", value: "true" },
-        { label: "Hide", value: "false" }
+        { label: "Show", value: true },
+        { label: "Hide", value: false }
       ]
     }
   },
@@ -108,56 +108,53 @@ export const Sidebar: ComponentConfig<SidebarProps> = {
       { label: "Essentials", href: "/essentials", icon: "Sparkles" },
       { label: "Manifesto", href: "/manifesto", icon: "Unabomber" }
     ],
-    // Icons: {
-    //   Lemmy: "Snoo",
-    //   About: "Contact",
-    //   Arts: "Palette",
-    //   Archive: "Archive",
-    //   Essentials: "Sparkles",
-    //   Manifesto: "Unabomber",
-    // },
     socialHandle: "@lotuswav.es",
     showSubscribe: true,
-    initialState: "open",
-    showDivider: false
+    initialState: true,
+    showDivider: true
   },
 
-  render: ({ navigation = [], socialHandle, showSubscribe, initialState = 'open', showDivider }) => {
+  render: ({ navigation = [], socialHandle, showSubscribe = true, initialState = true, showDivider = true }) => {
     const [isOpen, setIsOpen] = useState(() => {
+      // Check localStorage first
       if (typeof window !== 'undefined') {
-        const saved = localStorage.getItem('sidebarState')
-        return saved ? JSON.parse(saved) : true
+        const saved = localStorage.getItem('sidebarState');
+        if (saved !== null) {
+          return JSON.parse(saved);
+        }
       }
-      return true
-    })
+      // If no localStorage value, use initialState prop
+      return initialState;
+    });
 
-    const { isSidebarOpen, setSidebarOpen } = useLayoutState()
+    const { isSidebarOpen, setSidebarOpen } = useLayoutState();
 
+    // Sync states and localStorage
     useEffect(() => {
-      setSidebarOpen(isOpen)
-    }, [isOpen, setSidebarOpen])
+      localStorage.setItem('sidebarState', JSON.stringify(isOpen));
+      setSidebarOpen(isOpen);
+    }, [isOpen, setSidebarOpen]);
 
-    // Sidebar visibility based on screen size
+    // Screen size check
     useEffect(() => {
       const checkWidth = () => {
         const isMobile = window.innerWidth <= 768;
-        setIsOpen(!isMobile);
-        setSidebarOpen(!isMobile);
+        if (isMobile) {
+          setIsOpen(false);
+          setSidebarOpen(false);
+        } else {
+          // On desktop, respect the saved/initial state
+          const saved = localStorage.getItem('sidebarState');
+          const shouldBeOpen = saved !== null ? JSON.parse(saved) : initialState;
+          setIsOpen(shouldBeOpen);
+          setSidebarOpen(shouldBeOpen);
+        }
       };
 
       checkWidth();
       window.addEventListener('resize', checkWidth);
       return () => window.removeEventListener('resize', checkWidth);
-    }, [setSidebarOpen]);
-
-    <style jsx global>{`
-      body {
-        margin-bottom: 16rem;
-        @media (min-width: 768px) {
-          padding-bottom: 0;
-        }
-      }
-    `}</style>
+    }, [initialState, setSidebarOpen]);
 
     return (
       <>
@@ -210,7 +207,7 @@ export const Sidebar: ComponentConfig<SidebarProps> = {
           {/* Existing sidebar content */}
           {showDivider && (
             <div className={clsx(
-              "absolute right-0 top-[13.5vh] w-px h-[86.5vh] bg-adaptive-secondaryAlt transition-opacity duration-300",
+              "absolute right-0 top-[10vh] h-[90vh] lg:top-[13.5vh] w-px lg:h-[86.5vh] bg-adaptive-secondaryAlt transition-opacity duration-300",
               isSidebarOpen ? 'opacity-100' : 'opacity-0'
             )} />
           )}
@@ -228,11 +225,11 @@ export const Sidebar: ComponentConfig<SidebarProps> = {
                 {isSidebarOpen ? '←' : '→'}
               </button>
 
-              <div className="mt-8">
+              <div className="mt-16">
                 <DropZone zone="Toggle"/>
               </div>
 
-              <nav className={`mt-12 ${isSidebarOpen ? 'space-y-1 md:space-y-3 lg:space-y-4' : 'md:space-y-3 lg:space-y-6'}`}>
+              <nav className={`mt-14 ${isSidebarOpen ? 'space-y-1 md:space-y-3 lg:space-y-4' : 'md:space-y-3 lg:space-y-6'}`}>
                 {navigation.map((item, index) => (
                   <div key={index} className="transform-gpu">
                     <Link 
