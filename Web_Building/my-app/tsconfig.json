@@ -12,6 +12,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "tailwind.config.cjs", "svg.d.ts", "lib/**/*.tsx", "lib/**/*.ts", "utils/hooks/**/*.ts", "utils/hooks/**/*.tsx", "utils/**/*.tsx", "utils/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "tailwind.config.cjs", "svg.d.ts", "lib/**/*.tsx", "lib/**/*.ts", "utils/hooks/**/*.ts", "utils/hooks/**/*.tsx", "utils/**/*.tsx", "utils/**/*.ts", "public/animatedLW.ts"],
   "exclude": ["node_modules"]
 }

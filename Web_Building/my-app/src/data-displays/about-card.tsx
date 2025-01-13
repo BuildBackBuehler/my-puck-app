@@ -148,7 +148,7 @@ export const AboutCard: ComponentConfig<AboutCardProps> = {
       <div 
         ref={cardRef}
         onMouseMove={handleMouseMove}
-        className="group relative block max-w-5xl h-[600px] md:h-[450px] mx-auto overflow-hidden rounded-lg transition-all duration-400 shadow-lg hover:shadow-xl"
+        className="group snap-center relative block max-w-5xl h-[600px] md:h-[450px] mx-auto overflow-hidden rounded-lg transition-all duration-400 shadow-lg hover:shadow-xl"
       >
         <div className="relative h-full z-10 bg-gradient-to-r from-purple-dark via-purple-dark/70 to-transparent rounded-lg">
           <div className="relative p-6 h-2/5 opacity-10 group-hover:opacity-100 transition-all duration-300 ease-in-out">

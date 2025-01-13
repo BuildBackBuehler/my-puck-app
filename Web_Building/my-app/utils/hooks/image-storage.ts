@@ -42,3 +42,24 @@ export const insertCarouselImages = async (
 
   if (error) throw error;
 };
+
+async function setupStorage() {
+  const { data: buckets, error: listError } = await supabase.storage.listBuckets();
+  
+  if (listError) throw listError;
+
+  const articleBucket = buckets?.find(b => b.name === 'article-images');
+  
+  if (!articleBucket) {
+    const { error: createError } = await supabase.storage.createBucket('article-images', {
+      public: true,
+      allowedMimeTypes: ['image/webp', 'image/jpeg', 'image/png'],
+      fileSizeLimit: 5242880 // 5MB
+    });
+    
+    if (createError) throw createError;
+    console.log('Created article-images bucket');
+  }
+}
+
+setupStorage().catch(console.error);

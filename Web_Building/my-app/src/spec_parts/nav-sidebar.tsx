@@ -9,6 +9,8 @@ import Snoo from "../../public/snoo.svg"
 import dynamic from "next/dynamic";
 import Image from "next/image"
 import clsx from "clsx"
+import { createRipple } from "./ripple"
+import { usePathname } from 'next/navigation';
 
 const dynamicIconImports = {
   'Snoo': () => (
@@ -102,7 +104,7 @@ export const Sidebar: ComponentConfig<SidebarProps> = {
   defaultProps: {
     navigation: [
       { label: "Lemmy ↗", href: "/forums", icon: "Snoo" },
-      { label: "About Us", href: "/about", icon: "Contact" },
+      { label: "About Us", href: "/about-us", icon: "Contact" },
       { label: "Arts", href: "/arts", icon: "Palette" },
       { label: "Archive", href: "/archive", icon: "Archive" },
       { label: "Essentials", href: "/essentials", icon: "Sparkles" },
@@ -115,46 +117,39 @@ export const Sidebar: ComponentConfig<SidebarProps> = {
   },
 
   render: ({ navigation = [], socialHandle, showSubscribe = true, initialState = true, showDivider = true }) => {
+    const pathname = usePathname();
+    const storageKey = `sidebarState_${pathname}`;
+
     const [isOpen, setIsOpen] = useState(() => {
-      // Check localStorage first
       if (typeof window !== 'undefined') {
-        const saved = localStorage.getItem('sidebarState');
-        if (saved !== null) {
-          return JSON.parse(saved);
+        const pageSpecificState = localStorage.getItem(storageKey);
+        if (pageSpecificState !== null) {
+          return JSON.parse(pageSpecificState);
         }
+        return initialState;
       }
-      // If no localStorage value, use initialState prop
       return initialState;
     });
 
     const { isSidebarOpen, setSidebarOpen } = useLayoutState();
 
-    // Sync states and localStorage
     useEffect(() => {
-      localStorage.setItem('sidebarState', JSON.stringify(isOpen));
       setSidebarOpen(isOpen);
-    }, [isOpen, setSidebarOpen]);
+      localStorage.setItem(storageKey, JSON.stringify(isOpen));
+    }, [isOpen, setSidebarOpen, storageKey]);
 
-    // Screen size check
+    // Sidebar visibility based on screen size
     useEffect(() => {
       const checkWidth = () => {
         const isMobile = window.innerWidth <= 768;
-        if (isMobile) {
-          setIsOpen(false);
-          setSidebarOpen(false);
-        } else {
-          // On desktop, respect the saved/initial state
-          const saved = localStorage.getItem('sidebarState');
-          const shouldBeOpen = saved !== null ? JSON.parse(saved) : initialState;
-          setIsOpen(shouldBeOpen);
-          setSidebarOpen(shouldBeOpen);
-        }
+        setIsOpen(!isMobile);
+        setSidebarOpen(!isMobile);
       };
 
       checkWidth();
       window.addEventListener('resize', checkWidth);
       return () => window.removeEventListener('resize', checkWidth);
-    }, [initialState, setSidebarOpen]);
+    }, [setSidebarOpen]);
 
     return (
       <>
@@ -235,6 +230,7 @@ export const Sidebar: ComponentConfig<SidebarProps> = {
                     <Link 
                       href={item.href}
                       className="block text-lg lg:text-xl first-letter:text-2xl first-letter:bold text-adaptive-secondary group"
+                      onClick={createRipple}
                     >
                       <span className={clsx(
                         "block transform-gpu transition-all duration-300 ease-in-out group-hover:scale-[1.035] group-hover:text-adaptive-accent",

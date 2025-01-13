@@ -77,7 +77,7 @@ export const ScrollColumn: ComponentConfig<ScrollColumnProps> = {
     }, [zoneCount]);
 
     return (
-      <div className="h-screen overflow-y-auto snap-y snap-mandatory">
+      <div className="h-screen overflow-y-auto snap-y snap-mandatory scrollbar-hide">
         <div className="relative min-h-full">
           <div className={`flex flex-col ${padding} ${gap}`}>
             {Array.from({ length: zoneCount }).map((_, index) => (

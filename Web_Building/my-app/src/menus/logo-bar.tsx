@@ -2,6 +2,7 @@ import { ComponentConfig } from "@measured/puck";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
+import AnimatedSVG from "@/public/animatedLW";
 
 export interface LogoBarProps {
   siteLogo: {
@@ -74,19 +75,8 @@ export const LogoBar: ComponentConfig<LogoBarProps> = {
                   ease: "linear"
                 }}
                 className="relative"
-                style={{
-                  width: siteLogo.width,
-                  height: siteLogo.height
-                }}
-              >
-                <Image
-                  src={siteLogo.src}
-                  alt={siteLogo.alt}
-                  width={width}
-                  height={height}
-                  className="w-full h-full object-contain"
-                  priority
-                />
+                >
+              <AnimatedSVG />
               </motion.div>
             )  : (
               <motion.div

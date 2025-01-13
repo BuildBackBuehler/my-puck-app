@@ -1,5 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
-import type { CarouselImage } from "../types/database";
+import type { CarouselImage, ArticleEngagement } from "../types/database";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY; 
@@ -85,25 +85,59 @@ export const supabase = createClient(supabaseUrl, supabaseKey);
     const { data, error } = await supabase
   
       .from('carousel_images')
-  
       .select('*')
-  
       .eq('container_name', containerName)
-  
       .order('order', { ascending: true });
   
-  
-  
     if (error) {
-  
       console.error('Error fetching carousel images:', error);
-  
-      return [];
-  
+      return [];  
+    }
+
+    return data as CarouselImage[];
+  }
+
+  export class DbService {
+    static async initializeEngagement(articleId: string) {
+      const { error } = await supabase
+        .from('article_engagement')
+        .upsert({ article_id: articleId, views: 0, likes: 0, comments: 0 });
+      
+      if (error) throw error;
     }
   
+    static async updateEngagement(articleId: string, data: Partial<ArticleEngagement>) {
+      const { error } = await supabase
+        .from('article_engagement')
+        .update(data)
+        .eq('article_id', articleId);
+      
+      if (error) throw error;
+    }
   
+    static async getTopArticles(limit = 5) {
+      const { data, error } = await supabase
+        .from('article_engagement')
+        .select('article_id, views, likes, comments')
+        .order('views', { ascending: false })
+        .limit(limit);
+      
+      if (error) throw error;
+      return data;
+    }
   
-    return data as CarouselImage[];
-  
+    static subscribeToEngagement(articleId: string, callback: (data: ArticleEngagement) => void) {
+      return supabase
+        .channel(`engagement-${articleId}`)
+        .on('postgres_changes', {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'article_engagement',
+          filter: `article_id=eq.${articleId}`
+        }, payload => {
+          callback(payload.new as ArticleEngagement);
+        })
+        .subscribe();
+    }
   }
+  

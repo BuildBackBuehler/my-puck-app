@@ -18,7 +18,8 @@ module.exports = {
         dark: '#141414'
       },
       'red': {
-        DEFAULT: '#B43018',
+        'red-orange': '#B43018',
+        DEFAULT: '#D90429',
         dark: '#9B2915'
       },
       'white': {
@@ -29,12 +30,14 @@ module.exports = {
       'cyan': '#28CCC7',
       'purple': { 
         DEFAULT: '#57035b',
-        dark: '#11082a',
+        dark: '#231056',
+        'too-dark': '#11082a'
       },
       'gold': {
         light: '#B39C4D',
         DEFAULT: '#DEB841',
       },
+      'green': '#058C42',
       adaptive: {
         primary: 'var(--color-primary)',
         primaryAlt: 'var(--color-primary-Alt)',
@@ -63,6 +66,13 @@ module.exports = {
       ],
     },
     extend: {
+              fadeInLeft: {
+          '0%': { opacity: '0', transform: 'translateX(-50%)' },
+          '100%': { opacity: '1', transform: 'translateX(0)' },
+        },
+      animation: {
+        fadeInLeft: 'fadeInLeft 1.5s ease-out forwards',
+      },
           scale: {
       '102': '1.02',
     },
@@ -257,7 +267,7 @@ module.exports = {
           '--color-secondary': '#232323', // Black
           '--color-secondary-Alt': '#525252', // Dark Gray
           '--color-accent': '#9B2915', // Red
-          '--color-accent2': '#11082a', // Purple
+          '--color-accent2': '#231056', // Purple
           '--color-accent3': '#B39C4D', // Gold
         },
         '.dark': {

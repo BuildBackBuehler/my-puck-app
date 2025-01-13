@@ -57,12 +57,12 @@ export const ScrollFree: ComponentConfig<ScrollFreeProps> = {
   },
 
   render: ({ paddingX, paddingY, gap, id, zoneCount }) => (
-    <div className="mt-14 h-screen overflow-y-auto snap-y snap-proximity pb-12">
+    <div className="mt-14 h-screen overflow-y-auto snap-y pb-12">
       <div className={`flex flex-col ${paddingX} ${paddingY} ${gap}`}>
         {Array.from({ length: zoneCount }).map((_, index) => (
           <div 
             key={`${id}-${index}`}
-            className="snap-start scroll-mt-4"
+            className="snap-proximity scroll-mt-4"
           >
             <DropZone zone={`zone-${id}-${index}`} />
           </div>

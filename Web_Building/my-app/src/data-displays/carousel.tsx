@@ -1,5 +1,5 @@
 import { ComponentConfig } from "@measured/puck"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState, useCallback } from "react"
 import { getCarouselImages } from "../../utils/supabase/client"
 import { CarouselImage } from "../../utils/types/database"
 import gsap from "gsap"
@@ -41,8 +41,14 @@ export const Carousel: ComponentConfig<CarouselProps> = {
     containerSize: {
       type: "object",
       objectFields: {
-        width: { type: "text" },
-        height: { type: "text" }
+        width: { 
+          type: "text",
+          defaultValue: "min(80vw, 1200px)" // Max width constraint
+        },
+        height: { 
+          type: "text",
+          defaultValue: "min(60vh, 800px)" // Max height constraint
+        }
       }
     },
     perspective: { type: "text" }
@@ -52,22 +58,63 @@ export const Carousel: ComponentConfig<CarouselProps> = {
     title: "Gallery",
     perspective: "2000px",
     containerSize: {
-      width: "300px",
-      height: "400px"
+      width: "min(80vw, 1200px)",
+      height: "min(60vh, 800px)"
     }
   },
 
   render: ({ 
     title, 
     containerId, 
-    perspective = "1000px", 
-    containerSize = { width: "80vw", height: "60vh" } 
+    perspective = "2000px", 
+    containerSize 
   }) => {
     const [images, setImages] = useState<CarouselImage[]>([])
     const stageRef = useRef<HTMLDivElement>(null)
     const ringRef = useRef<HTMLDivElement>(null)
     const imageRefs = useRef<HTMLDivElement[]>([])
     let xPos = 0
+
+    const [lastUpdateTime, setLastUpdateTime] = useState(Date.now());
+    const [dragCoefficient, setDragCoefficient] = useState(0.25);
+    const THROTTLE_MS = 16; // ~60fps
+
+    const handleMouseMove = useCallback((e: MouseEvent) => {
+      const currentTime = Date.now();
+      if (currentTime - lastUpdateTime < THROTTLE_MS) return;
+    
+      const rect = stageRef.current?.getBoundingClientRect();
+      if (!rect) return;
+    
+      const mouseX = e.clientX;
+      const speed = Math.min(
+        Math.abs((mouseX - rect.left) / rect.width - 0.5) * dragCoefficient,
+        0.5
+      );
+      
+      xPos += speed * (mouseX > rect.width / 2 ? 1 : -1);
+      rotateRing();
+      
+      setLastUpdateTime(currentTime);
+    }, [lastUpdateTime]);
+    
+    useEffect(() => {
+      const stage = stageRef.current;
+      if (!stage) return;
+    
+      stage.addEventListener('mousemove', handleMouseMove);
+      return () => stage.removeEventListener('mousemove', handleMouseMove);
+    }, [handleMouseMove]);
+    
+    const rotateRing = () => {
+      if (!ringRef.current) return;
+      
+      gsap.to(ringRef.current, {
+        rotateY: xPos * -360,
+        duration: 0.5,
+        ease: "power2.out"
+      });
+    };
 
     useEffect(() => {
       if (containerId) {
@@ -91,7 +138,7 @@ export const Carousel: ComponentConfig<CarouselProps> = {
         gsap.set(ringRef.current, { rotationY: 180, cursor: "grab" })
         gsap.set(imageRefs.current, {
           rotateY: (i) => i * -36,
-          transformOrigin: "50% 50% 500px",
+          transformOrigin: "60% 60% 500px",
           z: -500,
           backgroundImage: (i) => `url(${images[i].image_url})`,
           backgroundPosition: (i) => getBgPos(i),
@@ -141,6 +188,45 @@ export const Carousel: ComponentConfig<CarouselProps> = {
       }
     }, [images])
 
+    const [selectedImage, setSelectedImage] = useState<CarouselImage | null>(null);
+
+    const ImageModal = ({ image, onClose }: { image: CarouselImage; onClose: () => void }) => {
+      useEffect(() => {
+        const handleEsc = (e: KeyboardEvent) => {
+          if (e.key === 'Escape') onClose();
+        };
+        window.addEventListener('keydown', handleEsc);
+        return () => window.removeEventListener('keydown', handleEsc);
+      }, [onClose]);
+    
+      return (
+        <div 
+          className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center"
+          onClick={onClose}
+        >
+          <div 
+            className="w-screen h-screen p-4 flex items-center justify-center"
+            onClick={e => e.stopPropagation()}
+          >
+            <button
+              className="absolute top-4 right-4 text-white hover:text-adaptive-accent z-50"
+              onClick={onClose}
+            >
+              Close
+            </button>
+            <Image
+              src={image.image_url}
+              alt={image.caption}
+              className="w-auto h-auto max-w-[95vw] max-h-[95vh] object-contain"
+              width={1920}
+              height={1080}
+              priority
+            />
+          </div>
+        </div>
+      );
+    };
+
     if (!images.length) return null
 
     return (
@@ -165,19 +251,21 @@ export const Carousel: ComponentConfig<CarouselProps> = {
             }
           }}
         >
-          <h1 className="text-7xl md:text-9xl font-display text-adaptive-secondary font-bold pb-64">
+          <h1 className="select-none text-7xl md:text-9xl font-display text-adaptive-secondary font-bold pb-64">
             {title}
           </h1>
         </div>
 
         <div style={{
           perspective,
-          width: containerSize.width,
-          height: containerSize.height,
+          width: containerSize?.width || "min(80vw, 1200px)",
+          height: containerSize?.height || "min(60vh, 800px)",
           position: "absolute",
           left: "50%",
           top: "50%",
-          transform: "translate(-50%, -50%)"
+          transform: "translate(-50%, -50%)",
+          maxWidth: "1200px", // Hard limit
+          margin: "0 auto"
         }}>
           <div 
             ref={ringRef}
@@ -194,12 +282,15 @@ export const Carousel: ComponentConfig<CarouselProps> = {
             ref={el => {
               if (el) imageRefs.current[i] = el
             }}
-            className="group"
+            className="group cursor-pointer"
+            onClick={() => setSelectedImage(image)}
             style={{
               position: "absolute",
               width: "100%",
               height: "100%",
-              transformStyle: "preserve-3d"
+              transformStyle: "preserve-3d",
+              backdropFilter: "blur(1000px)",
+              zIndex: 500
             }}
           >
             <Image 
@@ -209,8 +300,8 @@ export const Carousel: ComponentConfig<CarouselProps> = {
               width={600}
               height={1200}
             />
-            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <h2 className="font-display text-4xl font-bold text-white bg-black-light/20 backdrop-blur-sm z-10 drop-shadow-lg p-4">
+            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300">
+              <h2 className="font-display text-3xl font-bold text-white bg-black-light/20 backdrop-blur-sm z-10 drop-shadow-lg p-4">
                 {image.caption}
               </h2>
             </div>
@@ -218,6 +309,12 @@ export const Carousel: ComponentConfig<CarouselProps> = {
         ))}
           </div>
         </div>
+        {selectedImage && (
+          <ImageModal 
+            image={selectedImage} 
+            onClose={() => setSelectedImage(null)} 
+          />
+        )}
       </div>
     )
   }

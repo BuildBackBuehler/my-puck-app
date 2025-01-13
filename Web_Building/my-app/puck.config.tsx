@@ -18,8 +18,8 @@ import { ArticleProps, ArticleCardProps, ArticleCardListProps, ArticleDialogProp
 import { IssueCard, Sidebar, Socials, ArchiveGrid, ArchivePage, FilterBar } from "./src/spec_parts";
 import { IssueCardProps, SidebarProps, SocialsProps, ArchiveGridProps, ArchivePageProps, FilterBarProps } from "./src/spec_parts";
 
-import { ArticleList, Circle, FeaturedHeader, Ticker } from "./src/right-bar";
-import { ArticleListProps, CircleProps, FeaturedHeaderProps, TickerProps } from "./src/right-bar";
+import { ArticleList, Circle, FeaturedHeader, Ticker,  } from "./src/right-bar";
+import { ArticleListProps, CircleProps, FeaturedHeaderProps, TickerProps,  } from "./src/right-bar";
 
 type Props = {
   HeadingBlock: { title: string };
@@ -134,27 +134,27 @@ export const config: Config<Props> = {
     categories: {
     basics: {
       title: 'Basics',
-      components: [ 'Article', 'ArticleCard', 'ArticleCardList','ArticleDialog', 'DemoCard', 'Icon']
+      components: [ 'Article', 'ArticleCard', 'ArticleCardList','ArticleDialog', 'DemoCard', 'Icon' ]
     },
     layout: {
       title: 'Layout',
-      components: [ 'DropColumn', 'FixedColumns', 'FullWidthRow', 'ScrollColumn','ScrollFree', 'ThemeToggler',  'ThreeColumns',  'TwoColumns']
+      components: [ 'DropColumn', 'FixedColumns', 'FullWidthRow', 'ScrollColumn','ScrollFree', 'ThemeToggler',  'ThreeColumns',  'TwoColumns' ]
     },
     buttons: {
       title: 'Buttons',
-      components: [ 'Button', 'ContactDialog']
+      components: [ 'Button', 'ContactDialog' ]
     },
     'data displays': {
       title: 'Data Displays',
-      components: ['AboutCard', 'Accordion', 'Author', 'AspectRatio', 'Avatar', 'Carousel', 'Collapsible',`HoverCard`, 'MusicCarousel', 'Poll', 'ScrollArticles', 'Ticker']
+      components: [ 'AboutCard', 'Accordion', 'Author', 'AspectRatio', 'Avatar', 'Carousel', 'Collapsible',`HoverCard`, 'MusicCarousel', 'Poll', 'ScrollArticles' ]
     },
     menus: {
       title: 'Menus',
-      components: ['CommandMenu', 'ContextMenu', 'DropdownMenu', 'LogoBar', 'Menubar', 'NavigationMenu', 'Tabs', 'Toolbar', 'VertNavMenu']
+      components: [ 'CommandMenu', 'ContextMenu', 'DropdownMenu', 'LogoBar', 'Menubar', 'NavigationMenu', 'Tabs', 'Toolbar', 'VertNavMenu' ]
     },
     'right-side-bar': {
       title: 'Right Side Bar',
-      components: ['ArticleList', 'Circle', 'FeaturedHeader', 'Ticker']
+      components: [ 'ArticleList', 'Circle', 'FeaturedHeader', 'Ticker' ]
     },
   },
     root: {

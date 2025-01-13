@@ -1,5 +1,5 @@
 import { ComponentConfig } from "@measured/puck";
-import { ArticleCard, ArticleCardProps } from "./article-card";
+import { ArticleCard } from "./article-card";
 import { useEffect, useRef, useState } from "react";
 import { useLayoutState } from "../../lib/layout-state";
 

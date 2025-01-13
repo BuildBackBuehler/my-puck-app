@@ -2,146 +2,85 @@ import { ComponentConfig } from "@measured/puck";
 import { Eye, Heart, MessageCircle } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { ArticleWithEngagement } from "@/utils/types/database";
 
-export interface ArticleData {
-  id: string;
-  image: {
-    src: string;
-    alt: string;
-  };
-  title: string;
-  subtitle: string;
-  author: string;
-  readTime: string;
-  date: string;
-  summary: string;
-  link: string;
-  engagement: {
-    views: number;
-    likes: number;
-    comments: number;
-  };
-}
-
-export interface ArchiveGridProps {
-  articles: ArticleData[];
-  batchSize?: number;
-  gridGap?: string;
-}
+type ArchiveGridProps = {
+  batchSize: number;
+  gridGap: string;
+  articles: ArticleWithEngagement[];
+};
 
 export const ArchiveGrid: ComponentConfig<ArchiveGridProps> = {
   fields: {
-    articles: {
-      type: "array",
-      arrayFields: {
-        id: { type: "text" },
-        image: {
-          type: "object",
-          objectFields: {
-            src: { type: "text" },
-            alt: { type: "text" }
-          }
-        },
-        title: { type: "text" },
-        subtitle: { type: "text" },
-        author: { type: "text" },
-        readTime: { type: "text" },
-        date: { type: "text" },
-        summary: { type: "textarea" },
-        link: { type: "text" },
-        engagement: {
-          type: "object",
-          objectFields: {
-            views: { type: "number" },
-            likes: { type: "number" },
-            comments: { type: "number" }
-          }
-        }
-      }
-    },
     batchSize: { type: "number" },
-    gridGap: { type: "text" }
+    gridGap: { 
+      type: "select",
+      options: ["1rem", "2rem", "3rem"].map(gap => ({
+        label: gap,
+        value: gap
+      }))
+    }
   },
 
   defaultProps: {
-    articles: Array(6).fill({}).map((_, i) => ({
-      id: `article-${i}`,
-      image: {
-        src: "/translogo3000.png",
-        alt: "Article thumbnail"
-      },
-      title: `Article ${i + 1}`,
-      subtitle: "Article subtitle",
-      author: "Author Name",
-      readTime: "5 min read",
-      date: "12.06.2021",
-      summary: "Article summary goes here...",
-      link: "#",
-      engagement: {
-        views: 0,
-        likes: 0,
-        comments: 0
-      }
-    })),
     batchSize: 9,
-    gridGap: "2rem"
+    gridGap: "2rem",
+    articles: []
   },
 
-  render: ({ articles = [], batchSize = 9, gridGap = "2rem" }) => {
-    const [visibleItems, setVisibleItems] = useState(batchSize);
-    const observerTarget = useRef(null);
-
-    useEffect(() => {
-      if (!articles?.length) return;
-
-      const observer = new IntersectionObserver(
-        (entries) => {
-          const lastBatchIndex = Math.floor(visibleItems / batchSize) * batchSize;
-          if (entries[0].isIntersecting && lastBatchIndex < articles.length) {
-            setVisibleItems(prev => Math.min(prev + batchSize, articles.length));
-          }
-        },
-        { threshold: 0.1 }
-      );
-
-      if (observerTarget.current) {
-        observer.observe(observerTarget.current);
-      }
-
-      return () => observer.disconnect();
-    }, [visibleItems, articles?.length, batchSize]);
-
-    if (!articles?.length) return null;
-
-    return (
-      <div className="w-full max-w-7xl mx-auto px-4 py-8">
-        {articles.length > 0 && (
-          <div className="h-[calc(100vh-12rem)] overflow-y-auto">
-            <div 
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3" 
-              style={{ gap: gridGap }}
-            >
-              {articles.slice(0, visibleItems).map((article, index) => (
-                <article 
-                  key={`${article.id}-${index}`} 
-                  className="flex flex-col rounded-lg overflow-hidden shadow-lg"
-                >
-                  {/* Article content */}
-                </article>
-              ))}
-            </div>
-            
-            {visibleItems < articles.length && (
-              <div 
-                ref={observerTarget}
-                className="h-16 mt-4"
-                aria-hidden="true"
-              />
-            )}
-          </div>
-        )}
-      </div>
-    );
-  }
+  render: ({ articles = [], batchSize = 9, gridGap = "2rem" }) => (
+    <div className="w-full max-w-7xl mx-auto px-4 py-8">
+      {!articles.length ? (
+        <div className="text-center p-8 text-adaptive-secondaryAlt">
+          No articles available
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3" style={{ gap: gridGap }}>
+          {articles.slice(0, batchSize).map(article => (
+            <article key={article.id} className="flex flex-col rounded-lg overflow-hidden shadow-lg">
+              <Link href={`/articles/${article.slug}`}>
+                {article.featured_image && (
+                  <div className="relative h-48">
+                    <Image
+                      src={article.featured_image}
+                      alt={article.title}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    />
+                  </div>
+                )}
+                <div className="p-4 flex-1">
+                  <h2 className="text-xl font-bold">{article.title}</h2>
+                  <h3 className="text-sm italic text-adaptive-accent mb-2">{article.subtitle}</h3>
+                  {article.summary && (
+                    <p className="text-base text-adaptive-secondaryAlt mb-4 line-clamp-[8]">
+                      {article.summary}
+                    </p>
+                  )}
+                  <div className="flex justify-between items-center mt-auto">
+                    <span className="text-sm text-adaptive-accent">{article.category}</span>
+                    <div className="flex gap-4 text-sm text-adaptive-secondaryAlt">
+                      <span className="flex items-center gap-1">
+                        <Eye className="w-4" />
+                        {article.engagement?.views || 0}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <Heart className="w-4" />
+                        {article.engagement?.likes || 0}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <MessageCircle className="w-4" />
+                        {article.engagement?.comments || 0}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            </article>
+          ))}
+        </div>
+      )}
+    </div>
+  )
 };

@@ -22,7 +22,7 @@ export const Circle: ComponentConfig<CircleProps> = {
     <section className="hidden lg:block mt-80 relative w-full max-w-3xl mx-auto aspect-[2/1]">
       <div 
         className="absolute bottom-0 left-1/2 -translate-x-1/2 
-          w-[95%] lg:w-[85%] aspect-square rounded-[50%] bg-adaptive-secondary"
+          w-[95%] aspect-square rounded-[50%] bg-adaptive-secondary"
       >
         <div 
           className="absolute top-1/4 left-1/2 -translate-x-1/2 

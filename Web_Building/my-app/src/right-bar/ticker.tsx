@@ -372,7 +372,7 @@ export const Ticker: ComponentConfig<TickerProps> = {
                             >
                               {item.title}
                             </a>
-                            <span className="ml-8 w-2 h-2 lg:w-3 lg:h-3 bg-adaptive-primary rounded-full whitespace-nowrap"></span>
+                            <span className="ml-8 w-2 h-2 lg:w-3 lg:h-3 bg-adaptive-primary dark:bg-white-mid rounded-full whitespace-nowrap"></span>
                           </div>
                         ))}
                       </div>
@@ -386,11 +386,11 @@ export const Ticker: ComponentConfig<TickerProps> = {
               sideOffset={4}
               className={clsx(
                 "z-50 rounded-md px-3 py-0.5 text-xs font-medium shadow-md",
-                "bg-adaptive-secondary text-adaptive-primaryAlt"
+                "bg-adaptive-secondaryAlt text-adaptive-primaryAlt"
               )}
             >
               Right click to adjust speed
-              <TooltipPrimitive.Arrow className="fill-current text-adaptive-primaryAlt" />
+              <TooltipPrimitive.Arrow className="fill-adaptive-secondaryAlt" />
             </TooltipPrimitive.Content>
           </TooltipPrimitive.Root>
 
