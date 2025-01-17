@@ -1,27 +1,35 @@
+// middleware.ts
 import { NextResponse } from "next/server";
-
 import type { NextRequest } from "next/server";
 
 export async function middleware(req: NextRequest) {
-  const res = NextResponse.next();
-
-  if (req.method === "GET") {
-    // Rewrite routes that match "/[...puckPath]/edit" to "/puck/[...puckPath]"
-    if (req.nextUrl.pathname.endsWith("/edit")) {
-      const pathWithoutEdit = req.nextUrl.pathname.slice(
-        0,
-        req.nextUrl.pathname.length - 5
-      );
-      const pathWithEditPrefix = `/puck${pathWithoutEdit}`;
-
-      return NextResponse.rewrite(new URL(pathWithEditPrefix, req.url));
-    }
-
-    // Disable "/puck/[...puckPath]"
-    if (req.nextUrl.pathname.startsWith("/puck")) {
-      return NextResponse.redirect(new URL("/", req.url));
-    }
+  // Allow all HTTP methods for article routes
+  if (req.nextUrl.pathname.startsWith('/articles/') && !req.nextUrl.pathname.endsWith('/edit')) {
+    return NextResponse.next();
   }
 
-  return res;
+  // Development mode handling
+  if (process.env.NODE_ENV === 'development') {
+    if (req.nextUrl.pathname.endsWith('/edit')) {
+      const path = req.nextUrl.pathname.slice(0, -5);
+      return NextResponse.rewrite(new URL(`/puck${path}`, req.url));
+    }
+    return NextResponse.next();
+  }
+
+  // Production mode - block edit routes
+  if (req.nextUrl.pathname.endsWith('/edit') || 
+      req.nextUrl.pathname.startsWith('/puck')) {
+    return new NextResponse('Editing not available in production', { status: 404 });
+  }
+
+  return NextResponse.next();
 }
+
+export const config = {
+  matcher: [
+    '/articles/:path*', 
+    '/:path*/edit',
+    '/puck/:path*'
+  ]
+};

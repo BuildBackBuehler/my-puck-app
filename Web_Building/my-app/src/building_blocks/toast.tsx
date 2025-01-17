@@ -82,10 +82,13 @@ export const Toast: ComponentConfig<ToastProps> = {
           onOpenChange={setOpen}
           className={clsx(
             "z-50 fixed w-auto shadow-lg rounded-lg",
+            "radix-swipe-direction-right:radix-swipe-end:animate-toast-swipe-out-x",
+            "radix-swipe-direction-right:translate-x-radix-toast-swipe-move-x",
             "radix-state-closed:animate-toast-hide",
-            "radix-swipe-end:animate-toast-swipe-out",
-            "radix-swipe-cancel:translate-x-0 duration-200 ease-[ease]",
-            "focus:outline-none focus-visible:ring focus-visible:ring-purple-500",
+            "radix-swipe-direction-down:radix-swipe-end:animate-toast-swipe-out-y",
+            "radix-swipe-direction-down:translate-y-radix-toast-swipe-move-y",
+            "radix-swipe-cancel:translate-x-0 radix-swipe-cancel:duration-200 radix-swipe-cancel:ease-in-out",
+            "focus:outline-none focus-visible:ring focus-visible:ring-adaptive-accent focus-visible:ring-opacity-75"
             {
               "bg-white": variant === "light",
               "bg-gray-800": variant === "dark",

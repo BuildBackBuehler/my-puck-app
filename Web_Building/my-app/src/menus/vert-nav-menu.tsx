@@ -91,8 +91,8 @@ export const VertNavMenu: ComponentConfig<VertNavMenuProps> = {
       link: "w-full text-left px-3 py-2 text-sm rounded-md hover:bg-gray-100 dark:hover:bg-gray-900 text-sm font-medium text-gray-700 dark:text-gray-100",
       content: "absolute w-64 left-full top-0 ml-2 rounded-lg radix-motion-from-start:animate-enter-from-left radix-motion-from-end:animate-enter-from-right radix-motion-to-start:animate-exit-to-left radix-motion-to-end:animate-exit-to-right",
       viewportWrapper: "absolute left-full top-0 ml-2 w-64",
-      viewport: "relative shadow-lg rounded-md bg-white dark:bg-gray-800 overflow-hidden w-radix-navigation-menu-viewport h-radix-navigation-menu-viewport radix-state-open:animate-scale-in-content radix-state-closed:animate-scale-out-content origin-[top_center] transition-[width_height] duration-300 ease-[ease]",
-      indicator: "z-10 left-full flex items-center justify-center w-2 overflow-hidden radix-state-visible:animate-fade-in radix-state-hidden:animate-fade-out transition-[width_transform] duration-300 ease-[ease]"
+      viewport: "relative shadow-lg rounded-md bg-white dark:bg-gray-800 overflow-hidden w-radix-navigation-menu-viewport h-radix-navigation-menu-viewport radix-state-open:animate-scale-in-content radix-state-closed:animate-scale-out-content origin-[top_center] transition-[width_height] duration-300 ease-in-out",
+      indicator: "z-10 left-full flex items-center justify-center w-2 overflow-hidden radix-state-visible:animate-fade-in radix-state-hidden:animate-fade-out transition-[width_transform] duration-300 ease-in-out"
     }
   },
 

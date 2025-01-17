@@ -1,5 +1,6 @@
-import { ComponentConfig } from "@measured/puck";
-import { DropZone } from "@measured/puck";
+"use client";
+
+import { ComponentConfig, DropZone } from "@measured/puck";
 import { generateId } from "../../lib/generate-id";
 import { useLayoutState } from '../../lib/layout-state'
 import { useRef, useEffect } from 'react';

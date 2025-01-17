@@ -1,3 +1,5 @@
+"use client";
+
 import { ComponentConfig } from "@measured/puck";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
@@ -60,7 +62,37 @@ export const ContactDialog: ComponentConfig<ContactDialogProps> = {
       email: "",
       message: ""
     });
+
     const [isVerified, setIsVerified] = useState(false);
+
+    const verifyToken = async (token: string) => {
+      try {
+        const response = await fetch('/api/verify-recaptcha', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ token })
+        });
+        
+        const data = await response.json();
+        return data.success;
+      } catch (error) {
+        console.error('ReCAPTCHA verification failed:', error);
+        return false;
+      }
+    };
+
+    const handleVerify = async (token: string | null) => {
+      if (!token) {
+        setIsVerified(false);
+        return;
+      }
+
+      const isValid = await verifyToken(token);
+      setIsVerified(isValid);
+    };
+
     const hasChanges = formData.name || formData.email || formData.message;
 
     useEffect(() => {
@@ -79,10 +111,6 @@ export const ContactDialog: ComponentConfig<ContactDialogProps> = {
       } else {
         setIsOpen(false);
       }
-    };
-
-    const handleVerify = (token: string | null) => {
-      setIsVerified(!!token);
     };
 
     const handleSubmit = async (e: React.FormEvent) => {

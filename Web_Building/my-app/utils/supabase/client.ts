@@ -1,8 +1,13 @@
 import { createClient } from "@supabase/supabase-js";
 import type { CarouselImage, ArticleEngagement } from "../types/database";
+import { deployToCloudflarePages } from "../cloudflare/cloudflare";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY; 
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+if (!supabaseUrl || !supabaseKey) {
+  throw new Error('Missing Supabase environment variables');
+}
 
 export const supabase = createClient(supabaseUrl, supabaseKey);
 
@@ -141,3 +146,30 @@ export const supabase = createClient(supabaseUrl, supabaseKey);
     }
   }
   
+  export async function setupHybridDeployment() {
+    // Store static assets and data in Cloudflare
+    const { data: cfData, error: cfError } = await deployToCloudflarePages({
+      url: process.env.SITE_URL,
+      pageId: process.env.CF_PAGE_ID,
+      projectName: process.env.PROJECT_NAME
+    });
+  
+    if (cfError) throw cfError;
+  
+    // Store user data and dynamic content in Supabase
+    const { data: dbData, error: dbError } = await supabase
+      .from('deployments')
+      .insert({
+        cf_deployment_id: cfData.id,
+        status: 'active'
+      });
+  
+    if (dbError) throw dbError;
+  
+    return {
+      cloudflare: cfData,
+      supabase: dbData
+    };
+  } 
+
+export { createClient };

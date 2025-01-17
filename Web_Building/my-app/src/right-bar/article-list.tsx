@@ -5,7 +5,7 @@ import { supabase } from "@/utils/supabase/client";
 import { ArticleWithEngagement } from "@/utils/types/database";
 import { Circle } from "./circle";
 
-type ArticleListProps = {
+export type ArticleListProps = {
   maxArticles?: number;
   articles?: ArticleWithEngagement[];
 };
@@ -110,15 +110,15 @@ export const ArticleList: ComponentConfig<ArticleListProps> = {
                   {article.summary}
                 </p>
               </div>
-              <Circle.render
-                title="Leave Your Old Life Behind"
-                subtitle="Explore"
-                blurb="Don't try to be like someone else, be yourself. Be secure with yourself."
-                className="hidden lg:block absolute w-full max-w-3xl aspect-[2/1]"
-              />
             </article>
           ))}
         </div>
+        <Circle.render
+            title="Leave Your Old Life Behind"
+            subtitle="Explore"
+            blurb="Don't try to be like someone else, be yourself. Be secure with yourself."
+            className="hidden lg:block absolute w-full max-w-3xl aspect-[2/1]"
+          />
       </section>
     );
   }

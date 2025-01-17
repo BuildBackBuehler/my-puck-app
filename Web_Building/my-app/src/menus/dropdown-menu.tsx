@@ -1,3 +1,5 @@
+"use client";
+
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
 import { ComponentConfig } from "@measured/puck";
 import React, { ReactElement, useState } from "react";

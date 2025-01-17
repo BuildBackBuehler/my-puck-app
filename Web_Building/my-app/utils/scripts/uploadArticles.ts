@@ -8,7 +8,7 @@ dotenv.config({ path: './.env.local' })
 
 const supabase = createClient<Database>(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  process.env.SUPABASE_SERVICE_KEY!
 );
 
 const uploadImage = async (imgPath: string) => {
@@ -19,14 +19,11 @@ const uploadImage = async (imgPath: string) => {
     .from('article-images')
     .upload(imgId, imgBuffer, { contentType: 'image/webp' });
 
-  return supabase.storage
-    .from('article-images')
-    .getPublicUrl(imgId)
-    .data.publicUrl;
+  return supabase.storage.from('article-images').getPublicUrl(imgId).data.publicUrl;
 };
 
 const processImages = async (articlePath: string, content: string) => {
-  const imageRegex = /!\[.*?\]\((attachment\/.*?)\)/g;
+  const imageRegex = /<img(?:\s+align="[^"]*")?\s+src="([^"]+)"[^>]*>/g;
   const matches = Array.from(content.matchAll(imageRegex));
   let processedContent = content;
 
@@ -35,7 +32,8 @@ const processImages = async (articlePath: string, content: string) => {
     const absolutePath = path.join(articlePath, imgPath);
     try {
       const publicUrl = await uploadImage(absolutePath);
-      processedContent = processedContent.replace(fullMatch, `![](${publicUrl})`);
+      const newImgTag = fullMatch.replace(imgPath, publicUrl);
+      processedContent = processedContent.replace(fullMatch, newImgTag);
     } catch (error) {
       console.error(`Failed to process image ${imgPath}:`, error);
     }
@@ -70,23 +68,22 @@ const extractMetadataAndContent = async (rawContent: string) => {
         multilineValue = '';
       }
 
-      const [, key, value] = labelMatch;
+      const [, key, rawValue] = labelMatch;
       currentField = key.toLowerCase();
+      const value = rawValue.trim();
       
       switch (currentField) {
         case 'author': metadata.author = value; break;
         case 'category': metadata.category = value; break;
         case 'date': metadata.date = value; break;
         case 'reading': metadata.reading_time = value; break;
-        case 'subtitle/quote': metadata.subtitle_quote = value; break;
+        case 'subtitle': metadata.subtitle_quote = value.replace(/^["'](.+)["']$/, '$1'); break;
         case 'summary': multilineValue = value; break;
         case 'featured_image':
-          const imageMatch = value.match(/!\[.*?\]\((.*?)\)/);
+          const imageMatch = value.match(/<img[^>]+src="([^"]+)"[^>]*>/);
           metadata.featured_image = imageMatch ? imageMatch[1] : value;
           break;
       }
-    } else if (currentField === 'summary') {
-      multilineValue += ' ' + line.trim();
     }
   });
 
@@ -100,6 +97,7 @@ const extractMetadataAndContent = async (rawContent: string) => {
 const processArticle = async (articlePath: string) => {
   const mdFile = (await fs.readdir(articlePath))
     .find(f => f.endsWith('.md') && f !== 'attachment.md');
+    
   if (!mdFile) throw new Error('No markdown file found');
 
   const rawContent = await fs.readFile(path.join(articlePath, mdFile), 'utf-8');
@@ -129,10 +127,26 @@ const processArticle = async (articlePath: string) => {
     featured_image: featuredImageUrl
   };
 
-  const { error } = await supabase.from('articles').insert(articleData);
-  if (error) throw error;
+  const { data: insertedArticle, error: articleError } = await supabase
+    .from('articles')
+    .insert(articleData)
+    .select()
+    .single();
 
-  return articleData;
+  if (articleError) throw articleError;
+
+  const { error: engagementError } = await supabase
+    .from('article_engagement')
+    .insert({
+      article_id: insertedArticle.id,
+      views: 0,
+      likes: 0,
+      comments: 0
+    });
+
+  if (engagementError) throw engagementError;
+
+  return insertedArticle;
 };
 
 export const processAllArticles = async (articlesDir: string) => {
@@ -152,4 +166,4 @@ export const processAllArticles = async (articlesDir: string) => {
   }
 
   return results;
-};
+}

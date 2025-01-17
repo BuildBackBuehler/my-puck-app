@@ -1,3 +1,5 @@
+"use client";
+
 import { ComponentConfig } from "@measured/puck"
 import * as DialogPrimitive from "@radix-ui/react-dialog"
 import { Cross1Icon } from "@radix-ui/react-icons"
@@ -5,7 +7,6 @@ import { MessageCircle, Heart, Eye, CornerDownRight } from "lucide-react"
 import Image from "next/image"
 import { useState, useEffect, useCallback } from "react"
 import { Transition, TransitionChild } from "@headlessui/react"
-import { FacebookShare, RedditShare, TwitterShare, LinkedinShare } from 'react-share-kit'
 import { Avatar, AvatarWrapper } from "../data-displays/avatar"
 import { ArticleEngagement, Author } from "@/utils/types/database"
 import { SocialShareButtons } from "../buttons/SocialShareButtons"
@@ -16,6 +17,7 @@ import { useAuthor } from "@/utils/hooks/useAuthor"
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 import Link from "next/link"
 
+// Update interface to include article engagement
 export interface ArticleDialogProps {
     slug: string;
     showEngagement?: boolean;
@@ -25,6 +27,7 @@ export interface ArticleDialogProps {
       linkedin?: string;
       reddit?: string;
     };
+    engagement?: ArticleEngagement;  // Add this
 }
 
 export const ArticleDialog: ComponentConfig<ArticleDialogProps> = {
@@ -49,31 +52,49 @@ export const ArticleDialog: ComponentConfig<ArticleDialogProps> = {
       }
     },
 
-    render: ({ slug, showEngagement = true, socialShareUrls = {} }) => {
+    render: ({ slug, showEngagement = true, socialShareUrls = {}, engagement: initialEngagement }) => {
     const { article, loading, updateEngagement } = useArticle(slug);
     const [isLiked, setIsLiked] = useState(false);
     const [hasViewed, setHasViewed] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
-    
-    // Move author hook after article check
-    const { author, loading: authorLoading } = useAuthor(
-      article?.author?.id ?? ''
+    const [currentEngagement, setCurrentEngagement] = useState<ArticleEngagement>(() => 
+      initialEngagement || article?.engagement || {
+        article_id: '',
+        views: 0,
+        likes: 0,
+        comments: 0
+      }
     );
+
+    // Sync with article engagement when it changes
+    useEffect(() => {
+      if (article?.engagement) {
+        setCurrentEngagement(article.engagement);
+      }
+    }, [article?.engagement]);
 
     useEffect(() => {
       if (!article || !isOpen || hasViewed) return;
-      updateEngagement({ views: (article.engagement?.views || 0) + 1 });
+      const newEngagement = {
+        ...currentEngagement,
+        views: (currentEngagement.views || 0) + 1
+      };
+      setCurrentEngagement(newEngagement);
+      updateEngagement(newEngagement);
       setHasViewed(true);
-    }, [article]);
+    }, [article, isOpen, hasViewed, currentEngagement]);
 
     const handleLike = useCallback(() => {
       if (!article) return;
       const newLikedState = !isLiked;
       setIsLiked(newLikedState);
-      updateEngagement({ 
-        likes: article.engagement.likes + (newLikedState ? 1 : -1) 
-      });
-    }, [article, isLiked]);
+      const newEngagement = {
+        ...currentEngagement,
+        likes: currentEngagement.likes + (newLikedState ? 1 : -1)
+      };
+      setCurrentEngagement(newEngagement);
+      updateEngagement(newEngagement);
+    }, [article, isLiked, currentEngagement]);
 
     if (loading || !article) return null;
 
@@ -132,15 +153,15 @@ export const ArticleDialog: ComponentConfig<ArticleDialogProps> = {
                               <div className="text-adaptive-secondaryAlt flex items-center space-x-2 text-3xs md:text-xs pr-4">
                                 <span className="inline-flex items-center gap-1">
                                   <Eye className="w-2 sm:w-3 lg:w-4"/> 
-                                  {article.engagement?.views}
+                                  {currentEngagement.views}
                                 </span>
                                 <span className="inline-flex items-center gap-1">
                                   <Heart className={`w-2 sm:w-3 lg:w-4 ${isLiked ? 'text-adaptive-accent fill-adaptive-accent' : 'text-transparent fill-adaptive-accent'}`}/> 
-                                  {article.engagement?.likes}
+                                  {currentEngagement.likes}
                                 </span>
                                 <span className="inline-flex items-center gap-1">
                                   <MessageCircle className="w-2 sm:w-3 lg:w-4"/> 
-                                  {article.engagement?.comments}
+                                  {currentEngagement.comments}
                                 </span>
                               </div>
                             )}
@@ -154,7 +175,7 @@ export const ArticleDialog: ComponentConfig<ArticleDialogProps> = {
                       <div className="mx-4 self-center px-8 h-px bg-adaptive-secondaryAlt" />
                       
                       {article.featured_image && (
-                        <div className="mx-4 relative aspect-[2/1] overflow-hidden rounded-lg">
+                        <div className="mx-4 mt-2 lg:mt-4 relative aspect-[2/1] overflow-hidden rounded-lg">
                           <Image 
                             src={article.featured_image}
                             alt={article.title}
@@ -166,10 +187,10 @@ export const ArticleDialog: ComponentConfig<ArticleDialogProps> = {
                         </div>
                       )}
 
-                  <article className="space-y-2 lg:space-y-4">
-                    <header className="space-y-2 lg:space-y-4">
+                  <article className="space-y-1 md:space-y-2 lg:space-y-3">
+                    <header className="space-y-1 md:space-y-2 lg:space-y-3">
                       <div className="flex flex-col items-center justify-center w-full">
-                        <h1 className="font-display text-3xl md:text-5xl font-bold text-adaptive-accent text-center">
+                        <h1 className="mt-2 font-display text-3xl md:text-5xl font-bold text-adaptive-accent text-center">
                           <Link href={`/articles/${article.slug}`}>
                             {article.title}
                           </Link>
@@ -187,7 +208,7 @@ export const ArticleDialog: ComponentConfig<ArticleDialogProps> = {
                         </div>
                     </header>
                     <div className="mx-8 px-8 md:mx-12 md:px-12 lg:mx-16 self-center lg:px-16 h-px bg-adaptive-secondaryAlt" />
-                    <main className="px-4 prose-sm md:prose-lg text-adaptive-secondary max-w-none">
+                    <main className="mt-1 px-8 prose-sm md:prose-lg text-adaptive-secondary max-w-none">
                       <MarkdownRenderer.render content={article.content} />
                     </main>
 

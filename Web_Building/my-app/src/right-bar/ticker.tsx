@@ -1,3 +1,5 @@
+'use client';
+
 import { ComponentConfig } from "@measured/puck";
 import { useCallback, useEffect, useRef, useState } from "react";
 import * as ScrollArea from "@radix-ui/react-scroll-area";
@@ -5,12 +7,8 @@ import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import * as ContextMenuPrimitive from "@radix-ui/react-context-menu";
 import { Check, Clock } from "lucide-react";
 import { clsx } from "clsx";
-import Parser from 'rss-parser';
 import axios from 'axios';
 import { XMLParser } from 'fast-xml-parser';
-
-const parser = new Parser();
-const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
 
 const CORS_PROXIES = [
   'https://api.allorigins.win/raw?url=',
@@ -25,12 +23,9 @@ const xmlParser = new XMLParser({
   parseTagValue: true,
   parseAttributeValue: true,
   trimValues: true,
-  cdataPropName: "__cdata",
   processEntities: true,
   htmlEntities: true,
-  isArray: (name) => {
-    return name === 'item' || name === 'script';
-  }
+  isArray: (name) => ['item', 'entry'].includes(name)
 });
 
 interface NewsItem {
@@ -62,7 +57,8 @@ const speedMap = {
 
 const RSS_FEEDS = {
   proPub: 'http://feeds.propublica.org/propublica/main',
-  foreignPolicy: 'https://foreignpolicy.com/feed/'
+  foreignPolicy: 'https://foreignpolicy.com/feed/',
+  guardian: 'https://www.theguardian.com/world/rss'
 };
 
 const calculateDynamicSpeed = (headlines: NewsItem[], speedSetting: string) => {
@@ -177,26 +173,17 @@ export const Ticker: ComponentConfig<TickerProps> = {
     theme,
     maxArticlesPerSource = 3
   }) => {
-    const rssPubParser = new Parser({
-      customFields: {
-        feed: ['copyright', 'language'],
-        item: [['media:content', 'media'], ['atom:link', 'atomLink']]
-      },
-      xml2js: {
-        removeNSPrefix: true,
-        strict: false,
-        normalizeTags: true,
-        ignoreAttrs: true,
-        tagNameProcessors: [
-          name => name.replace(':', '_'),
-          name => name === 'script' ? '' : name
-        ],
-        valueProcessors: [
-          value => value?.trim()
-        ]
-      }
-    });
 
+    const xmlParser = new XMLParser({
+      ignoreAttributes: false,
+      removeNSPrefix: true,
+      parseTagValue: true,
+      parseAttributeValue: true,
+      trimValues: true,
+      processEntities: true,
+      htmlEntities: true,
+      isArray: (name) => ['item', 'entry'].includes(name)
+    });
 
     const fetchWithRetry = useCallback(async (url: string, attempts = 3) => {
       for (let i = 0; i < attempts; i++) {
@@ -226,7 +213,7 @@ export const Ticker: ComponentConfig<TickerProps> = {
       try {
         const data = await fetchWithRetry(url);
         const parsedXml = xmlParser.parse(data);
-        const items = parsedXml?.rss?.channel?.item || [];
+        const items = parsedXml?.rss?.channel?.item || parsedXml?.feed?.entry || [];
     
         if (!Array.isArray(items)) {
           console.error('RSS items not found or not an array:', items);
@@ -234,24 +221,18 @@ export const Ticker: ComponentConfig<TickerProps> = {
         }
     
         return items
-          .filter(item => {
-            // Check both direct title/link and potential CDATA wrapped content
-            const title = item.title?.__cdata || item.title;
-            const link = item.link?.__cdata || item.link;
-            return title && link;
-          })
           .slice(0, maxArticlesPerSource)
           .map(item => ({
-            title: item.title?.__cdata || item.title,
-            link: item.link?.__cdata || item.link,
+            title: item.title?.toString() || '',
+            link: item.link?.toString() || item.link?.href || '',
             source
-          }));
+          }))
+          .filter(item => item.title && item.link);
       } catch (error) {
         console.error(`Error fetching ${source} feed:`, error);
-        console.error('Full error details:', error.response?.data || error);
         return [];
       }
-    }, [maxArticlesPerSource]);
+    }, [maxArticlesPerSource, fetchWithRetry]);
 
     const [newsItems, setNewsItems] = useState<NewsItem[]>([]);
     const [scrollWidth, setScrollWidth] = useState(0);
@@ -259,32 +240,32 @@ export const Ticker: ComponentConfig<TickerProps> = {
     const contentRef = useRef<HTMLDivElement>(null);
     const wrapperRef = useRef<HTMLDivElement>(null);
 
-    const fetchGuardianNews = useCallback(async () => {
-      const guardianApiKey = process.env.NEXT_PUBLIC_GUARDIAN_API_KEY;
-      if (!guardianApiKey || !sources?.guardian) return [];
+    // const fetchGuardianNews = useCallback(async () => {
+      // const guardianApiKey = process.env.NEXT_PUBLIC_GUARDIAN_API_KEY;
+      // if (!guardianApiKey || !sources?.guardian) return [];
     
-      try {
-        const response = await fetch(
-          `https://content.guardianapis.com/search?api-key=${guardianApiKey}&show-fields=headline,shortUrl&page-size=${maxArticlesPerSource}`
-        );
-        const data = await response.json();
-        return data.response.results.map((item: any) => ({
-          title: item.fields.headline,
-          link: item.fields.shortUrl,
-          source: "The Guardian"
-        }));
-      } catch (error) {
-        console.error("Error fetching Guardian news:", error);
-        return [];
-      }
-    }, [sources?.guardian, maxArticlesPerSource]);
+    //   try {
+    //     // const response = await fetch(
+    //     //   `https://content.guardianapis.com/search?api-key=${guardianApiKey}&show-fields=headline,shortUrl&page-size=${maxArticlesPerSource}`
+    //     // );
+    //     const data = await response.json();
+    //     return data.response.results.map((item: any) => ({
+    //       title: item.fields.headline,
+    //       link: item.fields.shortUrl,
+    //       source: "The Guardian"
+    //     }));
+    //   } catch (error) {
+    //     console.error("Error fetching Guardian news:", error);
+    //     return [];
+    //   }
+    // }, [sources?.guardian, maxArticlesPerSource]);
 
     useEffect(() => {
       const fetchNews = async () => {
         if (typeof window === 'undefined') return;
 
         const newsPromises = [
-          sources.guardian && fetchGuardianNews(),
+          sources.guardian && fetchRssFeed(RSS_FEEDS.guardian, 'The Guardian'),
           sources.proPub && fetchRssFeed(RSS_FEEDS.proPub, 'ProPublica'),
           sources.foreignPolicy && fetchRssFeed(RSS_FEEDS.foreignPolicy, 'Foreign Policy')
         ].filter(Boolean);
@@ -307,7 +288,9 @@ export const Ticker: ComponentConfig<TickerProps> = {
       fetchNews();
       const interval = setInterval(fetchNews, 300000);
       return () => clearInterval(interval);
-    }, [sources, fetchGuardianNews, fetchRssFeed]);
+    }, [sources, fetchRssFeed]);
+  // }, [sources, fetchGuardianNews, fetchRssFeed]);
+
 
     useEffect(() => {
       if (!contentRef.current || !wrapperRef.current) return;

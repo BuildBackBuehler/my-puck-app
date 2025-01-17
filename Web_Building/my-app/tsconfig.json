@@ -1,6 +1,8 @@
 {
   "extends": "./tsconfig/nextjs.json",
   "compilerOptions": {
+    // "ignoreDeprecations": "5.0",
+    // "noImplicitAny": false,
     "plugins": [{ "name": "next" }, { "name": "tailwindcss" }],
     "target": "es6",
     "moduleResolution": "node",
@@ -9,9 +11,9 @@
     "esModuleInterop": true,
     "baseUrl": ".",
   "paths": {
-      "@/*": ["./*"]
+       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "tailwind.config.cjs", "svg.d.ts", "lib/**/*.tsx", "lib/**/*.ts", "utils/hooks/**/*.ts", "utils/hooks/**/*.tsx", "utils/**/*.tsx", "utils/**/*.ts", "public/animatedLW.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "tailwind.config.cjs", "svg.d.ts", "lib/**/*.tsx", "lib/**/*.ts", "utils/hooks/**/*.ts", "utils/hooks/**/*.tsx", "utils/**/*.tsx", "utils/**/*.ts"],
   "exclude": ["node_modules"]
 }

@@ -1,7 +1,9 @@
 import { ComponentConfig } from "@measured/puck";
 import { ArticleCard } from "./article-card";
-import { useEffect, useRef, useState } from "react";
 import { useLayoutState } from "../../lib/layout-state";
+import { ArticleCardProps } from "./article-card";
+
+// type WithoutPuck<T> = Omit<T, 'puck'>;
 
 export interface ArticleCardListProps {
   cards: ArticleCardProps[];
@@ -12,22 +14,8 @@ export const ArticleCardList: ComponentConfig<ArticleCardListProps> = {
   fields: {
     cards: {
       type: "array",
-      getItemSummary: (item) => item.title,
       arrayFields: {
-        mainTitle: { type: "text" },
-        date: { type: "text" },
-        image: {
-          type: "object",
-          objectFields: {
-            src: { type: "text" },
-            alt: { type: "text" }
-          }
-        },
-        title: { type: "text" },
-        author: { type: "text" },
-        readTime: { type: "text" },
-        summary: { type: "textarea" },
-        link: { type: "text" }
+        slug: { type: "text" }
       }
     },
     stickyOffset: { 
@@ -38,19 +26,13 @@ export const ArticleCardList: ComponentConfig<ArticleCardListProps> = {
   },
 
   defaultProps: {
-    cards: [{
-      mainTitle: "First Article",
-      date: "January 1, 2024",
-      image: {
-        src: "https://demo-source.imgix.net/puppy.jpg",
-        alt: "A cute puppy"
-      },
-      title: "Article Subtitle",
-      author: "Author Name",
-      readTime: "5 min read",
-      summary: "Article summary goes here",
-      link: "#"
-    }],
+    cards: [
+      { slug: "article-1" },
+      { slug: "article-2" },
+      { slug: "article-3" },
+      { slug: "article-4" },
+      { slug: "article-5" },
+    ],
     stickyOffset: 0
   },
 
@@ -69,7 +51,7 @@ export const ArticleCardList: ComponentConfig<ArticleCardListProps> = {
               className="sticky"
               style={{ top: `${stickyOffset}px` }}
             >
-              <ArticleCard.render {...card} id={`article-${index}`} />
+              <ArticleCard.render {...card} /> 
             </div>
           </div>
         ))}

@@ -1,8 +1,7 @@
-import { ComponentConfig } from "@measured/puck";
-import { DropZone } from "@measured/puck";
+import { ComponentConfig, DropZone } from "@measured/puck";
 import { generateId } from "../../lib/generate-id";
 import { useLayoutState } from '../../lib/layout-state'
-import { DropColumn } from "./drop-column";
+
 
 export interface ThreeColumnsProps {
   columns: {
@@ -39,12 +38,12 @@ export const ThreeColumns: ComponentConfig<ThreeColumnsProps> = {
     const { isSidebarOpen, isRightSidebarOpen } = useLayoutState()
     
     const sidebarWidth = isSidebarOpen 
-      ? 'calc(7rem + ((100vw - 430px) * 0.15))' 
-      : 'calc(2.5rem + ((100vw - 430px) * 0.05))'
+      ? 'calc(7rem + ((100vw - 430px) * 0.10))' // Reduced from 7rem and 0.15
+      : 'calc(2rem + ((100vw - 430px) * 0.03))' // Reduced from 2.5rem and 0.05
       
     const rightSidebarWidth = isRightSidebarOpen 
       ? `${columns[2].width}%` 
-      : 'calc(2.5rem + ((100vw - 430px) * 0.05))'
+      : 'calc(2rem + ((100vw - 430px) * 0.03))' // Reduced from 2.5rem and 0.05
       
     const mainWidth = isRightSidebarOpen ? columns[1].width : columns[1].width + 25
 

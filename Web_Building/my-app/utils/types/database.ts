@@ -55,7 +55,6 @@ export interface DBArticle {
   summary: string | null;
   content: string;
   featured_image: string | null;
-  created_at: string;
 }
 
 export interface ArticleWithEngagement extends DBArticle {
@@ -96,4 +95,34 @@ export interface ArticleWithAuthor extends DBArticle {
 
 export interface ArticleWithEngagement extends ArticleWithAuthor {
   engagement: ArticleEngagement;
+}
+
+export interface StorageConfig {
+  supabase: {
+    url: string;
+    key: string;
+    buckets: {
+      articles: string;
+      avatars: string;
+      images: string;
+    };
+  };
+  cloudflare: {
+    accountId: string;
+    apiToken: string;
+    buckets: {
+      static: string;
+      cache: string;
+    };
+  };
+}
+
+export interface DeploymentConfig {
+  static: {
+    patterns: string[];
+    excludePatterns: string[];
+  };
+  dynamic: {
+    patterns: string[];
+  };
 }

@@ -1,5 +1,5 @@
-import { ComponentConfig } from "@measured/puck";
-import { DropZone } from "@measured/puck";
+import { ComponentConfig, DropZone } from "@measured/puck";
+
 
 export interface ScrollFreeProps {
   paddingX: string;

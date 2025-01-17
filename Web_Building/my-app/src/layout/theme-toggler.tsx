@@ -1,3 +1,5 @@
+'use client';
+
 import { ComponentConfig } from "@measured/puck";
 import * as Toggle from "@radix-ui/react-toggle";
 import { Sun, Moon } from "lucide-react";

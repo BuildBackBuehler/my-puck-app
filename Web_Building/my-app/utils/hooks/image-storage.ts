@@ -1,25 +1,27 @@
 import { supabase } from '../supabase/client';
 
 export const getStorageUrl = async (bucketName: string, path: string, needsSignedUrl: boolean) => {
-  if (needsSignedUrl) {
-    const { data, error } = await supabase.storage
-      .from(bucketName)
-      .createSignedUrl(path, 31536000); // 1 year expiration
-    
-    if (error) {
-      console.error('Error creating signed URL:', error);
-      throw error;
+  // For Supabase buckets
+  if (['articles', 'avatars', 'images'].includes(bucketName)) {
+    if (needsSignedUrl) {
+      const { data, error } = await this.supabase.storage
+        .from(bucketName)
+        .createSignedUrl(path, 31536000);
+      
+      if (error) throw error;
+      return data.signedUrl;
     }
     
-    return data.signedUrl;
+    return this.supabase.storage
+      .from(bucketName)
+      .getPublicUrl(path)
+      .data.publicUrl;
   }
   
-  const { data } = supabase.storage
-    .from(bucketName)
-    .getPublicUrl(path);
-    
-  return data.publicUrl;
-};
+  // For R2 buckets
+  return `https://${bucketName}.r2.dev/${path}`;
+}
+
 
 export const insertCarouselImages = async (
   bucketName: string,
@@ -43,23 +45,3 @@ export const insertCarouselImages = async (
   if (error) throw error;
 };
 
-async function setupStorage() {
-  const { data: buckets, error: listError } = await supabase.storage.listBuckets();
-  
-  if (listError) throw listError;
-
-  const articleBucket = buckets?.find(b => b.name === 'article-images');
-  
-  if (!articleBucket) {
-    const { error: createError } = await supabase.storage.createBucket('article-images', {
-      public: true,
-      allowedMimeTypes: ['image/webp', 'image/jpeg', 'image/png'],
-      fileSizeLimit: 5242880 // 5MB
-    });
-    
-    if (createError) throw createError;
-    console.log('Created article-images bucket');
-  }
-}
-
-setupStorage().catch(console.error);

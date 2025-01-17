@@ -1,6 +1,8 @@
+"use client";
+
 import { ComponentConfig } from "@measured/puck";
 import { ChevronLeft, ChevronRight, Mail, Linkedin, Instagram } from "lucide-react";
-import { Author as AuthorType } from "../../lib/supabase";
+import { Author as AuthorType } from "@/utils/types/database";
 import { getAuthors } from "../../utils/supabase/client";
 import React, { useRef, useState } from "react";
 import Slider from "react-slick";

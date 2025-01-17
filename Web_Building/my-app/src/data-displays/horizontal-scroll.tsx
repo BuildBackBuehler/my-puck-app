@@ -1,3 +1,5 @@
+'use client';
+
 import { ComponentConfig } from "@measured/puck"
 import { useEffect, useRef, Fragment } from "react"
 import gsap from "gsap"
@@ -87,7 +89,9 @@ export const ScrollArticles: ComponentConfig<ScrollArticlesProps> = {
         }
       })
 
-      return () => draggable.kill()
+      return () => {
+        draggable.kill()
+      }
     }, [articles])
 
     return (

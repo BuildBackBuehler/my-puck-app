@@ -1,5 +1,4 @@
 import { ComponentConfig } from "@measured/puck";
-import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArticleDialog } from "./article-dialog";
@@ -7,19 +6,33 @@ import type { ArticleDialogProps } from "./article-dialog";
 import { ArticleWithEngagement } from "@/utils/types/database";
 import { useArticle } from "@/utils/hooks/useArticles";
 
-type ArticleCardProps = {
+
+export type ArticleCardProps = {
   slug: string;
 };
 
 export const ArticleCard: ComponentConfig<ArticleCardProps> = {
   fields: {
-    slug: { type: "text" }
+    slug: { 
+      type: "text",
+      label: "Article Slug"
+    }
+  },
+
+  defaultProps: {
+    slug: "america-the-free"
   },
 
   render: ({ slug }) => {
-    const { article, loading, updateEngagement } = useArticle(slug);
-    
-    if (loading || !article) return null;
+    const { article, loading } = useArticle(slug);
+
+    if (loading) {
+      return <div className="animate-pulse">Loading...</div>;
+    }
+
+    if (!article) {
+      return null;
+    }
     
     return (
       <article className="overflow-hidden">

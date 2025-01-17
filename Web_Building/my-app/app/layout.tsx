@@ -1,31 +1,32 @@
-'use client';
-
-import { AnimatePresence, motion } from "framer-motion";
-import { usePathname } from "next/navigation";
+import type { Metadata } from 'next'
 import './styles.css';
 
+export const metadata: Metadata = {
+  title: 'Your App Name',
+  description: 'Your app description',
+  icons: {
+    icon: '/favicon.ico',
+  },
+  appleWebApp: {
+    title: 'LotusWav.es',
+    capable: true,
+    statusBarStyle: 'default'
+  }
+}
+
+
+// app/layout.tsx
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const pathname = usePathname();
-
   return (
     <html lang="en">
-      <body>
-        <AnimatePresence mode="wait">
-          <motion.main
-            key={pathname}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.3 }}
-          >
-            {children}
-          </motion.main>
-        </AnimatePresence>
-      </body>
+            <head>
+        <meta name="apple-mobile-web-app-title" content="LotusWav.es" />
+      </head>
+      <body>{children}</body>
     </html>
   );
 }

@@ -1,0 +1,35 @@
+# Keep .next directory but ignore specific development files
+/.next/*.log
+/.next/cache/eslint/
+/.next/cache/webpack/
+
+# Dynamic Content Directories
+/articles/**
+/utils/supabase/**
+/uploads/**
+/public/uploads/**
+/authors/**
+
+# Database Files
+/supabase/**
+/utils/supabase/**
+/utils/supabase-utils/**
+*.sql
+*.db
+
+# Development Artifcacts
+node_modules/
+.env
+.env.*
+.pnpm-debug.log*
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# TypeScript Cache
+*.tsbuildinfo
+next-env.d.ts
+
+# Other
+/src/building_blocks/**

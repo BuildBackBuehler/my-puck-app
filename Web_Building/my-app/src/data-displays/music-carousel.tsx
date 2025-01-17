@@ -1,3 +1,5 @@
+'use client';
+
 import { ComponentConfig } from "@measured/puck"
 import { useEffect, useRef } from "react"
 import gsap from "gsap"
@@ -177,7 +179,7 @@ export const MusicCarousel: ComponentConfig<MusicCarouselProps> = {
             {tracks.map((track, i) => (
               <div
                 key={i}
-                ref={el => cardRefs.current[i] = el!}
+                ref={el => { if (el) cardRefs.current[i] = el }}
                 className="absolute w-full h-full"
                 style={{ transformStyle: "preserve-3d" }}
               >

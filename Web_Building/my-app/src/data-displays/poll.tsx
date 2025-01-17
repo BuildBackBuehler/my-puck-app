@@ -1,3 +1,5 @@
+'use client';
+
 import { Config } from "@measured/puck";
 import * as ToastPrimitive from "@radix-ui/react-toast";
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox";

@@ -1,4 +1,5 @@
 import type { Config } from "@measured/puck";
+import { ComponentConfig } from "@measured/puck";
 
 import {  Section, ThemeToggler, FixedColumns, DropColumn, FullWidthRow, ThreeColumns, ScrollColumn, TwoColumns, ScrollFree } from './src/layout';
 import {  SectionProps, ThemeTogglerProps, FixedColumnsProps, DropColumnProps, FullWidthRowProps, ThreeColumnsProps, ScrollColumnProps, TwoColumnsProps, ScrollFreeProps } from "./src/layout";
@@ -15,11 +16,19 @@ import { CommandMenuProps, ContextMenuProps, DropdownMenuProps, LogoBarProps, Me
 import { Article, ArticleCard, ArticleCardList, ArticleDialog, DemoCard } from './src/basics';
 import { ArticleProps, ArticleCardProps, ArticleCardListProps, ArticleDialogProps, DemoCardProps } from './src/basics';
 
-import { IssueCard, Sidebar, Socials, ArchiveGrid, ArchivePage, FilterBar } from "./src/spec_parts";
-import { IssueCardProps, SidebarProps, SocialsProps, ArchiveGridProps, ArchivePageProps, FilterBarProps } from "./src/spec_parts";
+import { IssueCard, Sidebar, Socials, ArchiveGrid, ArchivePage, FilterBar, } from "./src/spec_parts";
+import { IssueCardProps, SidebarProps, SocialsProps, ArchiveGridProps, Filters, FilterBarProps,  } from "./src/spec_parts";
 
-import { ArticleList, Circle, FeaturedHeader, Ticker,  } from "./src/right-bar";
-import { ArticleListProps, CircleProps, FeaturedHeaderProps, TickerProps,  } from "./src/right-bar";
+import { ArticleList, Circle, FeaturedHeader, Ticker, RightBar } from "./src/right-bar";
+import { ArticleListProps, CircleProps, FeaturedHeaderProps, TickerProps, RightBarProps  } from "./src/right-bar";
+
+import { JSONLD } from "./src/JSONLD/index";
+import { JSONLDProps } from "./src/JSONLD/index";
+import { WebsiteJsonLd } from "./src/JSONLD/WebsiteJSON";
+import { ArticleJsonLd } from "./src/JSONLD/ArticleJSON";
+import { ArtistProfileJsonLd } from "./src/JSONLD/ArtistJSON";
+import { ProfilePageJsonLd } from "./src/JSONLD/AuthorsJSON";
+
 
 type Props = {
   HeadingBlock: { title: string };
@@ -53,7 +62,7 @@ type Props = {
   ThreeColumns: ThreeColumnsProps;
   Article: ArticleProps;
   ArchiveGrid: ArchiveGridProps;
-  ArchivePage: ArchivePageProps;
+  ArchivePage: Filters;
   FilterBar: FilterBarProps;
   LogoBar: LogoBarProps;
   Carousel: CarouselProps;
@@ -68,7 +77,15 @@ type Props = {
   Author: AuthorProps;
   AboutCard: AboutCardProps;
   ScrollFree: ScrollFreeProps;
+  RightBar: RightBarProps;
+  JSONLD: JSONLDProps;
 };
+
+interface RootProps {
+  children: React.ReactNode;
+  pageType?: 'article' | 'arts' | 'profile';
+  pageData?: any;
+}
 
 export const config: Config<Props> = {
   components: {
@@ -130,11 +147,13 @@ export const config: Config<Props> = {
     Author,
     AboutCard,
     ScrollFree,
+    RightBar,
+    JSONLD,
   },
     categories: {
     basics: {
       title: 'Basics',
-      components: [ 'Article', 'ArticleCard', 'ArticleCardList','ArticleDialog', 'DemoCard', 'Icon' ]
+      components: [ 'Article', 'ArticleCard', 'ArticleCardList','ArticleDialog', 'DemoCard' ]
     },
     layout: {
       title: 'Layout',
@@ -154,16 +173,23 @@ export const config: Config<Props> = {
     },
     'right-side-bar': {
       title: 'Right Side Bar',
-      components: [ 'ArticleList', 'Circle', 'FeaturedHeader', 'Ticker' ]
+      components: [ 'ArticleList', 'Circle', 'FeaturedHeader', 'Ticker', 'RightBar']
     },
   },
     root: {
-        render: ({ children }: { children: React.ReactNode }) => (
-          <div className="min-h-screen bg-adaptive-primary text-adaptive-secondary transition-colors duration-300">
+      render: ({ children, pageType, pageData }: RootProps) => {
+        return (
+                  <>
+          <WebsiteJsonLd />
+          {pageType === 'article' && <ArticleJsonLd article={pageData} />}
+          {pageType === 'arts' && <ArtistProfileJsonLd artist={pageData} />}
+          {pageType === 'profile' && <ProfilePageJsonLd profile={pageData} />}
+          <div className="min-h-screen bg-adaptive-primary text-adaptive-secondary transition-colors duration-300"> 
             {children}
           </div>
-        )
+          </>
+          );
+        }
     }
-  };
-
+};
 export default config;

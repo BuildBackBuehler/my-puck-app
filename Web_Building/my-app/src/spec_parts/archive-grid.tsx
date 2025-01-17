@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArticleWithEngagement } from "@/utils/types/database";
 
-type ArchiveGridProps = {
+export type ArchiveGridProps = {
   batchSize: number;
   gridGap: string;
   articles: ArticleWithEngagement[];
@@ -13,12 +13,37 @@ type ArchiveGridProps = {
 export const ArchiveGrid: ComponentConfig<ArchiveGridProps> = {
   fields: {
     batchSize: { type: "number" },
-    gridGap: { 
+    gridGap: {
       type: "select",
       options: ["1rem", "2rem", "3rem"].map(gap => ({
         label: gap,
         value: gap
       }))
+    },
+    articles: {
+      type: "array",
+      arrayFields: {
+        id: { type: "text" },
+        slug: { type: "text" },
+        title: { type: "text" },
+        subtitle: { type: "text" },
+        summary: { type: "text" },
+        category: { type: "text" },
+        featured_image: { type: "text" },
+        engagement: {
+          type: "object",
+          objectFields: {
+            views: { type: "number" },
+            likes: { type: "number" },
+            comments: { type: "number" },
+            article_id: { type: "text" },
+          }
+        },
+        author: { type: "text" },
+        date: { type: "text" },
+        reading_time: { type: "text" },
+        content: { type: "text" },
+      }
     }
   },
 
@@ -35,9 +60,9 @@ export const ArchiveGrid: ComponentConfig<ArchiveGridProps> = {
           No articles available
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3" style={{ gap: gridGap }}>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 pr-1" style={{ gap: gridGap }}>
           {articles.slice(0, batchSize).map(article => (
-            <article key={article.id} className="flex flex-col rounded-lg overflow-hidden shadow-lg">
+            <article key={article.id} className="flex flex-col rounded-lg overflow-hidden shadow-lg hover:bg-adaptive-primaryAlt hover:shadow-xl">
               <Link href={`/articles/${article.slug}`}>
                 {article.featured_image && (
                   <div className="relative h-48">
@@ -52,13 +77,13 @@ export const ArchiveGrid: ComponentConfig<ArchiveGridProps> = {
                 )}
                 <div className="p-4 flex-1">
                   <h2 className="text-xl font-bold">{article.title}</h2>
-                  <h3 className="text-sm italic text-adaptive-accent mb-2">{article.subtitle}</h3>
+                  <h3 className="text-sm italic text-adaptive-accent mb-2 line-clamp-2">{article.subtitle}</h3>
                   {article.summary && (
                     <p className="text-base text-adaptive-secondaryAlt mb-4 line-clamp-[8]">
                       {article.summary}
                     </p>
                   )}
-                  <div className="flex justify-between items-center mt-auto">
+                  <div className="flex justify-between items-center">
                     <span className="text-sm text-adaptive-accent">{article.category}</span>
                     <div className="flex gap-4 text-sm text-adaptive-secondaryAlt">
                       <span className="flex items-center gap-1">

@@ -1,4 +1,4 @@
-import { ComponentConfig, DropZone } from "@measured/puck"
+import { ComponentConfig } from "@measured/puck"
 import Image from "next/image"
 import { Avatar } from '../data-displays/avatar';
 

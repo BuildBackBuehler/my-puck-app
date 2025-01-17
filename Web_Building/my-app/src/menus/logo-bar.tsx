@@ -76,7 +76,14 @@ export const LogoBar: ComponentConfig<LogoBarProps> = {
                 }}
                 className="relative"
                 >
-              <AnimatedSVG />
+              <Image
+                  src={siteLogo.src}
+                  alt={siteLogo.alt}
+                  width={width}
+                  height={height} 
+                  className="w-full h-full object-contain"
+                  priority
+                />
               </motion.div>
             )  : (
               <motion.div

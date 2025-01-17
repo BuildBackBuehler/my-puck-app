@@ -1,4 +1,6 @@
-import { ComponentConfig, DropZone } from "@measured/puck";
+"use client";
+
+import { ComponentConfig } from "@measured/puck";
 import { MessageCircle, Heart, Eye } from "lucide-react";
 import Image from "next/image";
 import { useArticle } from "@/utils/hooks/useArticles";
@@ -7,9 +9,9 @@ import { useCallback, useEffect, useState } from "react";
 import { SocialShareButtons } from "../buttons/SocialShareButtons"
 import { LikeButton } from "../buttons/like-button"
 import { MarkdownRenderer } from "./markdown-renderer";
-import { Avatar, AvatarWrapper } from "../data-displays/avatar";
-import { useAuthor } from "@/utils/hooks/useAuthor";
-interface ArticleProps {
+import { AvatarWrapper } from "../data-displays/avatar";
+import { LemmyComments } from "./lemmy-comments";
+export interface ArticleProps {
   slug: string;
   showEngagement?: boolean;
   socialShareUrls?: {
@@ -19,6 +21,8 @@ interface ArticleProps {
     reddit?: string;
   };
   authorId?: string;
+  lemmyPostId?: number;
+  lemmyInstanceUrl?: string;
 }
 
 export const Article: ComponentConfig<ArticleProps> = {
@@ -44,38 +48,102 @@ export const Article: ComponentConfig<ArticleProps> = {
     authorId: {
       type: "text"
     },
+    lemmyPostId: {
+      type: "number",
+      label: "Lemmy Post ID (for comments)"
+    },
+    lemmyInstanceUrl: {
+      type: "text",
+      label: "Lemmy Instance URL",
+      defaultValue: "https://lemmy.lotuswav.es"
+    }
   },
 
-  render: ({ slug, showEngagement = true, socialShareUrls = {}, authorId }) => {
+  render: ({ slug, showEngagement = true, socialShareUrls = {}, lemmyInstanceUrl, lemmyPostId }) => {
     const { article, loading, updateEngagement } = useArticle(slug);
-    const [isLiked, setIsLiked] = useState(false);
-    const [hasViewed, setHasViewed] = useState(false);
-    const [isOpen, setIsOpen] = useState(false);
     
-    // Move author hook after article check
-    const { author, loading: authorLoading } = useAuthor(
-      article?.author?.id ?? ''
-    );
+    // Initialize like state from localStorage and/or engagement data
+    const [isLiked, setIsLiked] = useState(() => {
+      if (typeof window !== 'undefined') {
+        const likedArticles = JSON.parse(localStorage.getItem('likedArticles') || '{}');
+        return !!likedArticles[slug];
+      }
+      return false;
+    });
 
+    // Add type for initial engagement state
+    const [engagement, setEngagement] = useState<ArticleEngagement>({
+      article_id: '',
+      likes: 0,
+      views: 0, 
+      comments: 0
+    });
+
+    // Update localStorage when like state changes
     useEffect(() => {
-      if (!article || !isOpen || hasViewed) return;
-      updateEngagement({ views: (article.engagement?.views || 0) + 1 });
-      setHasViewed(true);
-    }, [article]);
+      if (typeof window !== 'undefined') {
+        const likedArticles = JSON.parse(localStorage.getItem('likedArticles') || '{}');
+        if (isLiked) {
+          likedArticles[slug] = true;
+        } else {
+          delete likedArticles[slug];
+        }
+        localStorage.setItem('likedArticles', JSON.stringify(likedArticles));
+      }
+    }, [isLiked, slug]);
 
-    const handleLike = useCallback(() => {
+    // Add ArticleEngagement type to updateEngagement call
+    const handleLike = useCallback(async () => {
       if (!article) return;
+      
       const newLikedState = !isLiked;
       setIsLiked(newLikedState);
-      updateEngagement({ 
-        likes: article.engagement.likes + (newLikedState ? 1 : -1) 
-      });
-    }, [article, isLiked]);
 
-    if (loading || !article) return null;
+      const newEngagement: ArticleEngagement = {
+        article_id: article.id,
+        likes: (article.engagement?.likes ?? 0) + (newLikedState ? 1 : -1),
+        views: article.engagement?.views ?? 0,
+        comments: article.engagement?.comments ?? 0
+      };
+
+      await updateEngagement(newEngagement);
+    }, [article, isLiked, updateEngagement]);
+
+    // Track article views using localStorage
+    const [hasViewed, setHasViewed] = useState(() => {
+      if (typeof window !== 'undefined') {
+      const viewedArticles = JSON.parse(localStorage.getItem('viewedArticles') || '{}');
+      return !!viewedArticles[slug];
+      }
+      return false;
+    });
+
+    // Update view count when article is first viewed
+    useEffect(() => {
+      if (!hasViewed && article) {
+      setHasViewed(true);
+      localStorage.setItem('viewedArticles', JSON.stringify({
+        ...JSON.parse(localStorage.getItem('viewedArticles') || '{}'),
+        [slug]: true
+      }));
+      
+      const newEngagement: ArticleEngagement = {
+        article_id: article.id,
+        likes: article.engagement?.likes ?? 0,
+        views: (article.engagement?.views ?? 0) + 1,
+        comments: article.engagement?.comments ?? 0
+      };
+      
+      updateEngagement(newEngagement);
+      }
+    }, [hasViewed, article, slug, updateEngagement]);
+
+    if (loading || !article) {
+      return null;
+    }
 
     return (
-      <article className="w-full mx-auto max-h-[calc(100vh-80px)] overflow-y-auto text-adaptive-secondary relative">
+      <article className="w-full max-h-[calc(100vh-80px)] overflow-y-auto text-adaptive-secondary relative">
         <div className="py-4 space-y-4 relative mt-6">
           <div className="flex justify-between items-center">
             <h2 className="font-display text-2xl md:text-4xl lg:text-6xl tracking-tight pl-4">
@@ -91,18 +159,18 @@ export const Article: ComponentConfig<ArticleProps> = {
                 <div className="text-adaptive-secondaryAlt flex items-center space-x-2 text-3xs md:text-xs pr-4">
                   <span className="inline-flex items-center gap-1">
                     <Eye className="w-2 sm:w-3 lg:w-4"/> 
-                    {article.engagement?.views}
+                    {article.engagement?.views || 0}
                   </span>
                   <span className="inline-flex items-center gap-1">
                     <Heart className={`w-2 sm:w-3 lg:w-4 ${isLiked ? 'text-adaptive-accent fill-adaptive-accent' : 'text-transparent fill-adaptive-accent'}`}/> 
-                    {article.engagement?.likes}
+                    {article.engagement?.likes || 0}
                   </span>
                   <span className="inline-flex items-center gap-1">
                     <MessageCircle className="w-2 sm:w-3 lg:w-4"/> 
-                    {article.engagement?.comments}
+                    {article.engagement?.comments || 0}
                   </span>
                 </div>
-                            )}
+              )}
               
               <span className="text-adaptive-secondaryAlt text-3xs md:text-xs lg:text-base font-serif px-4">
                 {article.reading_time}
@@ -135,7 +203,7 @@ export const Article: ComponentConfig<ArticleProps> = {
             </blockquote>
           )}
           
-          <div className="flex items-center text-center justify-center text-base gap-1 md:gap-2">
+          <div className="flex items-center text-center justify-center text-base gap-1 md:gap-2 lg:gap-4">
           {article.author && (
             <AvatarWrapper
               variant="circle"
@@ -149,7 +217,7 @@ export const Article: ComponentConfig<ArticleProps> = {
 
           <div className="mx-16 self-center px-16 h-px bg-adaptive-secondaryAlt" />
           
-          <div className="prose prose-sm md:prose-base lg:prose-lg max-w-none mx-auto pr-2">
+          <div className="prose prose-sm md:prose-base lg:prose-lg max-w-none mx-auto px-4">
             <MarkdownRenderer.render content={article.content} />
           </div>
           
@@ -162,12 +230,16 @@ export const Article: ComponentConfig<ArticleProps> = {
               onClick={handleLike}
             />
           </div>
+          {lemmyPostId && (
+            <LemmyComments.render 
+              postId={lemmyPostId} 
+              instanceUrl={lemmyInstanceUrl || "https://lemmy.world"} 
+            />
+          )}
         </div>
       </article>
     );
   }
 };
 
-function setHasViewed(arg0: boolean) {
-  throw new Error("Function not implemented.");
-}
+

@@ -1,3 +1,5 @@
+"use client";
+
 import { createClient } from '@supabase/supabase-js';
 import { useEffect, useState } from 'react';
 import { Database, ArticleWithEngagement, ArticleEngagement, ArticleWithAuthor } from '../types/database';

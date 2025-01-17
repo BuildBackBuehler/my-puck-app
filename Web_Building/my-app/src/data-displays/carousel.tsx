@@ -1,3 +1,5 @@
+'use client';
+
 import { ComponentConfig } from "@measured/puck"
 import { useEffect, useRef, useState, useCallback } from "react"
 import { getCarouselImages } from "../../utils/supabase/client"

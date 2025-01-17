@@ -1,11 +1,11 @@
+'use client';
+
 import { ComponentConfig, DropZone } from "@measured/puck"
 import Link from "next/link"
-import React, { useState, useEffect, ReactElement } from "react"
+import React, { useState, useEffect, ReactElement, useMemo, useLayoutEffect } from "react"
 import { Rss, Instagram, MailPlus } from "lucide-react"
 import { useLayoutState } from "../../lib/layout-state"
-import { Archive, Contact, Palette, Sparkles, SquarePen } from "lucide-react"
-import Unabomber from "../../public/unabomber.svg"
-import Snoo from "../../public/snoo.svg"
+import { Archive, Contact, Palette, Sparkles } from "lucide-react"
 import dynamic from "next/dynamic";
 import Image from "next/image"
 import clsx from "clsx"
@@ -53,10 +53,188 @@ export interface NavItem {
   icon?: keyof typeof dynamicIconImports
 }
 
+const SidebarComponent = ({ navigation, socialHandle, showSubscribe, initialState, showDivider }) => {
+  const pathname = usePathname();
+  const { isSidebarOpen, setSidebarOpen } = useLayoutState();
+  const [mounted, setMounted] = useState(false);
+
+  // Only run this effect on client-side
+  useEffect(() => {
+    setMounted(true);
+    setSidebarOpen(initialState ?? window.innerWidth > 768);
+
+    const handleResize = () => {
+      setSidebarOpen(window.innerWidth > 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [initialState, setSidebarOpen]);
+
+  const content = (
+    <>
+    {/* Mobile Bottom Bar */}
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-adaptive-primary border-t border-adaptive-secondaryAlt z-50">
+      <div className="overflow-x-auto scrollbar-hide">
+        <div className="flex items-center p-4 min-w-min">
+          <div className="flex space-x-6">
+            {navigation.map((item, index) => (
+              <Link 
+                key={index}
+                href={item.href}
+                className="flex flex-col items-center min-w-[4rem] text-adaptive-secondary hover:text-adaptive-accent  transition-colors"
+              >
+                {item.icon && dynamicIconImports[item.icon] && (
+                  <span className="mb-1">
+                    {dynamicIconImports[item.icon]({ isSidebarOpen: false })}
+                  </span>
+                )}
+                <span className="text-2xs whitespace-nowrap">{item.label}</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile Social Icons */}
+      {/* <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center space-x-4 bg-adaptive-primary pl-4">
+        {showSubscribe && (
+          <>
+            <button className="text-adaptive-secondary hover:text-adaptive-accent">
+              <MailPlus size={16} />
+            </button>
+            <button className="text-adaptive-secondary hover:text-adaptive-accent">
+              <Instagram size={16} />
+            </button>
+            <button className="text-adaptive-secondary hover:text-adaptive-accent">
+              <Rss size={16} />
+            </button>
+          </>
+        )}
+      </div> */}
+    </nav>
+
+    {/* Desktop/Tablet Sidebar - Hiding on Mobile */}
+    <aside className={`
+      hidden md:block absolute inset-y-0 left-0 h-full transition-all duration-200 ease-in-out
+      ${isSidebarOpen ? 'w-36 lg:w-56' : 'w-12 lg:w-16'}
+    `}>
+      {/* Existing sidebar content */}
+      {showDivider && (
+        <div className={clsx(
+          "absolute right-0 top-[10vh] h-[90vh] lg:top-[13.5vh] w-px lg:h-[86.5vh] bg-adaptive-secondaryAlt transition-opacity duration-300",
+          isSidebarOpen ? 'opacity-100' : 'opacity-0'
+        )} />
+      )}
+      
+      <div className="flex flex-col h-full justify-between p-3 lg:p-6">
+        <div className="relative">
+          <button 
+            onClick={() => {
+              const newState = !isSidebarOpen;
+              setSidebarOpen(newState);
+              localStorage.setItem('sidebarState', JSON.stringify(newState));
+            }}
+            className="absolute -right-2 top-[50vh] w-4 h-4 lg:w-6 lg:h-6 border border-adaptive-secondary text-adaptive-secondary hover:text-adaptive-accent hover:border-adaptive-accent rounded-full flex items-center justify-center cursor-pointer bg-adaptive-primary opacity-40 hover:opacity-100 transition-all duration-150"
+          >
+            {isSidebarOpen ? '←' : '→'}
+          </button>
+
+          <div className="mt-16">
+            <DropZone zone="Toggle"/>
+          </div>
+
+          <nav className={`mt-14 ${isSidebarOpen ? 'space-y-1 md:space-y-3 lg:space-y-4' : 'md:space-y-3 lg:space-y-6'}`}>
+            {navigation.map((item, index) => (
+              <div key={index} className="transform-gpu">
+                <Link 
+                  href={item.href}
+                  className="block text-lg lg:text-xl first-letter:text-2xl first-letter:bold text-adaptive-secondary group"
+                  onClick={createRipple}
+                >
+                  <span className={clsx(
+                    "block transform-gpu transition-all duration-300 ease-in-out group-hover:scale-[1.035] group-hover:text-adaptive-accent",
+                    isSidebarOpen ? 'opacity-100' : 'opacity-0 hidden'
+                  )}>
+                    {item.label}
+                  </span>
+                  
+                  <span className={clsx(
+                    "block transform-gpu transition-all duration-300 ease-in-out group-hover:scale-110 group-hover:text-adaptive-accent",
+                    isSidebarOpen ? 'opacity-0 hidden' : 'opacity-100'
+                  )}>
+                    {item.icon && dynamicIconImports[item.icon] && 
+                      dynamicIconImports[item.icon]({ isSidebarOpen })}
+                </span>
+              </Link>
+              </div>
+            ))}
+          </nav>
+        </div>
+
+        {/* Bottom section */}
+        <div className="mt-auto space-y-4">
+          <div className={clsx(
+            "mt-8 transition-all duration-300 items-center ease-in-out",
+            isSidebarOpen ? 'w-auto hover:scale-[1.02]' : 'gap-4 w-6 -pl-4 hover:scale-[1.15]'
+          )}>
+            <DropZone zone="Contact" />
+          </div>
+
+          <div className={isSidebarOpen ? 'block' : 'hidden'}>
+            <p className="italic text-adaptive-secondaryAlt text-xs lg:text-base tracking-tight">
+              Looking for Substance?
+            </p>
+            <p className="text-adaptive-secondaryAlt text-xs lg:text-base italic line-through">
+              Subscribe
+            </p>
+            <p className="text-adaptive-secondaryAlt text-xs lg:text-base">
+              Prescribe to us
+            </p>
+          </div>
+
+
+            <div className={clsx(
+              "flex",
+              isSidebarOpen ? 'gap-2' : 'flex-col gap-2 items-center pl-2'
+            )}>
+              <button className="hidden md:flex text-adaptive-secondary p-1.5 rounded 
+                hover:scale-[1.15] hover:text-adaptive-accent 
+                transition-all duration-300 ease-in-out transform-gpu
+                items-center justify-center w-8 h-8">
+                <MailPlus size={16} />
+              </button>
+              <button className="hidden md:flex text-adaptive-secondary p-1.5 rounded 
+                hover:scale-[1.15] hover:text-adaptive-accent 
+                transition-all duration-300 ease-in-out transform-gpu
+                items-center justify-center w-8 h-8">
+                <Instagram size={16} />
+              </button>
+              <button className="hidden md:flex text-adaptive-secondary p-1.5 rounded 
+                hover:scale-[1.15] hover:text-adaptive-accent 
+                transition-all duration-300 ease-in-out transform-gpu
+                items-center justify-center w-8 h-8">
+                <Rss size={16} />
+              </button>
+            </div>
+
+          <p className={clsx(
+            "text-adaptive-accent text-xs italic",
+            isSidebarOpen ? 'block' : 'hidden'
+          )}>
+            Not a cult!™
+          </p>
+        </div>
+      </div>
+    </aside>
+  </>
+  );
+  return content;
+}
+
+
 export interface SidebarProps {
   navigation: NavItem[]
-  socialHandle?: string
-  showSubscribe?: boolean
   initialState?: boolean
   showDivider?: boolean
 }
@@ -68,35 +246,25 @@ export const Sidebar: ComponentConfig<SidebarProps> = {
       getItemSummary: (item) => item.label,
       arrayFields: {
         label: { type: "text" },
-        href: { type: "text" },
-        icon: { 
+        href: { type: "text" }, 
+        icon: {
           type: "select",
-          options: Object.keys(dynamicIconImports).map(name => ({
-            label: name, value: name
-          }))
-        },
-      },
-    },
-    socialHandle: { type: "text" },
-    showSubscribe: { 
-      type: "radio", 
-      options: [
-        { label: "Show", value: true },
-        { label: "Hide", value: false }
-      ]
+          options: [
+            { label: "Snoo", value: "snoo" },
+            { label: "Contact", value: "contact" },
+            { label: "Palette", value: "palette" },
+            { label: "Archive", value: "archive" },
+            { label: "Sparkles", value: "sparkles" },
+            { label: "Unabomber", value: "unabomber" }
+          ]
+        }
+      }
     },
     initialState: {
-      type: "radio",
+      type: "radio", 
       options: [
         { label: "Open", value: true },
         { label: "Closed", value: false }
-      ]
-    },
-    showDivider: { 
-      type: "radio", 
-      options: [
-        { label: "Show", value: true },
-        { label: "Hide", value: false }
       ]
     }
   },
@@ -110,205 +278,10 @@ export const Sidebar: ComponentConfig<SidebarProps> = {
       { label: "Essentials", href: "/essentials", icon: "Sparkles" },
       { label: "Manifesto", href: "/manifesto", icon: "Unabomber" }
     ],
-    socialHandle: "@lotuswav.es",
-    showSubscribe: true,
     initialState: true,
-    showDivider: true
+    showDivider: true,
+    socialHandle: '',
+    showSubscribe: false
   },
-
-  render: ({ navigation = [], socialHandle, showSubscribe = true, initialState = true, showDivider = true }) => {
-    const pathname = usePathname();
-    const storageKey = `sidebarState_${pathname}`;
-
-    const [isOpen, setIsOpen] = useState(() => {
-      if (typeof window !== 'undefined') {
-        const pageSpecificState = localStorage.getItem(storageKey);
-        if (pageSpecificState !== null) {
-          return JSON.parse(pageSpecificState);
-        }
-        return initialState;
-      }
-      return initialState;
-    });
-
-    const { isSidebarOpen, setSidebarOpen } = useLayoutState();
-
-    useEffect(() => {
-      setSidebarOpen(isOpen);
-      localStorage.setItem(storageKey, JSON.stringify(isOpen));
-    }, [isOpen, setSidebarOpen, storageKey]);
-
-    // Sidebar visibility based on screen size
-    useEffect(() => {
-      const checkWidth = () => {
-        const isMobile = window.innerWidth <= 768;
-        setIsOpen(!isMobile);
-        setSidebarOpen(!isMobile);
-      };
-
-      checkWidth();
-      window.addEventListener('resize', checkWidth);
-      return () => window.removeEventListener('resize', checkWidth);
-    }, [setSidebarOpen]);
-
-    return (
-      <>
-        {/* Mobile Bottom Bar */}
-        <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-adaptive-primary border-t border-adaptive-secondaryAlt z-50">
-          <div className="overflow-x-auto scrollbar-hide">
-            <div className="flex items-center p-4 min-w-min">
-              <div className="flex space-x-6">
-                {navigation.map((item, index) => (
-                  <Link 
-                    key={index}
-                    href={item.href}
-                    className="flex flex-col items-center min-w-[4rem] text-adaptive-secondary hover:text-adaptive-accent  transition-colors"
-                  >
-                    {item.icon && dynamicIconImports[item.icon] && (
-                      <span className="mb-1">
-                        {dynamicIconImports[item.icon]({ isSidebarOpen: false })}
-                      </span>
-                    )}
-                    <span className="text-2xs whitespace-nowrap">{item.label}</span>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Mobile Social Icons */}
-          {/* <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center space-x-4 bg-adaptive-primary pl-4">
-            {showSubscribe && (
-              <>
-                <button className="text-adaptive-secondary hover:text-adaptive-accent">
-                  <MailPlus size={16} />
-                </button>
-                <button className="text-adaptive-secondary hover:text-adaptive-accent">
-                  <Instagram size={16} />
-                </button>
-                <button className="text-adaptive-secondary hover:text-adaptive-accent">
-                  <Rss size={16} />
-                </button>
-              </>
-            )}
-          </div> */}
-        </nav>
-
-        {/* Desktop/Tablet Sidebar - Hiding on Mobile */}
-        <aside className={`
-          hidden md:block absolute inset-y-0 left-0 h-full transition-all duration-200 ease-in-out
-          ${isSidebarOpen ? 'w-36 lg:w-64' : 'w-12 lg:w-16'}
-        `}>
-          {/* Existing sidebar content */}
-          {showDivider && (
-            <div className={clsx(
-              "absolute right-0 top-[10vh] h-[90vh] lg:top-[13.5vh] w-px lg:h-[86.5vh] bg-adaptive-secondaryAlt transition-opacity duration-300",
-              isSidebarOpen ? 'opacity-100' : 'opacity-0'
-            )} />
-          )}
-          
-          <div className="flex flex-col h-full justify-between p-6 lg:p-8">
-            <div className="relative">
-              <button 
-                onClick={() => {
-                  const newState = !isSidebarOpen;
-                  setSidebarOpen(newState);
-                  localStorage.setItem('sidebarState', JSON.stringify(newState));
-                }}
-                className="absolute -right-6 top-[50vh] w-4 h-4 lg:w-6 lg:h-6 border border-adaptive-secondary text-adaptive-secondary hover:text-adaptive-accent hover:border-adaptive-accent rounded-full flex items-center justify-center cursor-pointer bg-adaptive-primary opacity-40 hover:opacity-100 transition-all duration-150"
-              >
-                {isSidebarOpen ? '←' : '→'}
-              </button>
-
-              <div className="mt-16">
-                <DropZone zone="Toggle"/>
-              </div>
-
-              <nav className={`mt-14 ${isSidebarOpen ? 'space-y-1 md:space-y-3 lg:space-y-4' : 'md:space-y-3 lg:space-y-6'}`}>
-                {navigation.map((item, index) => (
-                  <div key={index} className="transform-gpu">
-                    <Link 
-                      href={item.href}
-                      className="block text-lg lg:text-xl first-letter:text-2xl first-letter:bold text-adaptive-secondary group"
-                      onClick={createRipple}
-                    >
-                      <span className={clsx(
-                        "block transform-gpu transition-all duration-300 ease-in-out group-hover:scale-[1.035] group-hover:text-adaptive-accent",
-                        isSidebarOpen ? 'opacity-100' : 'opacity-0 hidden'
-                      )}>
-                        {item.label}
-                      </span>
-                      
-                      <span className={clsx(
-                        "block transform-gpu transition-all duration-300 ease-in-out group-hover:scale-110 group-hover:text-adaptive-accent",
-                        isSidebarOpen ? 'opacity-0 hidden' : 'opacity-100'
-                      )}>
-                        {item.icon && dynamicIconImports[item.icon] && 
-                          dynamicIconImports[item.icon]({ isSidebarOpen })}
-                    </span>
-                  </Link>
-                  </div>
-                ))}
-              </nav>
-            </div>
-
-            {/* Bottom section */}
-            <div className="mt-auto space-y-4">
-              <div className={clsx(
-                "mt-8 transition-all duration-300 items-center ease-in-out",
-                isSidebarOpen ? 'w-auto hover:scale-[1.02]' : 'gap-4 w-6 -pl-4 hover:scale-[1.15]'
-              )}>
-                <DropZone zone="Contact" />
-              </div>
-
-              <div className={isSidebarOpen ? 'block' : 'hidden'}>
-                <p className="italic text-adaptive-secondaryAlt text-xs lg:text-base tracking-normal">
-                  Looking for Substance?
-                </p>
-                <p className="text-adaptive-secondaryAlt text-xs lg:text-base italic line-through">
-                  Subscribe
-                </p>
-                <p className="text-adaptive-secondaryAlt text-xs lg:text-base">
-                  Prescribe to us
-                </p>
-              </div>
-
-              {showSubscribe && (
-                <div className={clsx(
-                  "flex",
-                  isSidebarOpen ? 'gap-2' : 'flex-col gap-2 items-center pl-2'
-                )}>
-                  <button className="hidden md:flex text-adaptive-secondary p-1.5 rounded 
-                    hover:scale-[1.15] hover:text-adaptive-accent 
-                    transition-all duration-300 ease-in-out transform-gpu
-                    items-center justify-center w-8 h-8">
-                    <MailPlus size={16} />
-                  </button>
-                  <button className="hidden md:flex text-adaptive-secondary p-1.5 rounded 
-                    hover:scale-[1.15] hover:text-adaptive-accent 
-                    transition-all duration-300 ease-in-out transform-gpu
-                    items-center justify-center w-8 h-8">
-                    <Instagram size={16} />
-                  </button>
-                  <button className="hidden md:flex text-adaptive-secondary p-1.5 rounded 
-                    hover:scale-[1.15] hover:text-adaptive-accent 
-                    transition-all duration-300 ease-in-out transform-gpu
-                    items-center justify-center w-8 h-8">
-                    <Rss size={16} />
-                  </button>
-                </div>
-              )}
-
-              <p className={clsx(
-                "text-adaptive-accent text-xs italic",
-                isSidebarOpen ? 'block' : 'hidden'
-              )}>
-                Not a cult!™
-              </p>
-            </div>
-          </div>
-        </aside>
-      </>
-    );
+    render: (props) => <SidebarComponent {...props} />
   }
-};

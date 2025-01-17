@@ -1,3 +1,5 @@
+'use client';
+
 import { ComponentConfig, DropZone } from "@measured/puck";
 import Link from "next/link";
 import { useState } from "react";
